@@ -1,5 +1,7 @@
 #
 .vscode
-client/.expo
 #node_modules
 client/node_modules
+node_modules
+#.expo
+client/.expo
