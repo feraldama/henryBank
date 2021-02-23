@@ -9,18 +9,20 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-
+import { colors } from "../res";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-import logo from "./assets/favicon.png";
+import logo from "../assets/favicon.png";
 const { width: WIDTH } = Dimensions.get("window");
 
-export default function App() {
+export const LogIn = () => {
   const [passHidden, setPassHidden] = useState(true);
 
   const handlePassVisibility = () => {
     setPassHidden(!passHidden);
   };
+
+  console.log(colors);
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
@@ -71,7 +73,7 @@ export default function App() {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     height: null,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "blue",
+    backgroundColor: colors.primary,
   },
   logoContainer: {
     alignItems: "center",
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
     width: WIDTH - 55,
     height: 45,
     borderRadius: 25,
-    backgroundColor: "#432577",
+    backgroundColor: colors.secondary,
     justifyContent: "center",
     marginTop: "20",
   },
