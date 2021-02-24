@@ -1,20 +1,20 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TextInput,
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import { Button } from "react-native-paper";
 import { colors } from "../res";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-import logo from "../assets/favicon.png";
+import logo from "../assets/logo2.png";
 const { width: WIDTH } = Dimensions.get("window");
 
-export const LogIn = () => {
+function loginScreen(props) {
   const [passHidden, setPassHidden] = useState(true);
 
   const handlePassVisibility = () => {
@@ -26,7 +26,6 @@ export const LogIn = () => {
     <View style={styles.mainContainer}>
       <View style={styles.logoContainer}>
         <Image source={logo} style={styles.logo} />
-        <Text style={styles.logoText}>Henry Bank</Text>
       </View>
 
       <View styles={styles.inputContainer}>
@@ -46,11 +45,11 @@ export const LogIn = () => {
 
       <View styles={styles.inputContainer}>
         {/* <Icon
-          name={"ion-ios-lock-outline"}
-          size={28}
-          color={"rgba(255,255,255,0.7"}
-          style={styles.inputIcon}
-        /> */}
+			name={"ion-ios-lock-outline"}
+			size={28}
+			color={"rgba(255,255,255,0.7"}
+			style={styles.inputIcon}
+		  /> */}
         <TextInput
           style={styles.input}
           placeholder={"Contraseña"}
@@ -67,12 +66,22 @@ export const LogIn = () => {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.btnLogin}>
-        <Text style={styles.text}>Ingresar</Text>
-      </TouchableOpacity>
+
+      <Button
+        style={styles.btn}
+        mode="contained"
+        title="Register"
+        onPress={() => {
+          navigation.navigate("Register");
+        }}
+      >
+        Log In
+      </Button>
     </View>
   );
-};
+}
+
+export default loginScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -134,5 +143,10 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.7)",
     fontSize: 16,
     textAlign: "center",
+  },
+  btn: {
+    margin: 15,
+    width: 150,
+    height: 40,
   },
 });
