@@ -7,16 +7,16 @@ apiEndpoints:
   api:
     host: localhost
     paths: '/ip'
-  user:
+  users:
     host: localhost
-    paths: ["/index", "/index/*"]
+    paths: ["/users", "/users/*"]
   transacciones:
     host: localhost
     paths: ["/transacciones", "/transacciones/*"]
 serviceEndpoints:
   httpbin:
     url: 'https://httpbin.org'
-  indexService:
+  usersService:
     url: "http://localhost:3000"
   transaccionesService:
     url: "http://localhost:4000"
@@ -40,15 +40,15 @@ pipelines:
           - action:
               serviceEndpoint: httpbin
               changeOrigin: true
-  userPipeline:
+  usersPipeline:
     apiEndpoints:
-      - index
+      - users
     policies:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
           - action:
-              serviceEndpoint: indexService
+              serviceEndpoint: usersService
               changeOrigin: true
   transaccionesPipeline:
     apiEndpoints:
