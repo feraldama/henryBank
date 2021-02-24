@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
-import colors from "../res/colors";
+import colors from "../../res/colors";
 
 function registerScreen4() {
   const [state, setState] = useState({
