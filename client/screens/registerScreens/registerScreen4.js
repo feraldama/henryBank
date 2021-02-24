@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
-import colors from "../../res/colors";
+import { colors } from "../../res/";
 
-function registerScreen4() {
+export const registerScreen4 = () => {
   const [state, setState] = useState({
     password: "",
     rePassword: "",
@@ -42,7 +42,7 @@ function registerScreen4() {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   btntext: {
@@ -76,5 +76,3 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
 });
-
-export default registerScreen4;

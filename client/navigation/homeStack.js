@@ -1,13 +1,13 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-import "../res/colors";
-
-import homeScreen from "../screens/homeScreen";
-import loginScreen from "../screens/loginScreen";
-import registerScreen from "../screens/registerScreens/registerScreen";
-import registerScreen2 from "../screens/registerScreens/registerScreen2";
-import registerScreen3 from "../screens/registerScreens/registerScreen3";
-import registerScreen4 from "../screens/registerScreens/registerScreen4";
+import { colors } from "../res";
+import { homeScreen, loginScreen } from "../screens/";
+import {
+  registerScreen,
+  registerScreen2,
+  registerScreen3,
+  registerScreen4,
+} from "../screens/registerScreens";
 
 const screens = {
   Home: {
