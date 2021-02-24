@@ -8,7 +8,7 @@ import {
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
 
-function registerScreen({ navigation }) {
+export const registerScreen = ({ navigation }) => {
   const [state, setState] = useState({
     name: "",
     lastname: "",
@@ -51,7 +51,7 @@ function registerScreen({ navigation }) {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
 const styles = StyleSheet.create({
   btntext: {
     color: "#fff",
@@ -77,5 +77,3 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
 });
-
-export default registerScreen;

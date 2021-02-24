@@ -3,7 +3,7 @@ import { Image, View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { colors } from "../res";
 
-function homeScreen({ navigation }) {
+export const homeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={require("../assets/logo2.png")} style={styles.image} />
@@ -28,7 +28,7 @@ function homeScreen({ navigation }) {
       </Button>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -48,5 +48,3 @@ const styles = StyleSheet.create({
     height: 40,
   },
 });
-
-export default homeScreen;
