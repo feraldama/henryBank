@@ -1,12 +1,16 @@
-const express  = require("express");
-const morgan =  require("morgan")
-const transacciones = require("./routes/transacciones")
-let app = express();
 
-app.use(morgan("dev"));
+//ARCHIVO DE CONFIGURACIÓN PARA OTRA DB
 
-app.use("/", transacciones)
+// const express  = require("express");
+// const morgan =  require("morgan")
+// const transacciones = require("./src/routes/transacciones.js")
+// let app = express();
 
-app.listen(4000, () => {
-    console.log('Server running on 4000');
-})
+// app.use(morgan("dev"));
+
+// app.use("/", transacciones)
+
+
+// app.listen(4000, () => {
+//     console.log('Server running on 4000');
+// })
