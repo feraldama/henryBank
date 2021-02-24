@@ -1,12 +1,23 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { colors } from "./res";
+import { StyleSheet, View, Image } from "react-native";
 import { Provider as ReduxProvider } from "react-redux";
-
-import generateStore from "./store";
+import store from "./redux/store";
 
 export default function App() {
-  const store = generateStore();
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    image: {
+      width: 200,
+      height: 200,
+    },
+  });
 
   return (
     <ReduxProvider store={store}>
@@ -17,12 +28,3 @@ export default function App() {
     </ReduxProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
