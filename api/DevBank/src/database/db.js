@@ -1,14 +1,18 @@
 const {Sequelize} = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config
 
-const {
-    DB_USER, DB_PASSWORD, DB_HOST, DB_TABLE, DB_PORT 
-} = process.env;
 
-// postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_TABLE}
+const db = {
+    user: 'postgres',
+    password: '7931',
+    host: 'localhost',
+    port: '5432',
+    table: 'henrybank'
+}
 
-const sequelize = new Sequelize('postgres://postgres:7931@localhost:5432/henrybank', {
+const sequelize = new Sequelize(`postgres://${db.user}:${db.password}@${db.host}:${db.port}/${db.table}`, {
     logging: false,
     native: false
 });
@@ -30,12 +34,6 @@ let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].s
 
 sequelize.models = Object.fromEntries(capsEntries)
 
-// try {
-//     sequelize.authenticate()
-//     console.log('Connection has been established successfully')
-// } catch(error){
-//     console.error('Unable to connect to the database: ', error)
-// }
 
 module.exports = {
     ...sequelize.models,

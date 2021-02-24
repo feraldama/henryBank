@@ -1,7 +1,12 @@
 #
 .vscode
+
 #node_modules
 client/node_modules
 node_modules
+
 #.expo
 client/.expo
+
+# dotenv environment variables file
+.env
