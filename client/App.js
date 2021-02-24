@@ -8,9 +8,11 @@ import generateStore from "./store";
 export default function App() {
   const store = generateStore();
 
+
   return (
     <ReduxProvider store={store}>
       <HomeStack />
     </ReduxProvider>
   );
 }
+
