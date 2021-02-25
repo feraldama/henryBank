@@ -17,6 +17,18 @@ module.exports = {
         })
     },
 
+    updateInfo(user, info){
+        return User.update(
+            {
+                ...user,
+                ...info
+            },
+            {
+                where: {id: user.id}
+            }
+        )
+    },
+
     getOneUser(userId){
         return User.findOne({
             where: {
