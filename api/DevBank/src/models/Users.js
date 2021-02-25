@@ -2,31 +2,6 @@ const {DataTypes} = require('sequelize')
 
 module.exports = (sequelize) => {
     sequelize.define('user', {
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        docType: {
-            type: DataTypes.STRING,
-            
-        },
-        docNumber: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true
-        },
-        birthday: {
-            type: DataTypes.INTEGER,
-        },
-        phone: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true
-        },
         email: {
             type: DataTypes.STRING,
             unique: true,
@@ -38,6 +13,41 @@ module.exports = (sequelize) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        docType: {
+            type: DataTypes.ENUM('DNI', 'PASAPORTE'),
+        },
+        docNumber: {
+            type: DataTypes.BIGINT,
+            unique: true
+        },
+        name: {
+            type: DataTypes.STRING,
+        },
+        lastName: {
+            type: DataTypes.STRING,
+        },
+        birthday: {
+            type: DataTypes.INTEGER,
+        },
+        phone: {
+            type: DataTypes.BIGINT,
+            unique: true
+        },
+        street: {
+            type: DataTypes.STRING,
+        },
+        number: {
+            type: DataTypes.INTEGER,
+        },
+        location: {
+            type: DataTypes.STRING,
+        },
+        province: {
+            type: DataTypes.STRING,
+        },
+        country: {
+            type: DataTypes.STRING,
         }
     })
 }
