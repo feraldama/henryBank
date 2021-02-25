@@ -6,8 +6,8 @@ require('dotenv').config
 
 
 const db = {
-    user: 'kydoro',
-    password: 'hachiko21',
+    user: 'postgres',
+    password: '123456789',
     host: 'localhost',
     port: '5432',
     table: 'henrybank'
