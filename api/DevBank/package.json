@@ -16,6 +16,7 @@
     "express-gateway": "^1.16.10",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
+    "passport": "^0.4.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.5.0"
