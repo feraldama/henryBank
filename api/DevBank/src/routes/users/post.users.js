@@ -39,7 +39,7 @@ server.post('/', (req, res) => {
 
             }
             
-            return nodemailerController.sendEmail(data)
+            // return nodemailerController.sendEmail(data)
         })  
         .then(() => {
             res.status(200).json({msg: 'Check your email'})
@@ -61,7 +61,17 @@ server.post('/:userId', (req, res) => {
             return userController.updateInfo(user, info)
         })
         .then((user) => {
-            res.status(200).json(user)
+            var cvu = 10000001233- userId + 500
+            var data= {userId, acconutNumber:1 , balance: 0, currency: "PESOS", cvu, type:"CAJA DE AHORRO"}
+            return userController.createdAccount(data)
+        })
+        .then((user) => {
+            var cvu =  10000001233- userId + 1000
+            var data= {userId, acconutNumber:2 , balance: 0, currency: "USD", cvu, type:"CAJA DE AHORRO"}
+            return userController.createdAccount(data)
+        })
+        .then((response) => {
+            res.status(200).json(response)
         })
         .catch((err) => {
             res.status(400).json(err)
