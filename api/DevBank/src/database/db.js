@@ -1,12 +1,13 @@
 const {Sequelize} = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require("bcrypt");
 require('dotenv').config
 
 
 const db = {
     user: 'postgres',
-    password: '7931',
+    password: '123456789',
     host: 'localhost',
     port: '5432',
     table: 'henrybank'

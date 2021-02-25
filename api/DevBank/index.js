@@ -1,5 +1,6 @@
 const server = require('./src/app');
 const {conn} = require('./src/database/db');
+const {Users} = require('./src/database/db');
 
 
 conn.authenticate()
@@ -8,6 +9,7 @@ conn.authenticate()
     })
     .then(() => {
         return server.listen(3000, () => {
+
             console.log('Connection has been established successfully at port 3000')
         })
     })

@@ -2,11 +2,18 @@ const server = require('express').Router();
 const userController = require('../../controllers/users.controller');
 const nodemailerController = require('../../controllers/nodemailer.controller');
 const nodemailer = require('nodemailer');
+var bcrypt = require("bcryptjs");
+
 
 
 server.post('/', (req, res) => {
-    const user = req.body;
-    
+    var user = req.body
+    var password = req.body.password
+
+    var salt = bcrypt.genSaltSync(10);
+    user.password = bcrypt.hashSync(password, salt);
+
+    user.password = req.body.password
 
     userController.createUser(user)
         .then((value) => {
