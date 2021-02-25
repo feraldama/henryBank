@@ -14,6 +14,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        type: {
+            type: DataTypes.ENUM('guest','admin'),
+            defaultValue: 'guest'
+        },
         docType: {
             type: DataTypes.ENUM('DNI', 'PASAPORTE'),
         },
