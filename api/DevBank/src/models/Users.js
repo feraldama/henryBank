@@ -21,9 +21,6 @@ module.exports = (sequelize) => {
         },
         birthday: {
             type: DataTypes.INTEGER,
-            validate: {
-                min: 16,
-            }
         },
         phone: {
             type: DataTypes.INTEGER,
