@@ -6,6 +6,9 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
+  Text,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { colors } from "../res";
 import { useState } from "react";
@@ -14,71 +17,85 @@ import Icon from "react-native-vector-icons/Ionicons";
 import logo from "../assets/logo2.png";
 const { width: WIDTH } = Dimensions.get("window");
 
-export const loginScreen = () => {
+export const loginScreen = ({ navigation }) => {
   const [passHidden, setPassHidden] = useState(true);
 
   const handlePassVisibility = () => {
     setPassHidden(!passHidden);
   };
 
-  console.log(colors);
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.logoContainer}>
-        <Image source={logo} style={styles.image} />
-      </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.mainContainer}>
+        <View style={styles.logoContainer}>
+          <Image source={logo} style={styles.image} />
+        </View>
 
-      <View styles={styles.inputContainer}>
-        <Icon
-          name={"ios-person-outline"}
-          size={28}
-          color={"rgba(255,255,255,0.7"}
-          style={styles.inputIcon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={"E-Mail"}
-          placeholderTextColor={"rgba(255,255,255,0.7"}
-          underlineColorAndroid="transparent"
-        />
-      </View>
-
-      <View styles={styles.inputContainer}>
-        {/* <Icon
-          name={"ion-ios-lock-outline"}
-          size={28}
-          color={"rgba(255,255,255,0.7"}
-          style={styles.inputIcon}
-        /> */}
-        <TextInput
-          style={styles.input}
-          placeholder={"Contraseña"}
-          secureTextEntry={passHidden}
-          placeholderTextColor={"rgba(255,255,255,0.7"}
-          underlineColorAndroid="transparent"
-        />
-
-        <TouchableOpacity style={styles.btnEye} onPress={handlePassVisibility}>
+        <View styles={styles.inputContainer}>
           <Icon
-            name={"ios-eye-outline"}
-            size={26}
+            name={"ios-person-outline"}
+            size={28}
             color={"rgba(255,255,255,0.7"}
+            style={styles.inputIcon}
           />
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Button
-          style={styles.btn}
-          mode="contained"
-          title="Register"
+          <TextInput
+            style={styles.input}
+            placeholder={"E-Mail"}
+            placeholderTextColor={"rgba(255,255,255,0.7"}
+            underlineColorAndroid="transparent"
+          />
+        </View>
+
+        <View styles={styles.inputContainer}>
+          {/* <Icon
+        name={"ion-ios-lock-outline"}
+        size={28}
+        color={"rgba(255,255,255,0.7"}
+        style={styles.inputIcon}
+      /> */}
+          <TextInput
+            style={styles.input}
+            placeholder={"Contraseña"}
+            secureTextEntry={passHidden}
+            placeholderTextColor={"rgba(255,255,255,0.7"}
+            underlineColorAndroid="transparent"
+          />
+
+          <TouchableOpacity
+            style={styles.btnEye}
+            onPress={handlePassVisibility}
+          >
+            <Icon
+              name={"ios-eye-outline"}
+              size={26}
+              color={"rgba(255,255,255,0.7"}
+            />
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Button
+            style={styles.btn}
+            mode="contained"
+            title="Register"
+            onPress={() => {
+              navigation.navigate("Consolidated");
+            }}
+          >
+            Log In
+          </Button>
+        </View>
+        <TouchableOpacity
+          style={styles.registerLink}
           onPress={() => {
             navigation.navigate("Register");
           }}
         >
-          Log In
-        </Button>
+          <Text style={{ color: "#fff" }}>
+            Don't have an account? Register now!
+          </Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -111,8 +128,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     fontSize: 16,
     paddingLeft: 45,
-    backgroundColor: "rgba(0,0,0,0.35)",
-    color: "rgba(255,255,255,0.7)",
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
+    color: "rgba(255, 255, 255, 0.7)",
     marginHorizontal: 25,
     marginVertical: 4,
   },
@@ -140,7 +157,7 @@ const styles = StyleSheet.create({
     marginTop: "20",
   },
   text: {
-    color: "rgba(255,255,255,0.7)",
+    color: "rgba(255, 255, 255, 0.7)",
     fontSize: 16,
     textAlign: "center",
   },
@@ -148,5 +165,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 92,
+  },
+  registerLink: {
+    marginTop: 50,
   },
 });

@@ -5,11 +5,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
+import { connect } from "react-redux";
 
-export const registerScreen4 = () => {
+export const registerScreen4 = ({ navigation }) => {
   const [state, setState] = useState({
     password: "",
     rePassword: "",
@@ -36,7 +36,10 @@ export const registerScreen4 = () => {
           value={state.rePassword}
         />
 
-        <Button mode="contained" onPress={() => alert("Register finished!")}>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate("VerifyEmail")}
+        >
           Finish
         </Button>
       </View>
@@ -76,3 +79,5 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
 });
+
+//export default connect(null, {})(registerScreen4);

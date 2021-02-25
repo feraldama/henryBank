@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { saveRegisterData } from "../../redux/user/actions";
 import {
   StyleSheet,
   View,
@@ -44,7 +46,10 @@ export const registerScreen = ({ navigation }) => {
         />
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("Register2")}
+          onPress={() => {
+            saveRegisterData(state);
+            navigation.navigate("Register2");
+          }}
         >
           Continuar
         </Button>
@@ -52,6 +57,7 @@ export const registerScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
+
 const styles = StyleSheet.create({
   btntext: {
     color: "#fff",
@@ -77,3 +83,5 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
 });
+
+//export default connect(null, saveRegisterData)(registerScreen);
