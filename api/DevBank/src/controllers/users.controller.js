@@ -1,5 +1,5 @@
-const {User} = require('../database/db')
-
+const {User, UserInfo} = require('../database/db');
+const {Op} = require('sequelize');
 
 module.exports = {
 
@@ -11,9 +11,17 @@ module.exports = {
         })
         .then((value) => {
             if(value){
-                return ({msg: 'user already exist'})
+                return false
             }
             return User.create(user)
+        })
+    },
+
+    getOneUser(userId){
+        return User.findOne({
+            where: {
+                id: userId
+            }
         })
     },
 

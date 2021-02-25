@@ -3,7 +3,10 @@ const userController = require('../../controllers/users.controller');
 
 server.get('/' , ( req, res) => {
 
-    res.json({msg: 'done'})
+    userController.getUsers()
+        .then((users) => {
+            res.status(200).json(users)
+        })
 
 })
 
