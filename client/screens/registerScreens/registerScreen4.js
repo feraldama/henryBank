@@ -24,6 +24,7 @@ export const registerScreen4 = ({ navigation }) => {
         <TextInput
           style={styles.textinput}
           placeholder="Password"
+          secureTextEntry={true}
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "password")}
           value={state.password}
@@ -31,6 +32,7 @@ export const registerScreen4 = ({ navigation }) => {
         <TextInput
           style={styles.textinput}
           placeholder="Repeat password"
+          secureTextEntry={true}
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "rePassword")}
           value={state.rePassword}

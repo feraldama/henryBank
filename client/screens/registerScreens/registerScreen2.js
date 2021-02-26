@@ -12,9 +12,9 @@ import { colors } from "../../res/";
 export const registerScreen2 = ({ navigation }) => {
   const [state, setState] = useState({
     idType: "",
-    idNumber: "",
-    bDate: "",
-    phoneNumber: "",
+    docNumber: "",
+    birthday: "",
+    phone: "",
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
@@ -38,22 +38,21 @@ export const registerScreen2 = ({ navigation }) => {
           style={styles.textinput}
           placeholder="ID Number"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "idNumber")}
+          onChangeText={(value) => handleChangeText(value, "docNumber")}
           value={state.idNumber}
         />
         <TextInput
           style={styles.textinput}
           placeholder="Birth Date"
-          secureTextEntry={true}
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "bDate")}
+          onChangeText={(value) => handleChangeText(value, "birthday")}
           value={state.bDate}
         />
         <TextInput
           style={styles.textinput}
           placeholder="Phone number"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "phoneNumber")}
+          onChangeText={(value) => handleChangeText(value, "phone")}
           value={state.phoneNumber}
         />
         <Button

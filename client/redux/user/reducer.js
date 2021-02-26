@@ -11,12 +11,13 @@ const initialState = {
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
     case SAVE_REGISTER_DATA:
+      console.log("Reducer: ", action.payload);
       return {
         ...state,
-        state: action.payload,
+        registerData: action.payload,
       };
-      break;
+
     default:
-      break;
+      return state;
   }
 }

@@ -11,10 +11,10 @@ import { colors } from "../../res/";
 
 export const registerScreen3 = ({ navigation }) => {
   const [state, setState] = useState({
-    address: "",
-    city: "",
+    street: "",
+    location: "",
     country: "",
-    state: "",
+    province: "",
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
@@ -27,7 +27,7 @@ export const registerScreen3 = ({ navigation }) => {
           style={styles.textinput}
           placeholder="Direccion"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "address")}
+          onChangeText={(value) => handleChangeText(value, "street")}
           value={state.address}
         />
         <TextInput
@@ -41,14 +41,14 @@ export const registerScreen3 = ({ navigation }) => {
           style={styles.textinput}
           placeholder="State"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "state")}
+          onChangeText={(value) => handleChangeText(value, "province")}
           value={state.state}
         />
         <TextInput
           style={styles.textinput}
           placeholder="City"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "city")}
+          onChangeText={(value) => handleChangeText(value, "location")}
           value={state.city}
         />
         <Button
