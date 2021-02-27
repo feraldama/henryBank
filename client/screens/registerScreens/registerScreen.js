@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const registerScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ export const registerScreen = ({ navigation }) => {
         <Button
           mode="contained"
           onPress={() => {
-            dispatch(saveRegisterData(state));
+            dispatch(saveRegisterData(state, 1));
             navigation.navigate("Register2");
           }}
         >

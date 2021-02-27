@@ -28,7 +28,7 @@ server.post("/", (req, res) => {
                         <br>
                         <br>
                         <br>
-                        <p> Almost ready, first click <a href='192.168.0.10:8080/users/${value.id}'>here</a> and finish your check Out</p> 
+                        <p> Almost ready, first click <a href='192.168.0.27:8080/users/${value.id}'>here</a> and finish your check Out</p> 
                         <br>
                         <br>
                         <br>

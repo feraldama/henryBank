@@ -37,11 +37,13 @@ const styles = StyleSheet.create({
   secondContainer: {
     backgroundColor: colors.secondary,
     justifyContent: "center",
+    alignContent: "center",
     borderRadius: 15,
     height: 150,
     margin: 25,
   },
   textStyle: {
     color: colors.white,
+    alignSelf: "center",
   },
 });

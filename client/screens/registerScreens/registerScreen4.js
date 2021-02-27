@@ -8,11 +8,26 @@ import {
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
 import { connect } from "react-redux";
+import { saveRegisterData } from "../../redux/user/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const registerScreen4 = ({ navigation }) => {
+  const register = useSelector((state) => state.user.registerData);
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     password: "",
     rePassword: "",
+    street: register.street,
+    location: register.location,
+    country: register.country,
+    province: register.province,
+    docType: register.docType,
+    docNumber: register.docNumber,
+    birthday: register.birthday,
+    phone: register.phone,
+    name: register.name,
+    lastName: register.lastName,
+    email: register.email,
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
@@ -40,7 +55,10 @@ export const registerScreen4 = ({ navigation }) => {
 
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("VerifyEmail")}
+          onPress={() => {
+            dispatch(saveRegisterData(state, 0));
+            navigation.navigate("VerifyEmail");
+          }}
         >
           Finish
         </Button>

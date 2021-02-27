@@ -8,13 +8,25 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
+import { saveRegisterData } from "../../redux/user/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const registerScreen3 = ({ navigation }) => {
+  const register = useSelector((state) => state.user.registerData);
+
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     street: "",
     location: "",
     country: "",
     province: "",
+    docType: register.docType,
+    docNumber: register.docNumber,
+    birthday: register.birthday,
+    phone: register.phone,
+    name: register.name,
+    lastName: register.lastName,
+    email: register.email,
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
@@ -53,7 +65,10 @@ export const registerScreen3 = ({ navigation }) => {
         />
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("Register4")}
+          onPress={() => {
+            dispatch(saveRegisterData(state, 1));
+            navigation.navigate("Register4");
+          }}
         >
           Continuar
         </Button>
