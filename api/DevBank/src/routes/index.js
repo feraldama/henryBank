@@ -5,8 +5,11 @@ const router = express.Router();
 const postUsers = require('./users/post.users');
 const getUsers = require('./users/get.users');
 const postAuth = require('./auth/post.auth');
+const transfer = require("./transfer/tranfer")
 
 
+// tranfer
+router.use('/users/transfer', transfer);
 // auth login
 router.use('/users/auth',postAuth);
 // use Users

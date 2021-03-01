@@ -5,8 +5,20 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
+var session = require('express-session');
 
 const server = express();
+
+server.use(
+  session({
+    secret: "secret",
+    // resave en true = en cada peticion, aunque la sesion no haya sido modificada la vamos a guardar.
+    resave: true,
+    // saveUnitialized en true = si inicializamos sesion en una peticion y no le guardamos nada, aun asi se guarda.
+    saveUninitialized: true,
+  })
+);
+
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:19006");
   res.header("Access-Control-Allow-Credentials", "true");
@@ -18,32 +30,42 @@ server.use((req, res, next) => {
   next();
 });
 
+
+
 const { Users } = require("./database/db");
 server.name = "API";
 
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 server.use(bodyParser.json({ limit: "50mb" }));
 server.use(morgan("dev"));
+
+// var express = require('express');
+// var app = express();
+// passport.use(
+//   new LocalStrategy(function (username, password, done) {
+//     Users.findOne({
+//       where: {
+//         email: username,
+//       },
+//     })
+//     .then((res) => {
+//         if (bcrypt.compareSync(password, res.dataValues.password)) {
+//           return done(null, res.dataValues);
+//         } else {
+//           return done(null, false);
+//         }
+//       })
+//       .catch((err) => {
+//         return done(err);
+//       });
+//     })
+// );
+
+server.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.session.user);
+  next();
+});
+
 server.use("/", routes);
-
-passport.use(
-  new LocalStrategy(function (username, password, done) {
-    Users.findOne({
-      where: {
-        email: username,
-      },
-    })
-      .then((res) => {
-        if (bcrypt.compareSync(password, res.dataValues.clave)) {
-          return done(null, res.dataValues);
-        } else {
-          return done(null, false);
-        }
-      })
-      .catch((err) => {
-        return done(err);
-      });
-  })
-);
-
 module.exports = server;

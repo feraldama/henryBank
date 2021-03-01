@@ -8,12 +8,13 @@ const { User } = require('../../database/db')
 
 
 server.post('/', (req, res) => {
-    var user = req.body
-    var password = req.body.password
-
-    var salt = bcrypt.genSaltSync(10);
-    user.password = bcrypt.hashSync(password, salt);
-
+    var user = req.body;
+    var password = req.body.password;
+    // var salt = bcrypt.genSaltSync(10);
+    // user.password = bcrypt.hashSync(password, salt);
+    var  salt  = bcrypt . genSaltSync ( 10 ) ; 
+    var  hash  = bcrypt . hashSync ( password,  salt ) ; 
+    user.password = hash
 
     userController.createUser(user)
         .then((value) => {
@@ -52,30 +53,35 @@ server.post('/', (req, res) => {
 })
 
 server.post('/:userId', (req, res) => {
-    const info = req.body
+    // const info = req.body
     const { userId } = req.params
 
     userController.getOneUser(userId)
+    // console.log("EEEEEEEEEEEEEEE 1")
+        // .then((user) => {
+        //     if (!user) {
+        //         return res.status(400).json({ msg: 'User does not exist' })
+        //     }
+        //     return userController.updateInfo(user, info)
+        // })
         .then((user) => {
-            if (!user) {
-                return res.status(400).json({ msg: 'User does not exist' })
-            }
-            return userController.updateInfo(user, info)
-        })
-        .then((user) => {
+            console.log("EEEEEEEEEEEEEEE 2")
             var cvu = 10000001233 - userId + 500
-            var data = { userId, acconutNumber: 1, balance: 0, currency: "PESOS", cvu, type: "CAJA DE AHORRO" }
+            var data = { userId, acconutNumber: 3, balance: 0, currency: "PESOS", cvu, type: "CAJA DE AHORRO" }
             return userController.createdAccount(data)
         })
         .then((user) => {
+            console.log("EEEEEEEEEEEEEEE 3")
             var cvu = 10000001233 - userId + 1000
-            var data = { userId, acconutNumber: 2, balance: 0, currency: "USD", cvu, type: "CAJA DE AHORRO" }
+            var data = { userId, acconutNumber: 4, balance: 0, currency: "USD", cvu, type: "CAJA DE AHORRO" }
             return userController.createdAccount(data)
         })
         .then((response) => {
+            console.log("EEEEEEEEEEEEEEE 4")
             res.status(200).json(response)
         })
         .catch((err) => {
+            console.log("EEEEEEEEEEEEEEE 5")
             res.status(400).json(err)
         })
 })
