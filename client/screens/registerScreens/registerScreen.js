@@ -9,11 +9,13 @@ import {
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
+import { useDispatch } from "react-redux";
 
 export const registerScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     name: "",
-    lastname: "",
+    lastName: "",
     email: "",
   });
   const handleChangeText = (value, name) => {
@@ -34,7 +36,7 @@ export const registerScreen = ({ navigation }) => {
           style={styles.textinput}
           placeholder="Last Name"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "lastname")}
+          onChangeText={(value) => handleChangeText(value, "lastName")}
           value={state.lastname}
         />
         <TextInput
@@ -47,7 +49,7 @@ export const registerScreen = ({ navigation }) => {
         <Button
           mode="contained"
           onPress={() => {
-            saveRegisterData(state);
+            dispatch(saveRegisterData(state, 1));
             navigation.navigate("Register2");
           }}
         >
