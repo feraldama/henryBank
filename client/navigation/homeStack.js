@@ -1,19 +1,18 @@
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
-import { colors } from "../res";
-import { loginScreen } from "../screens/";
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { colors } from '../res';
+import { homeScreen, LoginScreen } from '../screens/';
 import {
   registerScreen,
   registerScreen2,
   registerScreen3,
   registerScreen4,
   confirmEmailScreen,
-} from "../screens/registerScreens";
-import ConsolidateScreen from "../screens/ConsolidateScreen";
+} from '../screens/registerScreens';
 
 const screens = {
   Login: {
-    screen: loginScreen,
+    screen: LoginScreen,
     navigationOptions: {
       headerShown: false,
     },
@@ -29,7 +28,7 @@ const screens = {
   Register2: {
     screen: registerScreen2,
     navigationOptions: {
-      title: "Personal data",
+      title: 'Personal data',
       headerStyle: {
         backgroundColor: colors.secondary,
       },
@@ -38,7 +37,7 @@ const screens = {
   Register3: {
     screen: registerScreen3,
     navigationOptions: {
-      title: "Address information",
+      title: 'Address information',
       headerStyle: {
         backgroundColor: colors.secondary,
       },
@@ -47,14 +46,14 @@ const screens = {
   Register4: {
     screen: registerScreen4,
     navigationOptions: {
-      title: "Password",
+      title: 'Password',
       headerStyle: {
         backgroundColor: colors.secondary,
       },
     },
   },
   Consolidated: {
-    screen: ConsolidateScreen,
+    screen: homeScreen,
     navigationOptions: { headerShown: false },
   },
   VerifyEmail: {

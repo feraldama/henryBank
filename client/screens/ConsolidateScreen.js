@@ -1,47 +1,25 @@
 import React from "react";
 import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  TextComponent,
-} from "react-native";
 
 function ConsolidateScreen(props) {
+  var userObject = {
+    name: "Fran",
+    lastName: "Prato",
+    balance: 6543.21,
+    generalIncomes: 2345.6,
+    generalExpenses: 1234.5,
+  };
   return (
-    <View
-      style={{
-        backgroundColor: colors.primary,
-        flex: 1,
-        alignSelf: "stretch",
-        // flexDirection: "row",
-        // justifyContent: "space-evenly",
-      }}
-    >
-      <View
-        style={{
-          alignItems: "center",
-          // backgroundColor: "dodgerblue",
-          flex: 0.8,
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-        }}
-      >
-        <View
-          style={{
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ paddingBottom: 20, color: "#fff" }}>Hola, Luz</Text>
-          <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button}
-          >
+    <View style={styles.mainContainer}>
+      <View style={styles.firstContainer}>
+        <View style={{ alignItems: "center" }}>
+          <Text style={{ paddingBottom: 20, color: "#fff" }}>
+            Hola, {userObject.name}
+          </Text>
+          <TouchableOpacity style={styles.avatarButton}>
             <Avatar
               rounded
               source={{
@@ -56,32 +34,30 @@ function ConsolidateScreen(props) {
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff", fontSize: 28 }}>$5,634.12</Text>
+          <Text style={{ color: "#fff", fontSize: 28 }}>
+            ${userObject.balance}
+          </Text>
           <Text style={{ color: "#fff", fontSize: 14 }}>
             Balance de mi cuenta
           </Text>
         </View>
       </View>
-      <View style={{ flex: 0.8, justifyContent: "center" }}>
-        <View
-          style={{
-            backgroundColor: "#fff",
-            width: 310,
-            height: 200,
-            alignSelf: "center",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
-        >
+
+      <View style={styles.secondContainer}>
+        <View style={styles.generalSumContainer}>
           <Text style={{ color: "black", fontSize: 20 }}>General</Text>
           <View style={{ alignItems: "center", flexDirection: "row" }}>
             <View style={{ alignItems: "center", paddingRight: 55 }}>
-              <Text style={{ color: "gray", paddingBottom: 15 }}>Income</Text>
-              <Text style={{ color: "black", fontSize: 22 }}>$ 2,334.12</Text>
+              <Text style={styles.generalSumLabel}>Income</Text>
+              <Text style={styles.generalSumContent}>
+                $ {userObject.generalIncomes}
+              </Text>
             </View>
             <View style={{ alignItems: "center" }}>
-              <Text style={{ color: "gray", paddingBottom: 15 }}>Gastos</Text>
-              <Text style={{ color: "black", fontSize: 22 }}>$ 1,153.15</Text>
+              <Text style={styles.generalSumLabel}>Gastos</Text>
+              <Text style={styles.generalSumContent}>
+                $ {userObject.generalExpenses}
+              </Text>
             </View>
           </View>
           <Text style={{ color: "black", fontSize: 12 }}>
@@ -90,69 +66,49 @@ function ConsolidateScreen(props) {
         </View>
       </View>
 
-      <View
-        style={{
-          flex: 0.9,
-          // alignItems: "center",
-          justifyContent: "space-evenly",
-          // flexDirection: "row",
-        }}
-      >
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            flexDirection: "row",
-          }}
-        >
+      <View style={styles.thirdContainer}>
+        <View style={styles.firstButtonContainer}>
           <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button2}
+            style={styles.squareButton}
+            onPress={() => alert("Transactions")}
           >
             <Icon name="sc-telegram" type="evilicon" />
-            <Text style={styles.txtbutton}>Transacciones</Text>
+            <Text style={styles.btnText}>Transacciones</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button2}
+            style={styles.squareButton}
+            onPress={() => alert("Stats")}
           >
-            <Icon name="ios-american-football" type="ionicon" />
-            <Text style={styles.txtbutton}>Estadisticas</Text>
+            <Icon name="bar-chart-outline" type="ionicon" />
+            <Text style={styles.btnText}>Estadisticas</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button2}
+            style={styles.squareButton}
+            onPress={() => alert("Personal Info")}
           >
-            <Icon name="ios-american-football" type="ionicon" />
-            <Text style={styles.txtbutton}>Mis Datos</Text>
+            <Icon name="key-outline" type="ionicon" />
+            <Text style={styles.btnText}>Mis Datos</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button2}
+            style={styles.squareButton}
+            onPress={() => alert("My Products")}
           >
-            <Icon name="ios-american-football" type="ionicon" />
-            <Text style={styles.txtbutton}>Mis Productos</Text>
+            <Icon name="card-outline" type="ionicon" />
+            <Text style={styles.btnText}>Mis Productos</Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            flexDirection: "row",
-          }}
-        >
-          <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button3}
-          >
-            <Icon name="ios-american-football" type="ionicon" />
+
+        <View style={styles.secondButtonContainer}>
+          <TouchableOpacity style={styles.longButton}>
+            <Icon name="download-outline" type="ionicon" />
             <Text>Recargar Dinero</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            // onPress={() => console.log(state)}
-            style={styles.button3}
-          >
-            <Icon name="ios-american-football" type="ionicon" />
+
+          <TouchableOpacity style={styles.longButton}>
+            <Icon name="send-outline" type="ionicon" />
             <Text>Mandar Dinero</Text>
           </TouchableOpacity>
         </View>
@@ -162,30 +118,113 @@ function ConsolidateScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  txtbutton: {
+  mainContainer: {
+    backgroundColor: colors.primary,
+    flex: 1,
+    alignSelf: "stretch",
+  },
+
+  firstContainer: {
+    alignItems: "center",
+    flex: 0.8,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+
+  secondContainer: {
+    flex: 0.8,
+    justifyContent: "center",
+  },
+
+  thirdContainer: {
+    flex: 0.9,
+    justifyContent: "space-evenly",
+  },
+
+  generalSumContainer: {
+    backgroundColor: "#fff",
+    width: 310,
+    height: 200,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+
+  generalSumContent: {
+    color: "black",
+    fontSize: 22,
+  },
+
+  generalSumLabel: {
+    color: "gray",
+    paddingBottom: 15,
+  },
+
+  btnText: {
     fontSize: 10,
   },
-  button: {
+
+  firstButtonContainer: {
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+  },
+
+  secondButtonContainer: {
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+  },
+
+  avatarButton: {
     width: 100,
     height: 100,
     backgroundColor: "#fff",
     justifyContent: "space-evenly",
     alignItems: "center",
   },
-  button2: {
+
+  squareButton: {
     width: 80,
     height: 80,
     backgroundColor: "#77C5D5",
     justifyContent: "space-evenly",
     alignItems: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
   },
-  button3: {
+
+  longButton: {
     width: 160,
     height: 50,
     backgroundColor: "#77C5D5",
     justifyContent: "space-evenly",
     alignItems: "center",
     flexDirection: "row",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+
+  elevation: {
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
   },
 });
 
