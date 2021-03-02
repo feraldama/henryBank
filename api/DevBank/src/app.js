@@ -20,7 +20,7 @@ server.use(
 );
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:19006");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",
@@ -39,27 +39,8 @@ server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 server.use(bodyParser.json({ limit: "50mb" }));
 server.use(morgan("dev"));
 
-// var express = require('express');
-// var app = express();
-// passport.use(
-//   new LocalStrategy(function (username, password, done) {
-//     Users.findOne({
-//       where: {
-//         email: username,
-//       },
-//     })
-//     .then((res) => {
-//         if (bcrypt.compareSync(password, res.dataValues.password)) {
-//           return done(null, res.dataValues);
-//         } else {
-//           return done(null, false);
-//         }
-//       })
-//       .catch((err) => {
-//         return done(err);
-//       });
-//     })
-// );
+
+
 
 server.use((req, res, next) => {
   console.log(req.session);

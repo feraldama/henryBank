@@ -7,14 +7,23 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
+import { saveRegisterData } from "../../redux/user/actions";
+import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../res/";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export const registerScreen2 = ({ navigation }) => {
+  const register = useSelector((state) => state.user.registerData);
+
+  const dispatch = useDispatch();
   const [state, setState] = useState({
-    idType: "",
-    idNumber: "",
-    bDate: "",
-    phoneNumber: "",
+    docType: "DNI",
+    docNumber: "",
+    birthday: "",
+    phone: "",
+    name: register.name,
+    lastName: register.lastName,
+    email: register.email,
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
@@ -26,7 +35,7 @@ export const registerScreen2 = ({ navigation }) => {
         <Picker
           selectedValue={state.idType}
           style={styles.picker}
-          onValueChange={(itemValue) => handleChangeText(itemValue, "idType")}
+          onValueChange={(itemValue) => handleChangeText(itemValue, "docType")}
         >
           <Picker.Item label="DNI" value="DNI" />
           <Picker.Item label="LE" value="LE" />
@@ -38,27 +47,32 @@ export const registerScreen2 = ({ navigation }) => {
           style={styles.textinput}
           placeholder="ID Number"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "idNumber")}
+          keyboardType="numeric"
+          onChangeText={(value) => handleChangeText(value, "docNumber")}
           value={state.idNumber}
         />
         <TextInput
           style={styles.textinput}
           placeholder="Birth Date"
-          secureTextEntry={true}
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "bDate")}
+          // keyboardType="numeric"
+          onChangeText={(value) => handleChangeText(value, "birthday")}
           value={state.bDate}
         />
         <TextInput
           style={styles.textinput}
           placeholder="Phone number"
           underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "phoneNumber")}
+          keyboardType="numeric"
+          onChangeText={(value) => handleChangeText(value, "phone")}
           value={state.phoneNumber}
         />
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("Register3")}
+          onPress={() => {
+            dispatch(saveRegisterData(state, 1));
+            navigation.navigate("Register3");
+          }}
         >
           Continuar
         </Button>
