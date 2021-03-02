@@ -1,7 +1,7 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 import { colors } from "../res";
-import { loginScreen } from "../screens/";
+import { homeScreen, LoginScreen } from "../screens/";
 import {
   registerScreen,
   registerScreen2,
@@ -9,11 +9,10 @@ import {
   registerScreen4,
   confirmEmailScreen,
 } from "../screens/registerScreens";
-import ConsolidateScreen from "../screens/ConsolidateScreen";
 
 const screens = {
   Login: {
-    screen: loginScreen,
+    screen: LoginScreen,
     navigationOptions: {
       headerShown: false,
     },
@@ -54,7 +53,7 @@ const screens = {
     },
   },
   Consolidated: {
-    screen: ConsolidateScreen,
+    screen: homeScreen,
     navigationOptions: { headerShown: false },
   },
   VerifyEmail: {

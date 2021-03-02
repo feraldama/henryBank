@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import logo from "../assets/logo2.png";
 const { width: WIDTH } = Dimensions.get("window");
 
-export const loginScreen = ({ navigation }) => {
+export const LoginScreen = ({ navigation }) => {
   const [passHidden, setPassHidden] = useState(true);
 
   const handlePassVisibility = () => {
@@ -35,42 +35,32 @@ export const loginScreen = ({ navigation }) => {
           <Icon
             name={"ios-person-outline"}
             size={28}
-            color={"rgba(255,255,255,0.7"}
             style={styles.inputIcon}
           />
           <TextInput
             style={styles.input}
             placeholder={"E-Mail"}
-            placeholderTextColor={"rgba(255,255,255,0.7"}
+            placeholderTextColor={colors.transpartentWhite}
             underlineColorAndroid="transparent"
           />
         </View>
 
         <View styles={styles.inputContainer}>
-          {/* <Icon
-        name={"ion-ios-lock-outline"}
-        size={28}
-        color={"rgba(255,255,255,0.7"}
-        style={styles.inputIcon}
-      /> */}
+          <TouchableOpacity
+            style={styles.btnEye}
+            onPress={() => {
+              handlePassVisibility();
+            }}
+          >
+            <Icon name={"ios-eye-outline"} size={26} color={colors.black} />
+          </TouchableOpacity>
           <TextInput
             style={styles.input}
             placeholder={"Contraseña"}
             secureTextEntry={passHidden}
-            placeholderTextColor={"rgba(255,255,255,0.7"}
+            placeholderTextColor={colors.transpartentWhite}
             underlineColorAndroid="transparent"
           />
-
-          <TouchableOpacity
-            style={styles.btnEye}
-            onPress={handlePassVisibility}
-          >
-            <Icon
-              name={"ios-eye-outline"}
-              size={26}
-              color={"rgba(255,255,255,0.7"}
-            />
-          </TouchableOpacity>
         </View>
         <View>
           <Button
@@ -110,7 +100,6 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: "center",
-    /* marginBottom: 0, */
   },
   logoText: {
     color: "white",
@@ -119,17 +108,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     opacity: 0.5,
   },
-  /* inputContainer: {
-    marginTop: 0,
-  }, */
   input: {
     width: WIDTH - 55,
     height: 45,
     borderRadius: 25,
     fontSize: 16,
     paddingLeft: 45,
-    backgroundColor: "rgba(0, 0, 0, 0.35)",
-    color: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: colors.transparentBlack,
+    color: colors.transpartentWhite,
     marginHorizontal: 25,
     marginVertical: 4,
   },
@@ -145,7 +131,7 @@ const styles = StyleSheet.create({
   },
   btnEye: {
     position: "absolute",
-    top: 8,
+    top: 9,
     left: 37,
   },
   btnLogin: {
@@ -157,7 +143,7 @@ const styles = StyleSheet.create({
     marginTop: "20",
   },
   text: {
-    color: "rgba(255, 255, 255, 0.7)",
+    color: colors.transpartentWhite,
     fontSize: 16,
     textAlign: "center",
   },
