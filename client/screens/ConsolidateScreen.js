@@ -102,7 +102,12 @@ function ConsolidateScreen(props) {
         </View>
 
         <View style={styles.secondButtonContainer}>
-          <TouchableOpacity style={styles.longButton}>
+          <TouchableOpacity
+            style={styles.longButton}
+            onPress={() => {
+              props.navigation.navigate('Deposit');
+            }}
+          >
             <Icon name="download-outline" type="ionicon" />
             <Text>Recargar Dinero</Text>
           </TouchableOpacity>
