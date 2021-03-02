@@ -1,15 +1,15 @@
-const { Sequelize } = require("sequelize");
-const fs = require("fs");
-const path = require("path");
-const bcrypt = require("bcrypt");
-require("dotenv").config;
+const { Sequelize } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const bcrypt = require('bcrypt');
+require('dotenv').config;
 
 const db = {
-  user: "postgres",
-  password: "paloma",
-  host: "localhost",
-  port: "5432",
-  table: "henrybank",
+  user: 'postgres',
+  password: '7931',
+  host: 'localhost',
+  port: '5432',
+  table: 'henrybank',
 };
 
 const sequelize = new Sequelize(
@@ -24,13 +24,13 @@ const basename = path.basename(__filename);
 
 const modelDefiners = [];
 
-fs.readdirSync(path.join(__dirname, "./../models"))
+fs.readdirSync(path.join(__dirname, './../models'))
   .filter(
     (file) =>
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
   .forEach((file) => {
-    modelDefiners.push(require(path.join(__dirname, "./../models", file)));
+    modelDefiners.push(require(path.join(__dirname, './../models', file)));
   });
 
 modelDefiners.forEach((model) => model(sequelize));
