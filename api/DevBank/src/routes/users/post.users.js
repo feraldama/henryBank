@@ -56,24 +56,25 @@ server.post('/:userId', (req, res) => {
     // const info = req.body
     const { userId } = req.params
 
+    console.log("EEEEEEEEEEEEEEE 16")
     userController.getOneUser(userId)
-    // console.log("EEEEEEEEEEEEEEE 1")
-        // .then((user) => {
-        //     if (!user) {
-        //         return res.status(400).json({ msg: 'User does not exist' })
-        //     }
-        //     return userController.updateInfo(user, info)
-        // })
         .then((user) => {
+            console.log("EEEEEEEEEEEEEEE 1")
+            if (!user) {
+                return res.status(400).json({ msg: 'User does not exist' })
+            }
+            // return userController.updateInfo(user, info)
+        // })
+        // .then((user) => {
             console.log("EEEEEEEEEEEEEEE 2")
             var cvu = 10000001233 - userId + 500
-            var data = { userId, acconutNumber: 3, balance: 0, currency: "PESOS", cvu, type: "CAJA DE AHORRO" }
+            var data = { userId, acconutNumber: cvu, balance: 0, currency: "PESOS", cvu, type: "CAJA DE AHORRO" }
             return userController.createdAccount(data)
         })
         .then((user) => {
             console.log("EEEEEEEEEEEEEEE 3")
             var cvu = 10000001233 - userId + 1000
-            var data = { userId, acconutNumber: 4, balance: 0, currency: "USD", cvu, type: "CAJA DE AHORRO" }
+            var data = { userId, acconutNumber: cvu, balance: 0, currency: "USD", cvu, type: "CAJA DE AHORRO" }
             return userController.createdAccount(data)
         })
         .then((response) => {
