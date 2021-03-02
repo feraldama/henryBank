@@ -2,24 +2,24 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: localhost
+  host: 192.168.0.27
 apiEndpoints:
   api:
-    host: localhost
-    paths: '/ip'
+    host: 192.168.0.27
+    paths: "/ip"
   users:
-    host: localhost
+    host: 192.168.0.27
     paths: ["/users", "/users/*"]
   transacciones:
-    host: localhost
+    host: 192.168.0.27
     paths: ["/transacciones", "/transacciones/*"]
 serviceEndpoints:
   httpbin:
-    url: 'https://httpbin.org'
+    url: "https://httpbin.org"
   usersService:
-    url: "http://localhost:3000"
+    url: "http://192.168.0.27:3000"
   transaccionesService:
-    url: "http://localhost:4000"
+    url: "http://192.168.0.27:4000"
 policies:
   - basic-auth
   - cors
@@ -34,8 +34,8 @@ pipelines:
     apiEndpoints:
       - api
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
       - proxy:
           - action:
               serviceEndpoint: httpbin
@@ -44,8 +44,8 @@ pipelines:
     apiEndpoints:
       - users
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
       - proxy:
           - action:
               serviceEndpoint: usersService
@@ -54,8 +54,8 @@ pipelines:
     apiEndpoints:
       - transacciones
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
       - proxy:
           - action:
               serviceEndpoint: transaccionesService

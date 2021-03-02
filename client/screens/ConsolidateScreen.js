@@ -1,6 +1,7 @@
 import React from "react";
 import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
+import { colors } from "../res";
 import {
   StyleSheet,
   View,
@@ -15,7 +16,7 @@ function ConsolidateScreen(props) {
   return (
     <View
       style={{
-        // backgroundColor: "dodgerblue",
+        backgroundColor: colors.primary,
         flex: 1,
         alignSelf: "stretch",
         // flexDirection: "row",
