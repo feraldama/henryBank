@@ -46,48 +46,64 @@ function DrawerContent(props) {
               onPress={() => {
                 props.navigation.navigate('Home');
               }}
-              label="Home"
+              label="Inicio"
             />
             <DrawerItem
               icon={() => <Icon name={'ios-person-outline'} size={28} />}
               onPress={() => {
                 props.navigation.navigate('Profile');
               }}
-              label="Profile"
+              label="Perfil"
             />
             <DrawerItem
               icon={() => <Icon name={'swap-horizontal-outline'} size={28} />}
               onPress={() => {}}
-              label="Transactions"
-            />
-            <DrawerItem
-              icon={() => <Icon name={'settings-outline'} size={28} />}
-              onPress={() => {
-                props.navigation.navigate('Settings');
-              }}
-              label="Settings"
-            />
-            <DrawerItem
-              icon={() => <Icon name={'pulse-outline'} size={28} />}
-              onPress={() => {
-                props.navigation.navigate('Support');
-              }}
-              label="Support"
+              label="Transacciones"
             />
           </Drawer.Section>
-          <Drawer.Section title="Preferences">
+          <Drawer.Section title="Services">
+            <DrawerItem
+              icon={() => <Icon name={'receipt-outline'} size={28} />}
+              onPress={() => {}}
+              label="Facturas"
+            />
+
+            <DrawerItem
+              icon={() => <Icon name={'shapes-outline'} size={28} />}
+              onPress={() => {}}
+              label="Prestamos"
+            />
+          </Drawer.Section>
+
+          <Drawer.Section title="Preferencias">
             <TouchableRipple
               onPress={() => {
                 toggleDarkTheme();
               }}
             >
               <View style={styles.preference}>
-                <Text>Dark Mode</Text>
+                <Text>Modo oscuro</Text>
                 <View pointerEvent="none">
                   <Switch value={darkTheme} />
                 </View>
               </View>
             </TouchableRipple>
+          </Drawer.Section>
+          <Drawer.Section>
+            <DrawerItem
+              icon={() => <Icon name={'settings-outline'} size={28} />}
+              onPress={() => {
+                props.navigation.navigate('Settings');
+              }}
+              label="Ajustes"
+            />
+            <DrawerItem
+              icon={() => <Icon name={'pulse-outline'} size={28} />}
+              onPress={() => {
+                props.navigation.navigate('Support');
+              }}
+              label="Soporte"
+            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -95,7 +111,7 @@ function DrawerContent(props) {
         <DrawerItem
           icon={() => <Icon name={'exit-outline'} size={28} />}
           onPress={() => {}}
-          label="Sign Out"
+          label="Salir"
         />
       </Drawer.Section>
     </View>
