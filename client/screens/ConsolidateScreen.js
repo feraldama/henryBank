@@ -112,7 +112,11 @@ function ConsolidateScreen(props) {
             <Text>Recargar Dinero</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.longButton}>
+          <TouchableOpacity 
+            style={styles.longButton}
+            onPress={() => {
+              props.navigation.navigate('MenuMoney');
+            }}>
             <Icon name="send-outline" type="ionicon" />
             <Text>Mandar Dinero</Text>
           </TouchableOpacity>
