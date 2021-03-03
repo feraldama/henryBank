@@ -1,18 +1,13 @@
-const { Sequelize } = require("sequelize");
-const fs = require("fs");
-const path = require("path");
-const bcrypt = require("bcrypt");
-require("dotenv").config;
+require('dotenv').config({ path: __dirname + '/.env' });
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_TABLE } = process.env;
+const { Sequelize } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const bcrypt = require('bcrypt');
 
-const db = {
-    user: 'postgres',
-    password: '123456789',
-    host: 'localhost',
-    port: '5432',
-    table: 'henrybank'
-}
-
-const sequelize = new Sequelize(`postgres://${db.user}:${db.password}@${db.host}:${db.port}/${db.table}`, {
+const sequelize = new Sequelize(
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_TABLE}`,
+  {
     logging: false,
     native: false,
   }
@@ -22,13 +17,13 @@ const basename = path.basename(__filename);
 
 const modelDefiners = [];
 
-fs.readdirSync(path.join(__dirname, "./../models"))
+fs.readdirSync(path.join(__dirname, './../models'))
   .filter(
     (file) =>
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
   .forEach((file) => {
-    modelDefiners.push(require(path.join(__dirname, "./../models", file)));
+    modelDefiners.push(require(path.join(__dirname, './../models', file)));
   });
 
 modelDefiners.forEach((model) => model(sequelize));
