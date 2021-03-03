@@ -12,16 +12,16 @@ server.post("/", (req, res) => {
   var salt = bcrypt.genSaltSync(10);
   user.password = bcrypt.hashSync(password, salt);
 
-  userController.createUser(user).then((value) => {
-    if (!value) {
-      return res.status(400).json({ msg: "User already exist" });
-    }
+server.post('/', (req, res) => {
+    var user = req.body;
+    var password = req.body.password;
+    // var salt = bcrypt.genSaltSync(10);
+    // user.password = bcrypt.hashSync(password, salt);
+    var  salt  = bcrypt . genSaltSync ( 10 ) ; 
+    var  hash  = bcrypt . hashSync ( password,  salt ) ; 
+    user.password = hash
 
-    var salt = bcrypt.genSaltSync(10);
-    user.password = bcrypt.hashSync(password, salt);
-
-    userController
-      .createUser(user)
+    userController.createUser(user)
       .then((value) => {
         if (!value) {
           return res.status(400).json({ msg: "User already exist" });
@@ -56,49 +56,41 @@ server.post("/", (req, res) => {
       });
   });
 });
-server.post("/:userId", (req, res) => {
-  const info = req.body;
-  const { userId } = req.params;
 
-  userController
-    .getOneUser(userId)
-    .then((user) => {
-      if (!user) {
-        return res.status(400).json({ msg: "User does not exist" });
-      }
-      return userController.updateInfo(user, info);
-    })
-    .then((user) => {
-      var cvu = 10000001233 - userId + 500;
-      var data = {
-        userId,
-        acconutNumber: 1,
-        balance: 0,
-        currency: "PESOS",
-        cvu,
-        type: "CAJA DE AHORRO",
-      };
-      return userController.createdAccount(data);
-    })
-    .then((user) => {
-      var cvu = 10000001233 - userId + 1000;
-      var data = {
-        userId,
-        acconutNumber: 2,
-        balance: 0,
-        currency: "USD",
-        cvu,
-        type: "CAJA DE AHORRO",
-      };
-      return userController.createdAccount(data);
-    })
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
-});
+server.post('/:userId', (req, res) => {
+    // const info = req.body
+    const { userId } = req.params
+
+    console.log("EEEEEEEEEEEEEEE 16")
+    userController.getOneUser(userId)
+        .then((user) => {
+            console.log("EEEEEEEEEEEEEEE 1")
+            if (!user) {
+                return res.status(400).json({ msg: 'User does not exist' })
+            }
+            return userController.updateInfo(user, info)
+        })
+        .then((user) => {
+            console.log("EEEEEEEEEEEEEEE 2")
+            var cvu = 10000001233 - userId + 500
+            var data = { userId, acconutNumber: cvu, balance: 0, currency: "PESOS", cvu, type: "CAJA DE AHORRO" }
+            return userController.createdAccount(data)
+        })
+        .then((user) => {
+            console.log("EEEEEEEEEEEEEEE 3")
+            var cvu = 10000001233 - userId + 1000
+            var data = { userId, acconutNumber: cvu, balance: 0, currency: "USD", cvu, type: "CAJA DE AHORRO" }
+            return userController.createdAccount(data)
+        })
+        .then((response) => {
+            console.log("EEEEEEEEEEEEEEE 4")
+            res.status(200).json(response)
+        })
+        .catch((err) => {
+            console.log("EEEEEEEEEEEEEEE 5")
+            res.status(400).json(err)
+        })
+})
 
 server.post("/:userId", (req, res) => {
   const info = req.body;
