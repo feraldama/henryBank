@@ -1,34 +1,68 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-} from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res/colors";
-import { Icon } from 'react-native-elements'
+import { Icon } from "react-native-elements";
+import axios from "axios";
+import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function SendMoneyScreen(props) {
-
   const dispatch = useDispatch(); // para la futura accion
+  const loginUser = useSelector((state) => state.login.loginUser);
+  const accountUserLogin = useSelector((redux) => redux.user.registerData);
+
+  var cvu,
+    currency = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        cvu = p.cvu;
+        currency = p.currency;
+      }
+    });
+  }
+
   const [state, setState] = useState({
-    type: "CAJA DE AHORRO",
+    type: "PESOS",
     account: "",
-    amount : "",
+    amount: "",
+    description: "",
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
 
+  const sendMoney = () => {
+    var datos = {
+      origin: cvu,
+      destination: state.account,
+      value: parseInt(state.amount),
+      type: "TRANSFER",
+      currency: currency,
+      description: state.description,
+    };
+    axios
+      .post(`http://192.168.0.10:8080/users/transfer/transfer`, datos)
+      .then(() => {
+        dispatch(vaciarReducer());
+      })
+      .then(() => {
+        dispatch(accountUser(loginUser.id, "PESOS"));
+        dispatch(accountUser(loginUser.id, "USD"));
+      });
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.secondContainer}>
-        <Button onPress={() => {
-            props.navigation.navigate('Home');
-        }}>            
-            <Text>Home</Text>
+        <Button
+          onPress={() => {
+            props.navigation.navigate("Home");
+          }}
+        >
+          <Text>Home</Text>
         </Button>
         <Text>Transferencias</Text>
         <Icon />
@@ -39,8 +73,8 @@ function SendMoneyScreen(props) {
           style={styles.picker}
           onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
         >
-          <Picker.Item label="CAJA DE AHORRO" value="CAJA DE AHORRO" />
-          <Picker.Item label="CAJA DE AHORRO" value="CAJA DE AHORRO" />
+          <Picker.Item label="PESOS" value="PESOS" />
+          <Picker.Item label="USD" value="USD" />
         </Picker>
 
         <TextInput
@@ -59,22 +93,32 @@ function SendMoneyScreen(props) {
           onChangeText={(value) => handleChangeText(value, "amount")}
           value={state.amount}
         />
+        <TextInput
+          style={styles.textinput}
+          placeholder="Descripción"
+          underlineColorAndroid={"transparent"}
+          onChangeText={(value) => handleChangeText(value, "description")}
+          value={state.description}
+        />
         <Button
           mode="contained"
-          onPress={() => alert('Se envio la plata')}
+          onPress={() => {
+            sendMoney();
+            props.navigation.navigate("Home");
+          }}
         >
           Enviar
         </Button>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: colors.primary,
     flex: 1,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
   },
   btntext: {
     color: "#fff",
@@ -89,10 +133,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   secondContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    color: '#fff',    
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    color: "#fff",
     height: 120,
     backgroundColor: colors.secondary,
   },

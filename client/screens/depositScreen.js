@@ -1,8 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { colors } from "../res";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  TextInput,
+} from "react-native";
+import {
+  recargarDinero,
+  vaciarReducer,
+  accountUser,
+} from "../redux/user/actions";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 function DepositScreen(props) {
+  const dispatch = useDispatch();
+  const loginUser = useSelector((state) => state.login.loginUser);
+  const accountUserLogin = useSelector((state) => state.user.registerData);
+
+  var cvu,
+    currency,
+    value = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        cvu = p.cvu;
+        currency = p.currency;
+      }
+    });
+  }
+
+  const [state, setState] = useState({
+    amount: 0,
+  });
+  const handleChangeText = (value, name) => {
+    setState({ [name]: parseInt(value) });
+  };
+
+  const dispatchFunction = () => {
+    var datos = {
+      cvu,
+      currency,
+      value: state.amount,
+    };
+    console.log("DATOS en deposit: ", datos);
+    axios
+      .post(`http://192.168.0.10:8080/users/transfer/deposito`, datos)
+      .then(() => {
+        dispatch(vaciarReducer());
+      })
+      .then(() => {
+        dispatch(accountUser(loginUser.id, "PESOS"));
+        dispatch(accountUser(loginUser.id, "USD"));
+      });
+  };
+
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.generalSumLabel}>Recargar dinero</Text>
@@ -19,7 +73,20 @@ function DepositScreen(props) {
         <Text style={styles.generalDescription}>
           Mostrale este código al cajero en RapiPago o PagoFacil.
         </Text>
-        <TouchableOpacity style={styles.longButton} onPress={() => {}}>
+        <TextInput
+          keyboardType="numeric"
+          style={styles.montoInput}
+          placeholder="Ingrese monto a recargar"
+          onChangeText={(value) => handleChangeText(value, "amount")}
+          value={state.amount}
+        ></TextInput>
+        <TouchableOpacity
+          style={styles.longButton}
+          onPress={() => {
+            dispatchFunction();
+            props.navigation.navigate("Home");
+          }}
+        >
           <Text style={styles.generalDescription}>Confirmar Recarga</Text>
         </TouchableOpacity>
       </View>
@@ -65,6 +132,12 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingTop: 15,
   },
+  montoInput: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 20,
+    paddingTop: 20,
+  },
   generalDescription: {
     paddingLeft: 40,
     paddingRight: 40,
@@ -72,7 +145,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   longButton: {
-    marginTop: 70,
+    marginTop: 40,
     width: 250,
     height: 50,
     backgroundColor: "#77C5D5",
