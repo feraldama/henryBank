@@ -3,11 +3,14 @@ import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
+import { useSelector } from "react-redux";
 
 function ConsolidateScreen(props) {
+  const loginUser = useSelector((state) => state.login.loginUser);
+
   var userObject = {
-    name: "Fran",
-    lastName: "Prato",
+    name: loginUser.name,
+    lastName: loginUser.lastName,
     balance: 6543.21,
     generalIncomes: 2345.6,
     generalExpenses: 1234.5,
@@ -112,11 +115,12 @@ function ConsolidateScreen(props) {
             <Text>Recargar Dinero</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.longButton}
             onPress={() => {
-              props.navigation.navigate('MenuMoney');
-            }}>
+              props.navigation.navigate("MenuMoney");
+            }}
+          >
             <Icon name="send-outline" type="ionicon" />
             <Text>Mandar Dinero</Text>
           </TouchableOpacity>
