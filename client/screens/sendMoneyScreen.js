@@ -13,23 +13,24 @@ function SendMoneyScreen(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((redux) => redux.user.registerData);
 
-  var cvu,
-    currency = 0;
-  if (accountUserLogin) {
-    accountUserLogin.map((p) => {
-      if (p.currency === "PESOS") {
-        cvu = p.cvu;
-        currency = p.currency;
-      }
-    });
-  }
-
   const [state, setState] = useState({
     type: "PESOS",
     account: "",
     amount: "",
     description: "",
   });
+
+  var cvu,
+    currency = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === state.type) {
+        cvu = p.cvu;
+        currency = p.currency;
+      }
+    });
+  }
+
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };

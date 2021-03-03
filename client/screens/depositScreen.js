@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import {
   recargarDinero,
   vaciarReducer,
@@ -20,30 +21,32 @@ function DepositScreen(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((state) => state.user.registerData);
 
+  const [state, setState] = useState({
+    amount: 0,
+    type: "PESOS",
+  });
+
   var cvu,
     currency,
     value = 0;
   if (accountUserLogin) {
     accountUserLogin.map((p) => {
-      if (p.currency === "PESOS") {
+      if (p.currency === state.type) {
         cvu = p.cvu;
         currency = p.currency;
       }
     });
   }
 
-  const [state, setState] = useState({
-    amount: 0,
-  });
   const handleChangeText = (value, name) => {
-    setState({ [name]: parseInt(value) });
+    setState({ ...state, [name]: value });
   };
 
   const dispatchFunction = () => {
     var datos = {
       cvu,
-      currency,
-      value: state.amount,
+      currency: state.type,
+      value: parseInt(state.amount),
     };
     console.log("DATOS en deposit: ", datos);
     axios
@@ -73,6 +76,15 @@ function DepositScreen(props) {
         <Text style={styles.generalDescription}>
           Mostrale este código al cajero en RapiPago o PagoFacil.
         </Text>
+        <Picker
+          selectedValue={state.idType}
+          style={styles.picker}
+          onValueChange={(value) => handleChangeText(value, "type")}
+          value={state.type}
+        >
+          <Picker.Item label="PESOS" value="PESOS" />
+          <Picker.Item label="USD" value="USD" />
+        </Picker>
         <TextInput
           keyboardType="numeric"
           style={styles.montoInput}
