@@ -1,20 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RadioButton } from "react-native-paper";
+import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function ConsolidateScreen(props) {
+  const [checked, setChecked] = useState("first");
+
   const loginUser = useSelector((state) => state.login.loginUser);
+  const accountUserLogin = useSelector((state) => state.user.registerData);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (loginUser) {
+      dispatch(vaciarReducer);
+      dispatch(accountUser(loginUser.id, "PESOS"));
+      dispatch(accountUser(loginUser.id, "USD"));
+    }
+  }, [loginUser]);
+
+  var balance = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        balance = p.balance;
+      }
+    });
+  }
 
   var userObject = {
     name: loginUser.name,
     lastName: loginUser.lastName,
-    balance: 6543.21,
+    balance: balance,
     generalIncomes: 2345.6,
     generalExpenses: 1234.5,
   };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.firstContainer}>
@@ -43,6 +67,18 @@ function ConsolidateScreen(props) {
           <Text style={{ color: "#fff", fontSize: 14 }}>
             Balance de mi cuenta
           </Text>
+        </View>
+        <View>
+          <RadioButton
+            value="PESOS"
+            status={checked === "first" ? "checked" : "unchecked"}
+            onPress={() => setChecked("first")}
+          />
+          <RadioButton
+            value="USD"
+            status={checked === "second" ? "checked" : "unchecked"}
+            onPress={() => setChecked("second")}
+          />
         </View>
       </View>
 

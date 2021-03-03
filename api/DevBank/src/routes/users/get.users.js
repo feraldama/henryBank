@@ -3,15 +3,16 @@ const userController = require("../../controllers/users.controller");
 
 const { Account } = require("../../database/db");
 
-server.get("/account", (req, res) => {
-  const { id, currency } = req.body;
+server.get("/account/:id/:currency", (req, res) => {
+  var id = req.params.id;
+  var currency = req.params.currency;
   Account.findOne({ where: { userId: id, currency } })
     .then((response) => {
       res.json(response.dataValues);
     })
     .catch((err) => {
       console.log(err);
-      res.send(err);
+      //res.send(err);
     });
 });
 

@@ -36,13 +36,11 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const loginFunction = () => {
-    // console.log("State: ", state);
     axios
       .post("http://192.168.0.10:8080/users/auth/login", state)
       .then((data) => {
-        console.log("DATA: ", data.data);
         if (data.data == "login failed") {
-          console.log("Usuario o contraseña incorrectos");
+          alert("Usuario o contraseña incorrectos");
         } else {
           dispatch(login(state, 1));
           navigation.navigate("Consolidated");

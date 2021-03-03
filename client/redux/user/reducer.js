@@ -1,6 +1,11 @@
-import { SAVE_REGISTER_DATA } from "../actions_types.js";
+import {
+  SAVE_REGISTER_DATA,
+  ACCOUNT_LOGIN,
+  EMPTY_REDUX,
+} from "../actions_types.js";
 const initialState = {
   registerData: [],
+  registerData2: [],
 };
 
 export default function userReducer(state = initialState, action) {
@@ -9,6 +14,17 @@ export default function userReducer(state = initialState, action) {
       return {
         // registerData: [...state.registerData, action.payload],
         registerData: action.payload,
+      };
+
+    case ACCOUNT_LOGIN:
+      return {
+        registerData: [...state.registerData, action.payload],
+        // registerData: action.payload,
+      };
+
+    case EMPTY_REDUX:
+      return {
+        registerData: [],
       };
 
     default:
