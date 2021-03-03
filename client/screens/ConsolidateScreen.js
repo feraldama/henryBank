@@ -13,6 +13,8 @@ function ConsolidateScreen(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((state) => state.user.registerData);
 
+  const [balance, setBalance] = useState(0);
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (loginUser) {
@@ -22,19 +24,27 @@ function ConsolidateScreen(props) {
     }
   }, [loginUser]);
 
-  var balance = 0;
-  if (accountUserLogin) {
-    accountUserLogin.map((p) => {
-      if (p.currency === "PESOS") {
-        balance = p.balance;
-      }
-    });
-  }
+  // var balance = 0;
+  useEffect(() => {
+    if (accountUserLogin) {
+      accountUserLogin.map((p) => {
+        var check;
+        if (checked === "first") {
+          check = "PESOS";
+        } else {
+          check = "USD";
+        }
+        if (p.currency === check) {
+          setBalance(p.balance);
+        }
+      });
+    }
+  }, [checked, accountUserLogin]);
 
   var userObject = {
     name: loginUser.name,
     lastName: loginUser.lastName,
-    balance: balance,
+    // balance: balance,
     generalIncomes: 2345.6,
     generalExpenses: 1234.5,
   };
@@ -62,20 +72,22 @@ function ConsolidateScreen(props) {
           }}
         >
           <Text style={{ color: "#fff", fontSize: 28 }}>
-            ${userObject.balance}
+            {checked == "second" ? "U$D" : "$"} {balance}
           </Text>
           <Text style={{ color: "#fff", fontSize: 14 }}>
             Balance de mi cuenta
           </Text>
         </View>
         <View>
+          <Text>PESOS</Text>
           <RadioButton
-            value="PESOS"
+            value="first"
             status={checked === "first" ? "checked" : "unchecked"}
             onPress={() => setChecked("first")}
           />
+          <Text>USD</Text>
           <RadioButton
-            value="USD"
+            value="second"
             status={checked === "second" ? "checked" : "unchecked"}
             onPress={() => setChecked("second")}
           />
