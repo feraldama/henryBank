@@ -2,85 +2,80 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   View,
-  TouchableWithoutFeedback,
-  Keyboard,
+  Text,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
-import { saveRegisterData } from "../../redux/user/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { colors } from "../../res/";
+import { colors } from "../res/colors";
+import { Icon } from 'react-native-elements'
 
-export const registerScreen2 = ({ navigation }) => {
-  const register = useSelector((state) => state.user.registerData);
+function SendMoneyScreen(props) {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // para la futura accion
   const [state, setState] = useState({
-    docType: "DNI",
-    docNumber: "",
-    birthday: "",
-    phone: "",
-    name: register.name,
-    lastName: register.lastName,
-    email: register.email,
+    type: "CAJA DE AHORRO",
+    account: "",
+    amount : "",
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.mainContainer}>
+      <View style={styles.secondContainer}>
+        <Button onPress={() => {
+            props.navigation.navigate('Home');
+        }}>            
+            <Text>Home</Text>
+        </Button>
+        <Text>Transferencias</Text>
+        <Icon />
+      </View>
       <View style={styles.regform}>
         <Picker
           selectedValue={state.idType}
           style={styles.picker}
-          onValueChange={(itemValue) => handleChangeText(itemValue, "docType")}
+          onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
         >
-          <Picker.Item label="DNI" value="DNI" />
-          <Picker.Item label="LE" value="LE" />
-          <Picker.Item label="LC" value="LC" />
-          <Picker.Item label="CI" value="CI" />
+          <Picker.Item label="CAJA DE AHORRO" value="CAJA DE AHORRO" />
+          <Picker.Item label="CAJA DE AHORRO" value="CAJA DE AHORRO" />
         </Picker>
 
         <TextInput
           style={styles.textinput}
-          placeholder="ID Number"
+          placeholder="ID account"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
-          onChangeText={(value) => handleChangeText(value, "docNumber")}
-          value={state.idNumber}
+          onChangeText={(value) => handleChangeText(value, "account")}
+          value={state.account}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Birth Date"
-          underlineColorAndroid={"transparent"}
-          // keyboardType="numeric"
-          onChangeText={(value) => handleChangeText(value, "birthday")}
-          value={state.bDate}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder="Phone number"
+          placeholder="$ Amount"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
-          onChangeText={(value) => handleChangeText(value, "phone")}
-          value={state.phoneNumber}
+          onChangeText={(value) => handleChangeText(value, "amount")}
+          value={state.amount}
         />
         <Button
           mode="contained"
-          onPress={() => {
-            dispatch(saveRegisterData(state, 1));
-            navigation.navigate("Register3");
-          }}
+          onPress={() => alert('Se envio la plata')}
         >
-          Continuar
+          Enviar
         </Button>
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: colors.primary,
+    flex: 1,
+    alignSelf: 'stretch',
+  },
   btntext: {
     color: "#fff",
     fontWeight: "bold",
@@ -92,6 +87,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#59CBBD",
     marginTop: 30,
     borderRadius: 15,
+  },
+  secondContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    color: '#fff',    
+    height: 120,
+    backgroundColor: colors.secondary,
   },
   regform: {
     flex: 1,
@@ -112,3 +115,5 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
 });
+
+export default SendMoneyScreen;
