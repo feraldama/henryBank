@@ -1,2 +1,3 @@
 //USER ACTIONS
 export const SAVE_REGISTER_DATA = "SAVE_REGISTER_DATA";
+export const LOGIN = "LOGIN";

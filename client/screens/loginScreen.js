@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,19 +9,45 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
-} from 'react-native';
-import { colors } from '../res';
-import { useState } from 'react';
-import { Button } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
-import logo from '../assets/logo2.png';
-const { width: WIDTH } = Dimensions.get('window');
+} from "react-native";
+import { colors } from "../res";
+import { Button } from "react-native-paper";
+import Icon from "react-native-vector-icons/Ionicons";
+import logo from "../assets/logo2.png";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/login/actions";
+const { width: WIDTH } = Dimensions.get("window");
+import axios from "axios";
 
 export const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [state, setState] = useState({
+    username: "",
+    password: "",
+  });
+  const handleChangeText = (value, name) => {
+    setState({ ...state, [name]: value });
+  };
+
   const [passHidden, setPassHidden] = useState(true);
 
   const handlePassVisibility = () => {
     setPassHidden(!passHidden);
+  };
+
+  const loginFunction = () => {
+    // console.log("State: ", state);
+    axios
+      .post("http://192.168.0.10:8080/users/auth/login", state)
+      .then((data) => {
+        console.log("DATA: ", data.data);
+        if (data.data == "login failed") {
+          console.log("Usuario o contraseña incorrectos");
+        } else {
+          dispatch(login(state, 1));
+          navigation.navigate("Consolidated");
+        }
+      });
   };
 
   return (
@@ -33,15 +59,17 @@ export const LoginScreen = ({ navigation }) => {
 
         <View styles={styles.inputContainer}>
           <Icon
-            name={'ios-person-outline'}
+            name={"ios-person-outline"}
             size={28}
             style={styles.inputIcon}
           />
           <TextInput
             style={styles.input}
-            placeholder={'E-Mail'}
+            placeholder={"E-Mail"}
             placeholderTextColor={colors.transpartentWhite}
             underlineColorAndroid="transparent"
+            onChangeText={(value) => handleChangeText(value, "username")}
+            value={state.username}
           />
         </View>
 
@@ -52,14 +80,16 @@ export const LoginScreen = ({ navigation }) => {
               handlePassVisibility();
             }}
           >
-            <Icon name={'ios-eye-outline'} size={26} color={colors.black} />
+            <Icon name={"ios-eye-outline"} size={26} color={colors.black} />
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder={'Contraseña'}
+            placeholder={"Contraseña"}
             secureTextEntry={passHidden}
             placeholderTextColor={colors.transpartentWhite}
             underlineColorAndroid="transparent"
+            onChangeText={(value) => handleChangeText(value, "password")}
+            value={state.password}
           />
         </View>
         <View>
@@ -68,7 +98,7 @@ export const LoginScreen = ({ navigation }) => {
             mode="contained"
             title="Register"
             onPress={() => {
-              navigation.navigate('Consolidated');
+              loginFunction();
             }}
           >
             Log In
@@ -77,10 +107,10 @@ export const LoginScreen = ({ navigation }) => {
         <TouchableOpacity
           style={styles.registerLink}
           onPress={() => {
-            navigation.navigate('Register');
+            navigation.navigate("Register");
           }}
         >
-          <Text style={{ color: '#fff' }}>
+          <Text style={{ color: "#fff" }}>
             Don't have an account? Register now!
           </Text>
         </TouchableOpacity>
@@ -94,17 +124,17 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.primary,
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   logoText: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: "500",
     marginTop: 10,
     opacity: 0.5,
   },
@@ -120,7 +150,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   inputIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     left: 37,
   },
@@ -130,7 +160,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   btnEye: {
-    position: 'absolute',
+    position: "absolute",
     top: 9,
     left: 37,
   },
@@ -139,13 +169,13 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 25,
     backgroundColor: colors.secondary,
-    justifyContent: 'center',
-    marginTop: '20',
+    justifyContent: "center",
+    marginTop: "20",
   },
   text: {
     color: colors.transpartentWhite,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   image: {
     width: 200,
