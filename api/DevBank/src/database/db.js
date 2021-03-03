@@ -5,16 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt');
 
-const db = {
-  user: 'postgres',
-  password: '210698',
-  host: 'localhost',
-  port: '5432',
-  table: 'henrybank',
-};
-
 const sequelize = new Sequelize(
-  `postgres://${db.user}:${db.password}@${db.host}:${db.port}/${db.table}`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_TABLE}`,
   {
     logging: false,
     native: false,
