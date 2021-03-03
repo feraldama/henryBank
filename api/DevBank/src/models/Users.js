@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
       defaultValue: "guest",
     },
     docType: {
-      type: DataTypes.ENUM("DNI", "PASAPORTE"),
+      type: DataTypes.ENUM("DNI","LE","LC","CI", "PASAPORTE"),
     },
     docNumber: {
       type: DataTypes.BIGINT,

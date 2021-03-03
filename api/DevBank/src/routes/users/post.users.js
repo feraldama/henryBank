@@ -1,11 +1,11 @@
-const server = require('express').Router();
-const userController = require('../../controllers/users.controller');
-const nodemailerController = require('../../controllers/nodemailer.controller');
-const nodemailer = require('nodemailer');
-var bcrypt = require('bcryptjs');
-const { User } = require('../../database/db');
+const server = require("express").Router();
+const userController = require("../../controllers/users.controller");
+const nodemailerController = require("../../controllers/nodemailer.controller");
+const nodemailer = require("nodemailer");
+var bcrypt = require("bcryptjs");
+const { User } = require("../../database/db");
 
-server.post('/', (req, res) => {
+server.post("/", (req, res) => {
   var user = req.body;
   var password = req.body.password;
 
@@ -24,15 +24,15 @@ server.post('/', (req, res) => {
     userController.createUser(user)
       .then((value) => {
         if (!value) {
-          return res.status(400).json({ msg: 'User already exist' });
+          return res.status(400).json({ msg: "User already exist" });
         }
 
-        const url = 'www.google.com';
+        const url = "www.google.com";
 
         const data = {
-          from: 'DevBank <devbank2021@gmail>',
+          from: "DevBank <devbank2021@gmail>",
           to: `${value.email}`,
-          subject: 'Welcome to DevBank',
+          subject: "Welcome to DevBank",
           html: `
                         <h2> Nice to meet you </h2>
                         <br>
@@ -49,7 +49,7 @@ server.post('/', (req, res) => {
         return nodemailerController.sendEmail(data);
       })
       .then(() => {
-        res.status(200).json({ msg: 'Check your email' });
+        res.status(200).json({ msg: "Check your email" });
       })
       .catch((err) => {
         res.status(400).json(err);
@@ -92,7 +92,7 @@ server.post('/:userId', (req, res) => {
         })
 })
 
-server.post('/:userId', (req, res) => {
+server.post("/:userId", (req, res) => {
   const info = req.body;
   const { userId } = req.params;
 
@@ -100,7 +100,7 @@ server.post('/:userId', (req, res) => {
     .getOneUser(userId)
     .then((user) => {
       if (!user) {
-        return res.status(400).json({ msg: 'User does not exist' });
+        return res.status(400).json({ msg: "User does not exist" });
       }
       return userController.updateInfo(user, info);
     })
@@ -110,9 +110,9 @@ server.post('/:userId', (req, res) => {
         userId,
         acconutNumber: 1,
         balance: 0,
-        currency: 'PESOS',
+        currency: "PESOS",
         cvu,
-        type: 'CAJA DE AHORRO',
+        type: "CAJA DE AHORRO",
       };
       return userController.createdAccount(data);
     })
@@ -122,9 +122,9 @@ server.post('/:userId', (req, res) => {
         userId,
         acconutNumber: 2,
         balance: 0,
-        currency: 'USD',
+        currency: "USD",
         cvu,
-        type: 'CAJA DE AHORRO',
+        type: "CAJA DE AHORRO",
       };
       return userController.createdAccount(data);
     })
