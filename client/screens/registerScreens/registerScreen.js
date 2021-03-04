@@ -6,6 +6,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
@@ -21,6 +22,16 @@ export const registerScreen = ({ navigation }) => {
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
+
+  const checkData = () => {
+    if (!state.email || !state.lastName || !state.email) {
+      return Alert.alert("Error", "All fields should be filled");
+    }
+    return (
+      dispatch(saveRegisterData(state, 1)), navigation.navigate("Register2")
+    );
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.regform}>
@@ -46,13 +57,7 @@ export const registerScreen = ({ navigation }) => {
           onChangeText={(value) => handleChangeText(value, "email")}
           value={state.email}
         />
-        <Button
-          mode="contained"
-          onPress={() => {
-            dispatch(saveRegisterData(state, 1));
-            navigation.navigate("Register2");
-          }}
-        >
+        <Button mode="contained" onPress={checkData}>
           Continuar
         </Button>
       </View>

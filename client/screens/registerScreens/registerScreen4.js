@@ -4,6 +4,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
@@ -33,6 +34,18 @@ export const registerScreen4 = ({ navigation }) => {
     setState({ ...state, [name]: value });
   };
 
+  const passAuth = () => {
+    if (state.password.length < 8)
+      return Alert.alert(
+        "Error",
+        "Password must be at least 8 characters long"
+      );
+    if (state.password !== state.rePassword)
+      return Alert.alert("Error", "Passwords must match");
+    return (
+      dispatch(saveRegisterData(state, 0)), navigation.navigate("VerifyEmail")
+    );
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.regform}>
@@ -53,13 +66,7 @@ export const registerScreen4 = ({ navigation }) => {
           value={state.rePassword}
         />
 
-        <Button
-          mode="contained"
-          onPress={() => {
-            dispatch(saveRegisterData(state, 0));
-            navigation.navigate("VerifyEmail");
-          }}
-        >
+        <Button mode="contained" onPress={passAuth}>
           Finish
         </Button>
       </View>
