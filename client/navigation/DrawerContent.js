@@ -60,6 +60,13 @@ function DrawerContent(props) {
               onPress={() => {}}
               label="Transacciones"
             />
+            <DrawerItem
+              icon={() => <Icon name={"people-outline"} size={28} />}
+              onPress={() => {
+                props.navigation.navigate("Contacts");
+              }}
+              label="Contactos"
+            />
           </Drawer.Section>
           <Drawer.Section title="Services">
             <DrawerItem
