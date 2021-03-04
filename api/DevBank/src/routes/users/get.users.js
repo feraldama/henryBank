@@ -25,9 +25,11 @@ server.get("/", (req, res) => {
 server.get("/:userId", (req, res) => {
   const { userId } = req.params;
 
-  userController.getOneUser(userId).then((user) => {
-    res.status(200).json({ msg: `Welcome to DevBank ${user.email}` });
-  });
-});
+    userController.getOneUser(userId)
+        .then((user) => {
+            res.status(200).json(user)
+        })
+})
+
 
 module.exports = server;

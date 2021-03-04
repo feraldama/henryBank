@@ -1,4 +1,4 @@
-const {User, UserInfo, Account} = require('../database/db');
+const {User, Account} = require('../database/db');
 const {Op} = require('sequelize');
 
 module.exports = {
@@ -38,11 +38,12 @@ module.exports = {
     },
 
     getUsers(){
-        return User.findAll()
+        return User.findAll({
+            include:{
+                model: Account
+            }
+        })
     },
 
-    createdAccount(data){
-        // Mandar userId en data
-        return Account.create(data)
-    }
+    
 }

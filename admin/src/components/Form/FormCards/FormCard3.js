@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { changeCurrent, returnCurrent } from '../../../stores/Form/actions/form_actions'
-import { postForm } from '../../../controllers/form'
+import { postForm } from '../../../controllers/formControllers'
 
-import './style3.css'
+import './styles.css'
 
 const FormCard3 = (props) => {
     const [info, setInfo] = useState({
@@ -27,7 +27,7 @@ const FormCard3 = (props) => {
     const handlerNext = (e) => {
         e.preventDefault()
         dispatch(changeCurrent())
-        // postForm(props.userId, info)
+        postForm(parseInt(props.userId), info)
     }
 
     const handlerPrevious = (e) => {

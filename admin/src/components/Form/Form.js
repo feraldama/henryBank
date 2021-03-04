@@ -1,8 +1,8 @@
 import React from 'react';
-import FormCard1 from './FormCard1/FormCard1';
-import FormCard2 from './FormCard2/FormCard2';
-import FormCard3 from './FormCard3/FormCard3';
-import FormCard4 from './FormCard4/FormCard4';
+import FormCard1 from './FormCards/FormCard1'
+import FormCard2 from './FormCards/FormCard2'
+import FormCard3 from './FormCards/FormCard3'
+import FormCard4 from './FormCards/FormCard4'
 import logo from '../../images/logo2.png';
 import { useSelector } from 'react-redux';
 import './styles.css';
