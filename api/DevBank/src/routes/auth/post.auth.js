@@ -1,16 +1,34 @@
 const server = require("express").Router();
 const userController = require("../../controllers/auth.controller");
-const { Users } = require("../../database/db");
-const passport = require("passport");
-const bcrypt = require("bcrypt");
+const { User } = require("../../database/db");
+// const passport = require("passport");
+const bcrypt = require("bcryptjs");
 
-server.post("/login", passport.authenticate("local"), (req, res) => {
-  console.log("BODY: ", req.user);
-  res.send(req.user);
+server.post("/login", function (req, res) {
+  const { username, password } = req.body;
+  User.findOne({
+    where: {
+      email: username,
+    },
+  })
+    .then((response) => {
+      console.log("LINEA 16", res.dataValues);
+      var clave = response.dataValues.password;
+      if (bcrypt.compareSync(password, clave)) {
+        console.log("entre aca");
+        req.session.user = response.dataValues;
+        res.json(response.dataValues);
+      } else {
+        res.send("login failed");
+      }
+    })
+    .catch((err) => {
+      res.send("login failed");
+    });
 });
 
 server.post("/logout", (req, res) => {
-  req.logout();
+  req.session.destroy();
   res.sendStatus(200);
 });
 

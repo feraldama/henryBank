@@ -1,19 +1,12 @@
+require('dotenv').config({ path: __dirname + '/.env' });
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_TABLE } = process.env;
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt');
-require('dotenv').config;
-
-const db = {
-  user: 'postgres',
-  password: '7931',
-  host: 'localhost',
-  port: '5432',
-  table: 'henrybank',
-};
 
 const sequelize = new Sequelize(
-  `postgres://${db.user}:${db.password}@${db.host}:${db.port}/${db.table}`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_TABLE}`,
   {
     logging: false,
     native: false,
@@ -44,10 +37,18 @@ let capsEntries = entries.map((entry) => [
 
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { User, Account } = sequelize.models;
-
+const {User, Account, Transfer} = sequelize.models;
+//realciones de user con cuenta
 User.hasMany(Account);
 Account.belongsTo(User);
+
+//relacion de cuenta con trnasaccion.
+
+// Transfer.belongsTo(Account, {as: "CVUorigen"});
+// Transfer.belongsTo(Account, {as: "CVUdestino"});
+// // Transfer.hasOne(Account);
+
+
 
 module.exports = {
   ...sequelize.models,

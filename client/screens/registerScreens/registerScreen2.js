@@ -10,7 +10,6 @@ import { Button, TextInput } from "react-native-paper";
 import { saveRegisterData } from "../../redux/user/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../../res/";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 export const registerScreen2 = ({ navigation }) => {
   const register = useSelector((state) => state.user.registerData);
