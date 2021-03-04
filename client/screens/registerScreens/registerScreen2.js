@@ -96,17 +96,17 @@ const styles = StyleSheet.create({
   regform: {
     flex: 1,
     padding: 30,
-    paddingTop: 100,
+    paddingTop: 50,
     backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
     alignSelf: "stretch",
-    marginBottom: 50,
+    marginBottom: 25,
     backgroundColor: colors.white,
   },
   picker: {
-    marginBottom: 50,
+    marginBottom: 25,
     backgroundColor: colors.white,
     color: colors.black,
     borderRadius: 30,

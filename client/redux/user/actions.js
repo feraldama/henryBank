@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 export const saveRegisterData = (data, finish) => (dispatch) => {
   if (finish == 0) {
-    axios.post("http://192.168.0.10:8080/users", data);
+    axios.post("http://localhost:8080/users", data);
     dispatch({ type: SAVE_REGISTER_DATA, payload: data });
   } else {
     dispatch({ type: SAVE_REGISTER_DATA, payload: data });
@@ -17,7 +17,7 @@ export const saveRegisterData = (data, finish) => (dispatch) => {
 
 export const accountUser = (id, currency) => (dispatch) => {
   axios
-    .get(`http://192.168.0.10:8080/users/account/${id}/${currency}`)
+    .get(`http://localhost:8080/users/account/${id}/${currency}`)
     .then((data) => {
       dispatch({ type: ACCOUNT_LOGIN, payload: data.data });
     });
@@ -29,7 +29,7 @@ export const recargarDinero = (cvu, currency, value) => () => {
     currency,
     value,
   };
-  axios.post(`http://192.168.0.10:8080/users/transfer/deposito`, datos);
+  axios.post(`http://localhost:8080/users/transfer/deposito`, datos);
 };
 
 export const vaciarReducer = () => (dispatch) => {
