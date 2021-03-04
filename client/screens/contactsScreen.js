@@ -28,7 +28,7 @@ const contacts = [
   },
 ];
 
-export const ContactsScreen = () => {
+export default function ContactsScreen() {
   var getData = () => {
     let contactsArr = [];
     let aCode = "A".charCodeAt(0);
@@ -48,7 +48,8 @@ export const ContactsScreen = () => {
     }
     return contactsArr;
   };
-  console.log(getData());
+
+  const addContact = () => {};
 
   return (
     <View style={styles.mainContainer}>
@@ -56,11 +57,18 @@ export const ContactsScreen = () => {
         <Text style={styles.header}> Tus Contactos</Text>
         <SectionList
           sections={getData()}
-          ListFooterComponent={() => <Button title="Agregar Contacto" />}
+          ListFooterComponent={() => (
+            <Button title="Agregar Contacto" onPress={addContact} />
+          )}
           //Estructura de item => { index:2, nombre:"segundo"}
           renderItem={({ item }) => (
             <View style={styles.row}>
-              <Text style={styles.contactNames}>{item.name}</Text>
+              <View>
+                <Text style={styles.contactNames}>{item.name}</Text>
+              </View>
+              <View style={styles.transferBtn}>
+                <Button title="Transferir" />
+              </View>
             </View>
           )}
           keyExtractor={(item) => item.index}
@@ -76,13 +84,12 @@ export const ContactsScreen = () => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: "center",
-
     backgroundColor: colors.primary,
   },
   container: {
@@ -96,12 +103,22 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   row: {
-    alignSelf: "center",
+    flexDirection: "row",
+
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
     margin: 7,
+    paddingLeft: 3,
+    backgroundColor: colors.secondary,
   },
   contactNames: {
     fontSize: 20,
-    color: colors.secondary,
+    color: colors.primary,
+    paddingRight: 30,
+  },
+  transferBtn: {
+    alignSelf: "flex-end",
   },
   sectionHeader: {},
 });
