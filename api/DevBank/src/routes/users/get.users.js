@@ -15,7 +15,7 @@ server.get('/:userId', (req, res) => {
 
     userController.getOneUser(userId)
         .then((user) => {
-            res.status(200).json({msg: `Welcome to DevBank ${user.email}`})
+            res.status(200).json(user)
         })
 })
 

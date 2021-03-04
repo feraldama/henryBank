@@ -2,7 +2,7 @@ const {DataTypes} = require('sequelize')
 
 module.exports = (sequelize) => {
     sequelize.define('account', {
-        acconutNumber: {
+        accountNumber: {
             type: DataTypes.BIGINT,
             unique: true,
             allowNull: false,
