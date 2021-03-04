@@ -1,9 +1,12 @@
-const server = require("express").Router();
-const userController = require("../../controllers/users.controller");
-const nodemailerController = require("../../controllers/nodemailer.controller");
-const nodemailer = require("nodemailer");
-var bcrypt = require("bcryptjs");
-const { User } = require("../../database/db");
+
+const server = require('express').Router();
+const userController = require('../../controllers/users.controller');
+const accountController = require('../../controllers/accounts.controller')
+const nodemailerController = require('../../controllers/nodemailer.controller');
+const nodemailer = require('nodemailer');
+var bcrypt = require('bcryptjs');
+const { User, Account } = require('../../database/db');
+
 
 server.post("/", (req, res) => {
   var user = req.body;
@@ -21,7 +24,7 @@ server.post("/", (req, res) => {
         return res.status(400).json({ msg: "User already exist" });
       }
 
-      const url = "www.google.com";
+  
 
       const data = {
         from: "DevBank <devbank2021@gmail>",
@@ -51,55 +54,6 @@ server.post("/", (req, res) => {
 });
 
 server.post("/:userId", (req, res) => {
-  const { userId } = req.params;
-
-  console.log("EEEEEEEEEEEEEEE 16");
-  userController
-    .getOneUser(userId)
-    .then((user) => {
-      //   console.log("EEEEEEEEEEEEEEE 1");
-      //   if (!user) {
-      //     return res.status(400).json({ msg: "User does not exist" });
-      //   }
-      //   return userController.updateInfo(user, info);
-      // })
-      // .then((user) => {
-      console.log("EEEEEEEEEEEEEEE 2");
-      var cvu = 10000001233 - userId + 500;
-      var data = {
-        userId,
-        acconutNumber: cvu,
-        balance: 0,
-        currency: "PESOS",
-        cvu,
-        type: "CAJA DE AHORRO",
-      };
-      return userController.createdAccount(data);
-    })
-    .then((user) => {
-      console.log("EEEEEEEEEEEEEEE 3");
-      var cvu = 10000001233 - userId + 1000;
-      var data = {
-        userId,
-        acconutNumber: cvu,
-        balance: 0,
-        currency: "USD",
-        cvu,
-        type: "CAJA DE AHORRO",
-      };
-      return userController.createdAccount(data);
-    })
-    .then((response) => {
-      console.log("EEEEEEEEEEEEEEE 4");
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      console.log("EEEEEEEEEEEEEEE 5");
-      res.status(400).json(err);
-    });
-});
-
-server.post("/:userId", (req, res) => {
   const info = req.body;
   const { userId } = req.params;
 
@@ -111,29 +65,14 @@ server.post("/:userId", (req, res) => {
       }
       return userController.updateInfo(user, info);
     })
-    .then((user) => {
-      var cvu = 10000001233 - userId + 500;
-      var data = {
-        userId,
-        acconutNumber: 1,
-        balance: 0,
-        currency: "PESOS",
-        cvu,
-        type: "CAJA DE AHORRO",
-      };
-      return userController.createdAccount(data);
+    .then(() => {
+      return accountController.getAccount(userId)
     })
-    .then((user) => {
-      var cvu = 10000001233 - userId + 1000;
-      var data = {
-        userId,
-        acconutNumber: 2,
-        balance: 0,
-        currency: "USD",
-        cvu,
-        type: "CAJA DE AHORRO",
-      };
-      return userController.createdAccount(data);
+    .then((acc) => {
+      if(acc){
+        return res.status(200).json({msg:'Accounts were created before'})
+      }
+      return accountController.createdAccount(userId)
     })
     .then((response) => {
       res.status(200).json(response);
@@ -141,6 +80,8 @@ server.post("/:userId", (req, res) => {
     .catch((err) => {
       res.status(400).json(err);
     });
+
 });
+
 
 module.exports = server;

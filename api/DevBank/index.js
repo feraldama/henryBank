@@ -21,7 +21,7 @@ conn.authenticate()
 conn
   .authenticate()
   .then(() => {
-    return conn.sync({ force: false });
+    return conn.sync({ force: true });
   })
   .then(() => {
     return server.listen(3000, () => {
