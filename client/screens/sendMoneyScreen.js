@@ -80,7 +80,7 @@ function SendMoneyScreen(props) {
 
         <TextInput
           style={styles.textinput}
-          placeholder="ID account"
+          placeholder="ID de Cuenta"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "account")}
@@ -88,7 +88,7 @@ function SendMoneyScreen(props) {
         />
         <TextInput
           style={styles.textinput}
-          placeholder="$ Amount"
+          placeholder="$ Cantidad"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "amount")}

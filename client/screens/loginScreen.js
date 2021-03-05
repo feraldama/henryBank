@@ -107,7 +107,7 @@ export const LoginScreen = ({ navigation }) => {
           }}
         >
           <Text style={{ color: "#fff" }}>
-            Don't have an account? Register now!
+            No tienes cuenta aún? Registrate Acá!
           </Text>
         </TouchableOpacity>
       </View>

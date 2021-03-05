@@ -24,8 +24,8 @@ export const registerScreen = ({ navigation }) => {
   };
 
   const checkData = () => {
-    if (!state.email || !state.lastName || !state.email) {
-      return Alert.alert("Error", "All fields should be filled");
+    if (!state.name || !state.lastName || !state.email) {
+      return Alert.alert("Error", "Debes completar todos los datos");
     }
     return (
       dispatch(saveRegisterData(state, 1)), navigation.navigate("Register2")
@@ -38,21 +38,21 @@ export const registerScreen = ({ navigation }) => {
         <TextInput
           style={styles.textinput}
           mode="flat"
-          placeholder="First Name"
+          placeholder="Nombre"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "name")}
           value={state.name}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Last Name"
+          placeholder="Apellido"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "lastName")}
           value={state.lastname}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Email"
+          placeholder="E-Mail"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "email")}
           value={state.email}

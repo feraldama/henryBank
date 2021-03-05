@@ -38,10 +38,10 @@ export const registerScreen4 = ({ navigation }) => {
     if (state.password.length < 8)
       return Alert.alert(
         "Error",
-        "Password must be at least 8 characters long"
+        "La contraseña debe tener al menos 8 caracteres"
       );
     if (state.password !== state.rePassword)
-      return Alert.alert("Error", "Passwords must match");
+      return Alert.alert("Error", "Las contraseñas deben coincidir");
     return (
       dispatch(saveRegisterData(state, 0)), navigation.navigate("VerifyEmail")
     );
@@ -51,7 +51,7 @@ export const registerScreen4 = ({ navigation }) => {
       <View style={styles.regform}>
         <TextInput
           style={styles.textinput}
-          placeholder="Password"
+          placeholder="Contraseña"
           secureTextEntry={true}
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "password")}
@@ -59,7 +59,7 @@ export const registerScreen4 = ({ navigation }) => {
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Repeat password"
+          placeholder="Confirmar contraseña"
           secureTextEntry={true}
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "rePassword")}
@@ -67,7 +67,7 @@ export const registerScreen4 = ({ navigation }) => {
         />
 
         <Button mode="contained" onPress={passAuth}>
-          Finish
+          Terminar
         </Button>
       </View>
     </TouchableWithoutFeedback>
