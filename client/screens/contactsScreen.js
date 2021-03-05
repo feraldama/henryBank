@@ -1,34 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Text, SectionList, Button, StyleSheet } from "react-native";
 import { colors } from "../res";
-const contacts = [
-  {
-    eMail: "primero@email.com",
-    name: "Juan Carlos Ruso",
-  },
-  {
-    eMail: "segundo@email.com",
-    name: "Marcela Garcia",
-  },
-  {
-    eMail: "tercero@email.com",
-    name: "Tomas Morello",
-  },
-  {
-    eMail: "cuarto@email.com",
-    name: "Alejandro Ferreira",
-  },
-  {
-    eMail: "cuarto@email.com",
-    name: "Nicolas Ferruti",
-  },
-  {
-    eMail: "cuarto@email.com",
-    name: "Cecilia Puente",
-  },
-];
+import axios from "axios";
+import SendMoneyScreen from "./sendMoneyScreen";
 
-export default function ContactsScreen() {
+// var contacts = [
+//   {
+//     eMail: "cuarto@email.com",
+//     name: "Cecilia Puente",
+//   },
+// ];
+
+export default function ContactsScreen(props) {
+  const loginUser = useSelector((state) => state.login.loginUser);
+
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://192.168.0.10:8080/users/contact/" + loginUser.id)
+      .then((data) => {
+        setContacts(data.data);
+      });
+  }, []);
+
   var getData = () => {
     let contactsArr = [];
     let aCode = "A".charCodeAt(0);
@@ -38,15 +34,19 @@ export default function ContactsScreen() {
         title: currChar,
       };
       let currContacts = contacts.filter((item) => {
-        return item.name[0].toUpperCase() === currChar;
+        return item.alias[0].toUpperCase() === currChar;
       });
       if (currContacts.length > 0) {
-        currContacts.sort((a, b) => a.name.localeCompaer(b.name));
+        currContacts.sort((a, b) => a.alias.localeCompaer(b.alias));
         obj.data = currContacts;
         contactsArr.push(obj);
       }
     }
     return contactsArr;
+  };
+
+  const transfer = (item) => {
+    props.navigation.navigate("SendMoney", item);
   };
 
   const addContact = () => {};
@@ -64,10 +64,10 @@ export default function ContactsScreen() {
           renderItem={({ item }) => (
             <View style={styles.row}>
               <View>
-                <Text style={styles.contactNames}>{item.name}</Text>
+                <Text style={styles.contactNames}>{item.alias}</Text>
               </View>
               <View style={styles.transferBtn}>
-                <Button title="Transferir" />
+                <Button onPress={() => transfer(item)} title="Transferir" />
               </View>
             </View>
           )}

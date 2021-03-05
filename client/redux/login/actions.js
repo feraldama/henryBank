@@ -4,7 +4,6 @@ import {hoost} from "../varible_host";
 import { useSelector } from "react-redux";
 
 export const login = (state) => (dispatch) => {
-
   axios
     .post(`http://${hoost}:8080/users/auth/login`, state)
     .then((data) => {
