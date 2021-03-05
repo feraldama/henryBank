@@ -37,7 +37,7 @@ export const LoginScreen = ({ navigation }) => {
 
   const loginFunction = () => {
     axios
-      .post("http://192.168.0.10:8080/users/auth/login", state)
+      .post("http://localhost:8080/users/auth/login", state)
       .then((data) => {
         if (data.data == "login failed") {
           alert("Usuario o contraseña incorrectos");

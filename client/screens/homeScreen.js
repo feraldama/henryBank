@@ -8,6 +8,7 @@ import SupportScreen from './supportScreen';
 import DepositScreen from './depositScreen';
 import SettingsScreen from './settingsScreens';
 import MenuMoneyScreen from './menuMoneyScreen';
+import TransferScreen from './transferScreen';
 import SendMoneyScreen from './sendMoneyScreen';
 
 const Drawer = createDrawerNavigator();
@@ -23,6 +24,7 @@ export const homeScreen = (props) => {
       <Drawer.Screen name="Support" component={SupportScreen} />
       <Drawer.Screen name="Deposit" component={DepositScreen} />
       <Drawer.Screen name="MenuMoney" component={MenuMoneyScreen} />
+      <Drawer.Screen name="Transfer" component={TransferScreen} />
       <Drawer.Screen name="SendMoney" component={SendMoneyScreen} />
     </Drawer.Navigator>
   );
