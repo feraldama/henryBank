@@ -23,7 +23,7 @@ export const registerScreen2 = ({ navigation }) => {
   const [state, setState] = useState({
     docType: "DNI",
     docNumber: "",
-    birthday: "Select Your Birthday",
+    birthday: "Fecha de Nacimiento",
     phone: "",
     name: register.name,
     lastName: register.lastName,
@@ -54,19 +54,16 @@ export const registerScreen2 = ({ navigation }) => {
     if (
       !state.docNumber ||
       !state.phone ||
-      state.birthday === "Select Your Birthday"
+      state.birthday === "Fecha de Nacimiento"
     ) {
-      return Alert.alert("Error", "All fields should be filled");
+      return Alert.alert("Error", "Debes completar todos los datos");
     }
 
     if (
       date.toString().slice(11, 15) - parseInt(state.birthday.slice(-4)) <
       16
     ) {
-      return Alert.alert(
-        "Error",
-        "Your age must be above 16 to create an account"
-      );
+      return Alert.alert("Error", "Debes ser mayor de 16 para crear cuenta");
     }
     return (
       dispatch(saveRegisterData(state, 1)), navigation.navigate("Register3")
@@ -105,7 +102,7 @@ export const registerScreen2 = ({ navigation }) => {
 
         <TextInput
           style={styles.textinput}
-          placeholder="ID Number"
+          placeholder="Número de ID"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "docNumber")}
@@ -114,7 +111,7 @@ export const registerScreen2 = ({ navigation }) => {
 
         <TextInput
           style={styles.textinput}
-          placeholder="Phone number"
+          placeholder="Número de Telefono"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "phone")}

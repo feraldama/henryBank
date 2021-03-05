@@ -35,7 +35,7 @@ export const registerScreen3 = ({ navigation }) => {
 
   const checkData = () => {
     if (!state.street || !state.location || !state.country || !state.province) {
-      return Alert.alert("Error", "All fields should be filled");
+      return Alert.alert("Error", "Debes completar todos los datos");
     }
     return (
       dispatch(saveRegisterData(state, 1)), navigation.navigate("Register4")
@@ -53,21 +53,21 @@ export const registerScreen3 = ({ navigation }) => {
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Country"
+          placeholder="País"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "country")}
           value={state.country}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="State"
+          placeholder="Provincia/Estado"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "province")}
           value={state.state}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="City"
+          placeholder="Ciudad"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "location")}
           value={state.city}
