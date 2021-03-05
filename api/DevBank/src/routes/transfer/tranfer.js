@@ -14,14 +14,20 @@ server.post("/transfer", function (req, res) {
   if (type !== 'TRANSFER' && type !== 'DEP' && type !== 'EXT') {
     return res.send({ msg: "El valor de tipo de operacion es incorrecto." })
   }
+
   if (currency !== 'PESOS' && currency !== 'USD') {
     return res.send({ msg: 'El valor de moneda es incorrecto.' })
   }
+
   if (value < 0 || typeof value !== 'number' || isNaN(parseFloat(value))) {
     return res.send({ msg: 'El formato de valor es incorrecto.' })
   }
-  if (isNaN(parseInt(origin)) || isNaN(parseInt(destination)) || typeof origin !== 'number' || typeof destination !== 'number') {
+
+  if (isNaN(parseInt(origin)) || isNaN(parseInt(destination)) 
+      || typeof origin !== 'number' || typeof destination !== 'number') {
+
     let errorName = '';
+
     if (isNaN(parseInt(origin)) || typeof origin !== 'number') errorName = 'origen'
     else errorName = 'destino'
     return res.send({ msg: `El formato de ${errorName} es incorrecto.`})
