@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Text, SectionList, Button, StyleSheet } from "react-native";
+import {
+  Alert,
+  Modal,
+  Pressable,
+  View,
+  Text,
+  SectionList,
+  Button,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 import { colors } from "../res";
 import axios from "axios";
-import SendMoneyScreen from "./sendMoneyScreen";
 
 // var contacts = [
 //   {
@@ -14,16 +23,23 @@ import SendMoneyScreen from "./sendMoneyScreen";
 
 export default function ContactsScreen(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
-
+  const [modalVisible, setModalVisible] = useState(false);
   const [contacts, setContacts] = useState([]);
+
+  const [email, setEmail] = useState("");
+  const [get, setGet] = useState(0);
+
+  const handleChangeText = (value) => {
+    setEmail(value);
+  };
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.10:8080/users/contact/" + loginUser.id)
+      .get("http://192.168.0.27:8080/users/contact/" + loginUser.id)
       .then((data) => {
         setContacts(data.data);
       });
-  }, []);
+  }, [get]);
 
   var getData = () => {
     let contactsArr = [];
@@ -49,7 +65,28 @@ export default function ContactsScreen(props) {
     props.navigation.navigate("SendMoney", item);
   };
 
-  const addContact = () => {};
+  const agregarContacto = () => {
+    var dato = {
+      email,
+    };
+    axios
+      .post("http://192.168.0.27:8080/users/contact/" + loginUser.id, dato)
+      .then((data) => {
+        console.log("DATA: ", data);
+        if (data.data === "ya es un contacto") {
+          setModalVisible(!modalVisible);
+          Alert.alert("AVISO", "El usuario ya es su contacto");
+        } else {
+          setModalVisible(!modalVisible);
+          Alert.alert("EXITO", "Usuario agregado");
+          setGet(Math.random());
+        }
+      })
+      .catch((error) => {
+        setModalVisible(!modalVisible);
+        Alert.alert("ERROR", "Usuario no existe");
+      });
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -58,7 +95,10 @@ export default function ContactsScreen(props) {
         <SectionList
           sections={getData()}
           ListFooterComponent={() => (
-            <Button title="Agregar Contacto" onPress={addContact} />
+            <Button
+              title="Agregar Contacto"
+              onPress={() => setModalVisible(true)}
+            />
           )}
           //Estructura de item => { index:2, nombre:"segundo"}
           renderItem={({ item }) => (
@@ -81,6 +121,54 @@ export default function ContactsScreen(props) {
             </View>;
           }}
         />
+      </View>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Ingrese e-mail del contacto a agregar
+              </Text>
+              <TextInput
+                style={styles.email}
+                placeholder="E-mail"
+                onChangeText={(value) => handleChangeText(value, "email")}
+                value={email}
+              ></TextInput>
+              <View
+                style={{
+                  justifyContent: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <View style={{ paddingRight: 30 }}>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>Cancelar</Text>
+                  </Pressable>
+                </View>
+                <View>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => agregarContacto()}
+                  >
+                    <Text style={styles.textStyle}>Agregar</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -121,4 +209,49 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   sectionHeader: {},
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  email: {
+    paddingBottom: 20,
+  },
 });

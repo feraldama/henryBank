@@ -50,7 +50,7 @@ function DepositScreen(props) {
     };
     console.log("DATOS en deposit: ", datos);
     axios
-      .post(`http://192.168.0.10:8080/users/transfer/deposito`, datos)
+      .post(`http://192.168.0.27:8080/users/transfer/deposito`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
@@ -96,7 +96,7 @@ function DepositScreen(props) {
         </Picker> */}
 
         <Picker
-          selectedValue={state.idType}
+          selectedValue={state.type}
           style={styles.picker}
           onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
         >
