@@ -10,3 +10,6 @@ client/.expo
 
 # dotenv environment variables file
 .env
+
+# direction 
+client\redux\varible_host.js

@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
+import { menuTransfer } from "../redux/transfer/actions";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function ConsolidateScreen(props) {
@@ -79,13 +80,13 @@ function ConsolidateScreen(props) {
           </Text>
         </View>
         <View>
-          <Text>PESOS</Text>
+          <Text style={{ color: "#fff" }}>PESOS</Text>
           <RadioButton
             value="first"
             status={checked === "first" ? "checked" : "unchecked"}
             onPress={() => setChecked("first")}
           />
-          <Text>USD</Text>
+          <Text style={{ color: "#fff" }}>USD</Text>
           <RadioButton
             value="second"
             status={checked === "second" ? "checked" : "unchecked"}
@@ -99,7 +100,7 @@ function ConsolidateScreen(props) {
           <Text style={{ color: "black", fontSize: 20 }}>General</Text>
           <View style={{ alignItems: "center", flexDirection: "row" }}>
             <View style={{ alignItems: "center", paddingRight: 55 }}>
-              <Text style={styles.generalSumLabel}>Income</Text>
+              <Text style={styles.generalSumLabel}>Ingresos</Text>
               <Text style={styles.generalSumContent}>
                 $ {userObject.generalIncomes}
               </Text>
@@ -121,7 +122,10 @@ function ConsolidateScreen(props) {
         <View style={styles.firstButtonContainer}>
           <TouchableOpacity
             style={styles.squareButton}
-            onPress={() => alert("Transactions")}
+            onPress={() => {
+              dispatch(menuTransfer(accountUserLogin[0].cvu));
+              props.navigation.navigate("Transfer");
+            }}
           >
             <Icon name="sc-telegram" type="evilicon" />
             <Text style={styles.btnText}>Transacciones</Text>

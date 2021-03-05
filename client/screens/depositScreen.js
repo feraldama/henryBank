@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
@@ -22,7 +23,7 @@ function DepositScreen(props) {
   const accountUserLogin = useSelector((state) => state.user.registerData);
 
   const [state, setState] = useState({
-    amount: 0,
+    amount: "",
     type: "PESOS",
   });
 
@@ -48,16 +49,25 @@ function DepositScreen(props) {
       currency: state.type,
       value: parseInt(state.amount),
     };
-    console.log("DATOS en deposit: ", datos);
     axios
-      .post(`http://192.168.0.10:8080/users/transfer/deposito`, datos)
+      .post(`http://192.168.0.27:8080/users/transfer/deposito`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
       .then(() => {
         dispatch(accountUser(loginUser.id, "PESOS"));
         dispatch(accountUser(loginUser.id, "USD"));
+        Alert.alert("AVISO", "Recarga Exitosa");
       });
+  };
+
+  const validateDeposit = () => {
+    if (state.amount < 50) {
+      Alert.alert("AVISO", "Recarga mínima de $50");
+    } else {
+      dispatchFunction();
+      props.navigation.navigate("Home");
+    }
   };
 
   return (
@@ -76,15 +86,25 @@ function DepositScreen(props) {
         <Text style={styles.generalDescription}>
           Mostrale este código al cajero en RapiPago o PagoFacil.
         </Text>
+
+        {/* <Picker
+          selectedValue={state.type}
+          // style={styles.picker}
+          onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
+        >
+          <Picker.Item label="PESOS" value="PESOS" />
+          <Picker.Item label="USD" value="USD" />
+        </Picker> */}
+
         <Picker
-          selectedValue={state.idType}
+          selectedValue={state.type}
           style={styles.picker}
-          onValueChange={(value) => handleChangeText(value, "type")}
-          value={state.type}
+          onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
         >
           <Picker.Item label="PESOS" value="PESOS" />
           <Picker.Item label="USD" value="USD" />
         </Picker>
+
         <TextInput
           keyboardType="numeric"
           style={styles.montoInput}
@@ -95,8 +115,9 @@ function DepositScreen(props) {
         <TouchableOpacity
           style={styles.longButton}
           onPress={() => {
-            dispatchFunction();
-            props.navigation.navigate("Home");
+            validateDeposit();
+            // dispatchFunction();
+            // props.navigation.navigate("Home");
           }}
         >
           <Text style={styles.generalDescription}>Confirmar Recarga</Text>
@@ -117,8 +138,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     borderRadius: 10,
     width: 350,
-    height: 500,
-    alignItems: "center",
+    height: 550,
+    // alignItems: "center",
     justifyContent: "center",
   },
   generalSumLabel: {
@@ -129,12 +150,13 @@ const styles = StyleSheet.create({
   codeContainer: {
     backgroundColor: "black",
     borderRadius: 10,
-    // width: 350,
+    width: 300,
     // height: 500,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
     marginBottom: 40,
+    alignSelf: "center",
   },
   codeText: {
     color: "#fff",
@@ -163,12 +185,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#77C5D5",
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 3,
+  },
+  picker: {
+    marginTop: 15,
+    alignSelf: "center",
+    width: 200,
+    backgroundColor: colors.white,
+    color: colors.black,
+    borderRadius: 30,
   },
 });
 

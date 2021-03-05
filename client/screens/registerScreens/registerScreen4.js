@@ -4,6 +4,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
@@ -33,12 +34,24 @@ export const registerScreen4 = ({ navigation }) => {
     setState({ ...state, [name]: value });
   };
 
+  const passAuth = () => {
+    if (state.password.length < 8)
+      return Alert.alert(
+        "Error",
+        "La contraseña debe tener al menos 8 caracteres"
+      );
+    if (state.password !== state.rePassword)
+      return Alert.alert("Error", "Las contraseñas deben coincidir");
+    return (
+      dispatch(saveRegisterData(state, 0)), navigation.navigate("VerifyEmail")
+    );
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.regform}>
         <TextInput
           style={styles.textinput}
-          placeholder="Password"
+          placeholder="Contraseña"
           secureTextEntry={true}
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "password")}
@@ -46,21 +59,15 @@ export const registerScreen4 = ({ navigation }) => {
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Repeat password"
+          placeholder="Confirmar contraseña"
           secureTextEntry={true}
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "rePassword")}
           value={state.rePassword}
         />
 
-        <Button
-          mode="contained"
-          onPress={() => {
-            dispatch(saveRegisterData(state, 0));
-            navigation.navigate("VerifyEmail");
-          }}
-        >
-          Finish
+        <Button mode="contained" onPress={passAuth}>
+          Terminar
         </Button>
       </View>
     </TouchableWithoutFeedback>

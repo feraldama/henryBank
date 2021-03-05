@@ -36,8 +36,9 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const loginFunction = () => {
+
     axios
-      .post("http://192.168.0.10:8080/users/auth/login", state)
+      .post("http://192.168.0.27:8080/users/auth/login", state)
       .then((data) => {
         if (data.data == "login failed") {
           alert("Usuario o contraseña incorrectos");
@@ -109,7 +110,7 @@ export const LoginScreen = ({ navigation }) => {
           }}
         >
           <Text style={{ color: "#fff" }}>
-            Don't have an account? Register now!
+            No tienes cuenta aún? Registrate Acá!
           </Text>
         </TouchableOpacity>
       </View>

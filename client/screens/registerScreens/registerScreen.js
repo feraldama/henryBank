@@ -6,6 +6,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
@@ -21,38 +22,46 @@ export const registerScreen = ({ navigation }) => {
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
+  const regEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const checkData = () => {
+    if (!state.name || !state.lastName || !state.email) {
+      return Alert.alert("Error", "Debes completar todos los datos");
+    }
+    if (!regEx.test(String(state.email).toLowerCase())) {
+      return Alert.alert("Error", "El E-Mail no es válido");
+    }
+    return (
+      dispatch(saveRegisterData(state, 1)), navigation.navigate("Register2")
+    );
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.regform}>
         <TextInput
           style={styles.textinput}
           mode="flat"
-          placeholder="First Name"
+          placeholder="Nombre"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "name")}
           value={state.name}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Last Name"
+          placeholder="Apellido"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "lastName")}
           value={state.lastname}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="Email"
+          placeholder="E-Mail"
           underlineColorAndroid={"transparent"}
           onChangeText={(value) => handleChangeText(value, "email")}
           value={state.email}
         />
-        <Button
-          mode="contained"
-          onPress={() => {
-            dispatch(saveRegisterData(state, 1));
-            navigation.navigate("Register2");
-          }}
-        >
+        <Button mode="contained" onPress={checkData}>
           Continuar
         </Button>
       </View>
