@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.use('/users/auth',postAuth);
 // use Users
 router.use('/users', postUsers);
 router.use('/users', getUsers);
+
 
 module.exports = router;

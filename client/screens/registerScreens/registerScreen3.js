@@ -4,6 +4,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
@@ -32,6 +33,14 @@ export const registerScreen3 = ({ navigation }) => {
     setState({ ...state, [name]: value });
   };
 
+  const checkData = () => {
+    if (!state.street || !state.location || !state.country || !state.province) {
+      return Alert.alert("Error", "All fields should be filled");
+    }
+    return (
+      dispatch(saveRegisterData(state, 1)), navigation.navigate("Register2")
+    );
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.regform}>
@@ -63,13 +72,7 @@ export const registerScreen3 = ({ navigation }) => {
           onChangeText={(value) => handleChangeText(value, "location")}
           value={state.city}
         />
-        <Button
-          mode="contained"
-          onPress={() => {
-            dispatch(saveRegisterData(state, 1));
-            navigation.navigate("Register4");
-          }}
-        >
+        <Button mode="contained" onPress={checkData}>
           Continuar
         </Button>
       </View>
@@ -93,17 +96,17 @@ const styles = StyleSheet.create({
   regform: {
     flex: 1,
     padding: 30,
-    paddingTop: 100,
+    paddingTop: 50,
     backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
     alignSelf: "stretch",
-    marginBottom: 50,
+    marginBottom: 25,
     backgroundColor: colors.white,
   },
   picker: {
-    marginBottom: 50,
+    marginBottom: 25,
     backgroundColor: colors.white,
     color: colors.black,
     borderRadius: 30,

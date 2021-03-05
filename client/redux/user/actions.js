@@ -18,6 +18,7 @@ export const saveRegisterData = (data, finish) => (dispatch) => {
 
 export const accountUser = (id, currency) => (dispatch) => {
   axios
+
     .get(`http://${hoost}:8080/users/account/${id}/${currency}`)
     .then((data) => {
       dispatch({ type: ACCOUNT_LOGIN, payload: data.data });

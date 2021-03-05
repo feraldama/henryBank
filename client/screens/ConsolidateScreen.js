@@ -80,13 +80,13 @@ function ConsolidateScreen(props) {
           </Text>
         </View>
         <View>
-          <Text>PESOS</Text>
+          <Text style={{ color: "#fff" }}>PESOS</Text>
           <RadioButton
             value="first"
             status={checked === "first" ? "checked" : "unchecked"}
             onPress={() => setChecked("first")}
           />
-          <Text>USD</Text>
+          <Text style={{ color: "#fff" }}>USD</Text>
           <RadioButton
             value="second"
             status={checked === "second" ? "checked" : "unchecked"}

@@ -36,6 +36,7 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const loginFunction = () => {
+
     axios
       .post("http://localhost:8080/users/auth/login", state)
       .then((data) => {
@@ -46,6 +47,7 @@ export const LoginScreen = ({ navigation }) => {
           navigation.navigate("Consolidated");
         }
       });
+
   };
 
   return (
