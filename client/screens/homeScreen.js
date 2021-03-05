@@ -1,4 +1,3 @@
-
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -10,7 +9,7 @@ import DepositScreen from "./depositScreen";
 import SettingsScreen from "./settingsScreens";
 import MenuMoneyScreen from "./menuMoneyScreen";
 import SendMoneyScreen from "./sendMoneyScreen";
-import TransferScreen from './transferScreen';
+import TransferScreen from "./transferScreen";
 import ContactsScreen from "./contactsScreen";
 
 const Drawer = createDrawerNavigator();

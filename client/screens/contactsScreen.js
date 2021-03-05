@@ -72,7 +72,6 @@ export default function ContactsScreen(props) {
     axios
       .post("http://192.168.0.27:8080/users/contact/" + loginUser.id, dato)
       .then((data) => {
-        console.log("DATA: ", data);
         if (data.data === "ya es un contacto") {
           setModalVisible(!modalVisible);
           Alert.alert("AVISO", "El usuario ya es su contacto");

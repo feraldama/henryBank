@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
@@ -48,7 +49,6 @@ function DepositScreen(props) {
       currency: state.type,
       value: parseInt(state.amount),
     };
-    console.log("DATOS en deposit: ", datos);
     axios
       .post(`http://192.168.0.27:8080/users/transfer/deposito`, datos)
       .then(() => {
@@ -57,12 +57,13 @@ function DepositScreen(props) {
       .then(() => {
         dispatch(accountUser(loginUser.id, "PESOS"));
         dispatch(accountUser(loginUser.id, "USD"));
+        Alert.alert("AVISO", "Recarga Exitosa");
       });
   };
 
   const validateDeposit = () => {
     if (state.amount < 50) {
-      alert("Recarga mínima de $50");
+      Alert.alert("AVISO", "Recarga mínima de $50");
     } else {
       dispatchFunction();
       props.navigation.navigate("Home");
