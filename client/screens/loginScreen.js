@@ -36,6 +36,7 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const loginFunction = () => {
+
     axios
       .post("http://192.168.0.10:8080/users/auth/login", state)
       .then((data) => {
