@@ -2,24 +2,24 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: 192.168.0.10
+  host: 192.168.0.27
 apiEndpoints:
   api:
-    host: 192.168.0.10
+    host: 192.168.0.27
     paths: "/ip"
   users:
-    host: 192.168.0.10
+    host: 192.168.0.27
     paths: ["/users", "/users/*"]
   transacciones:
-    host: 192.168.0.10
+    host: 192.168.0.27
     paths: ["/transacciones", "/transacciones/*"]
 serviceEndpoints:
   httpbin:
     url: "https://httpbin.org"
   usersService:
-    url: "http://192.168.0.10:3000"
+    url: "http://192.168.0.27:3000"
   transaccionesService:
-    url: "http://192.168.0.10:4000"
+    url: "http://192.168.0.27:4000"
 policies:
   - basic-auth
   - cors

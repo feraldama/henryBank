@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,15 +26,19 @@ function SendMoneyScreen(props) {
     currencyDOLARES = "";
 
   var cvuPESOS,
-    cvuDOLARES = 0;
+    cvuDOLARES,
+    balancePESOS,
+    balanceDOLARES = 0;
   if (accountUserLogin) {
     accountUserLogin.map((p) => {
       if (p.currency === "PESOS") {
         cvuPESOS = p.cvu;
         currencyPESOS = p.currency;
+        balancePESOS = p.balance;
       } else if (p.currency === "USD") {
         cvuDOLARES = p.cvu;
         currencyDOLARES = p.currency;
+        balanceDOLARES = p.balance;
       }
     });
   }
@@ -69,16 +73,48 @@ function SendMoneyScreen(props) {
       currency: state.currency,
       description: state.description,
     };
-    axios
-      .post(`http://192.168.0.10:8080/users/transfer/transfer`, datos)
-      .then(() => {
-        dispatch(vaciarReducer());
-      })
-      .then(() => {
-        dispatch(accountUser(loginUser.id, "PESOS"));
-        dispatch(accountUser(loginUser.id, "USD"));
-        //props.route.params = undefined;
-      });
+    if (datos.currency === "USD") {
+      if (datos.value > 0 && datos.value <= balanceDOLARES) {
+        axios
+          .post(`http://192.168.0.27:8080/users/transfer/transfer`, datos)
+          .then(() => {
+            dispatch(vaciarReducer());
+          })
+          .then(() => {
+            Alert.alert("AVISO", "Transferencia realizada con exito");
+            dispatch(accountUser(loginUser.id, "PESOS"));
+            dispatch(accountUser(loginUser.id, "USD"));
+            //props.route.params = undefined;
+          });
+      } else {
+        if (datos.value <= 0) {
+          Alert.alert("AVISO", "Monto a transferir debe ser mayor a 0");
+        } else {
+          Alert.alert("AVISO", "Saldo insuficiente");
+        }
+      }
+    }
+    if (datos.currency === "PESOS") {
+      if (datos.value > 0 && datos.value <= balancePESOS) {
+        axios
+          .post(`http://192.168.0.27:8080/users/transfer/transfer`, datos)
+          .then(() => {
+            dispatch(vaciarReducer());
+          })
+          .then(() => {
+            Alert.alert("AVISO", "Transferencia realizada con exito");
+            dispatch(accountUser(loginUser.id, "PESOS"));
+            dispatch(accountUser(loginUser.id, "USD"));
+            //props.route.params = undefined;
+          });
+      } else {
+        if (datos.value <= 0) {
+          Alert.alert("AVISO", "Monto a transferir debe ser mayor a 0");
+        } else {
+          Alert.alert("AVISO", "Saldo insuficiente");
+        }
+      }
+    }
   };
 
   return (
