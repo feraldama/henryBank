@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
+import { menuTransfer } from "../redux/transfer/actions";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function ConsolidateScreen(props) {
@@ -121,7 +122,10 @@ function ConsolidateScreen(props) {
         <View style={styles.firstButtonContainer}>
           <TouchableOpacity
             style={styles.squareButton}
-            onPress={() => alert("Transactions")}
+            onPress={() => {
+              dispatch(menuTransfer(accountUserLogin[0].cvu));
+              props.navigation.navigate("Transfer");
+            }}
           >
             <Icon name="sc-telegram" type="evilicon" />
             <Text style={styles.btnText}>Transacciones</Text>
