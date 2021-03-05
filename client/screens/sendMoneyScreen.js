@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
@@ -15,43 +15,69 @@ function SendMoneyScreen(props) {
 
   const [state, setState] = useState({
     type: "PESOS",
-    account: "",
+    account: props.route.params.cvu_pesos || "",
     amount: "",
     description: "",
+    cvu: "",
+    currency: "",
   });
 
-  var cvu,
-    currency = 0;
+  var currencyPESOS,
+    currencyDOLARES = "";
+
+  var cvuPESOS,
+    cvuDOLARES = 0;
   if (accountUserLogin) {
     accountUserLogin.map((p) => {
-      if (p.currency === state.type) {
-        cvu = p.cvu;
-        currency = p.currency;
+      if (p.currency === "PESOS") {
+        cvuPESOS = p.cvu;
+        currencyPESOS = p.currency;
+      } else if (p.currency === "USD") {
+        cvuDOLARES = p.cvu;
+        currencyDOLARES = p.currency;
       }
     });
   }
 
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
+    if (name === "type") {
+      value === "PESOS"
+        ? setState({
+            ...state,
+            type: "PESOS",
+            account: props.route.params.cvu_pesos,
+            cvu: cvuPESOS,
+            currency: currencyPESOS,
+          })
+        : setState({
+            ...state,
+            type: "USD",
+            account: props.route.params.cvu_dolares,
+            cvu: cvuDOLARES,
+            currency: currencyDOLARES,
+          });
+    }
   };
 
   const sendMoney = () => {
     var datos = {
-      origin: cvu,
+      origin: state.cvu,
       destination: state.account,
       value: parseInt(state.amount),
       type: "TRANSFER",
-      currency: currency,
+      currency: state.currency,
       description: state.description,
     };
     axios
-      .post(`http://localhost:8080/users/transfer/transfer`, datos)
+      .post(`http://192.168.0.10:8080/users/transfer/transfer`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
       .then(() => {
         dispatch(accountUser(loginUser.id, "PESOS"));
         dispatch(accountUser(loginUser.id, "USD"));
+        //props.route.params = undefined;
       });
   };
 
@@ -70,7 +96,7 @@ function SendMoneyScreen(props) {
       </View>
       <View style={styles.regform}>
         <Picker
-          selectedValue={state.idType}
+          selectedValue={state.type}
           style={styles.picker}
           onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
         >
@@ -82,6 +108,7 @@ function SendMoneyScreen(props) {
           style={styles.textinput}
           placeholder="ID account"
           underlineColorAndroid={"transparent"}
+          editable={false}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "account")}
           value={state.account}

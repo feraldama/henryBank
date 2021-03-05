@@ -38,7 +38,7 @@ export const registerScreen3 = ({ navigation }) => {
       return Alert.alert("Error", "All fields should be filled");
     }
     return (
-      dispatch(saveRegisterData(state, 1)), navigation.navigate("Register2")
+      dispatch(saveRegisterData(state, 1)), navigation.navigate("Register4")
     );
   };
   return (
