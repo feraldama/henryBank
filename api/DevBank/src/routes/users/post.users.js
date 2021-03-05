@@ -1,12 +1,10 @@
-
-const server = require('express').Router();
-const userController = require('../../controllers/users.controller');
-const accountController = require('../../controllers/accounts.controller')
-const nodemailerController = require('../../controllers/nodemailer.controller');
-const nodemailer = require('nodemailer');
-var bcrypt = require('bcryptjs');
-const { User, Account } = require('../../database/db');
-
+const server = require("express").Router();
+const userController = require("../../controllers/users.controller");
+const accountController = require("../../controllers/accounts.controller");
+const nodemailerController = require("../../controllers/nodemailer.controller");
+const nodemailer = require("nodemailer");
+var bcrypt = require("bcryptjs");
+const { User, Account } = require("../../database/db");
 
 server.post("/", (req, res) => {
   var user = req.body;
@@ -23,8 +21,6 @@ server.post("/", (req, res) => {
       if (!value) {
         return res.status(400).json({ msg: "User already exist" });
       }
-
-  
 
       const data = {
         from: "DevBank <devbank2021@gmail>",
@@ -66,13 +62,13 @@ server.post("/:userId", (req, res) => {
       return userController.updateInfo(user, info);
     })
     .then(() => {
-      return accountController.getAccount(userId)
+      return accountController.getAccount(userId);
     })
     .then((acc) => {
-      if(acc){
-        return res.status(200).json({msg:'Accounts were created before'})
+      if (acc) {
+        return res.status(200).json({ msg: "Accounts were created before" });
       }
-      return accountController.createdAccount(userId)
+      return accountController.createdAccount(userId);
     })
     .then((response) => {
       res.status(200).json(response);
@@ -80,8 +76,6 @@ server.post("/:userId", (req, res) => {
     .catch((err) => {
       res.status(400).json(err);
     });
-
 });
-
 
 module.exports = server;

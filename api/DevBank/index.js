@@ -5,7 +5,7 @@ const { Users } = require("./src/database/db");
 conn
   .authenticate()
   .then(() => {
-    return conn.sync({ force: true });
+    return conn.sync({ force: false });
   })
   .then(() => {
     return server.listen(3000, () => {
