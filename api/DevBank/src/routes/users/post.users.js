@@ -4,17 +4,19 @@ const userController = require('../../controllers/users.controller');
 const accountController = require('../../controllers/accounts.controller')
 const nodemailerController = require('../../controllers/nodemailer.controller');
 const nodemailer = require('nodemailer');
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const { User, Account } = require('../../database/db');
 
 
 server.post("/", (req, res) => {
-  var user = req.body;
-  var password = req.body.password;
+
+  let { user, password } = req.body;
+
   // var salt = bcrypt.genSaltSync(10);
   // user.password = bcrypt.hashSync(password, salt);
-  var salt = bcrypt.genSaltSync(10);
-  var hash = bcrypt.hashSync(password, salt);
+  
+  let salt = bcrypt.genSaltSync(10);
+  let hash = bcrypt.hashSync(password, salt);
   user.password = hash;
 
   userController
