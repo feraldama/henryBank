@@ -23,7 +23,7 @@ export const registerScreen2 = ({ navigation }) => {
   const [state, setState] = useState({
     docType: "DNI",
     docNumber: "",
-    birthday: "Select Your Birthday",
+    birthday: "Fecha de Nacimiento",
     phone: "",
     name: register.name,
     lastName: register.lastName,
@@ -56,17 +56,14 @@ export const registerScreen2 = ({ navigation }) => {
       !state.phone ||
       state.birthday === "Fecha de Nacimiento"
     ) {
-      return Alert.alert("Error", "Debes completar todos los datos";
+      return Alert.alert("Error", "Debes completar todos los datos");
     }
 
     if (
       date.toString().slice(11, 15) - parseInt(state.birthday.slice(-4)) <
       16
     ) {
-      return Alert.alert(
-        "Error",
-        "Debes ser mayor de 16 para crear cuenta"
-      );
+      return Alert.alert("Error", "Debes ser mayor de 16 para crear cuenta");
     }
     return (
       dispatch(saveRegisterData(state, 1)), navigation.navigate("Register3")

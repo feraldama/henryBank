@@ -22,10 +22,14 @@ export const registerScreen = ({ navigation }) => {
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
+  const regEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const checkData = () => {
     if (!state.name || !state.lastName || !state.email) {
       return Alert.alert("Error", "Debes completar todos los datos");
+    }
+    if (!regEx.test(String(state.email).toLowerCase())) {
+      return Alert.alert("Error", "El E-Mail no es válido");
     }
     return (
       dispatch(saveRegisterData(state, 1)), navigation.navigate("Register2")
