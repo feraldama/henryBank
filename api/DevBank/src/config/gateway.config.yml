@@ -2,24 +2,24 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: 192.168.0.27
+  host: ${GATEWAY_HOST}
 apiEndpoints:
   api:
-    host: 192.168.0.27
-    paths: "/ip"
+    host: ${GATEWAY_HOST}
+    paths: '/ip'
   users:
-    host: 192.168.0.27
-    paths: ["/users", "/users/*"]
+    host: ${GATEWAY_HOST}
+    paths: ['/users', '/users/*']
   transacciones:
-    host: 192.168.0.27
-    paths: ["/transacciones", "/transacciones/*"]
+    host: ${GATEWAY_HOST}
+    paths: ['/transacciones', '/transacciones/*']
 serviceEndpoints:
   httpbin:
     url: "https://httpbin.org"
   usersService:
-    url: "http://192.168.0.27:3000"
+    url: 'http://${GATEWAY_HOST}:3000'
   transaccionesService:
-    url: "http://192.168.0.27:4000"
+    url: 'http://${GATEWAY_HOST}:4000'
 policies:
   - basic-auth
   - cors
