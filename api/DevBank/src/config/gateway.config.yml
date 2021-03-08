@@ -2,13 +2,13 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: localhost
+  host: ${GATEWAY_HOST}
 apiEndpoints:
   api:
-    host: localhost
+    host: ${GATEWAY_HOST}
     paths: '/ip'
   users:
-    host: localhost
+    host: ${GATEWAY_HOST}
     paths: ['/users', '/users/*']
   transacciones:
     host: localhost
@@ -17,9 +17,9 @@ serviceEndpoints:
   httpbin:
     url: "https://httpbin.org"
   usersService:
-    url: 'http://localhost:3000'
+    url: 'http://${GATEWAY_HOST}:3000'
   transaccionesService:
-    url: 'http://localhost:4000'
+    url: 'http://${GATEWAY_HOST}:4000'
 policies:
   - basic-auth
   - cors
