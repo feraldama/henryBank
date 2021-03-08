@@ -8,6 +8,7 @@ server.post("/transfer", function (req, res) {
 
   // recibo destination del que manda y del que recive, junto con el value
   //
+  console.log("sassadpaso por todos esos");
   const { origin, destination, value, type, currency, description } = req.body;
   
   // validaciones
@@ -32,6 +33,7 @@ server.post("/transfer", function (req, res) {
     else errorName = 'destino'
     return res.send({ msg: `El formato de ${errorName} es incorrecto.`})
   }
+  console.log("paso por todos esos");
 
   Account.findOne({ where: { cvu: origin } })
     .then((response) => {

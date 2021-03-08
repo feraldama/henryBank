@@ -11,7 +11,7 @@ apiEndpoints:
     host: ${GATEWAY_HOST}
     paths: ['/users', '/users/*']
   transacciones:
-    host: ${GATEWAY_HOST}
+    host: localhost
     paths: ['/transacciones', '/transacciones/*']
 serviceEndpoints:
   httpbin:

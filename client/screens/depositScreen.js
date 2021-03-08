@@ -50,7 +50,7 @@ function DepositScreen(props) {
       value: parseInt(state.amount),
     };
     axios
-      .post(`http://192.168.0.27:8080/users/transfer/deposito`, datos)
+      .post(`http://localhost:8080/users/transfer/deposito`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
