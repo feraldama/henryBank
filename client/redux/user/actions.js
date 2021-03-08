@@ -2,15 +2,15 @@ import {
   SAVE_REGISTER_DATA,
   ACCOUNT_LOGIN,
   EMPTY_REDUX,
-} from "../actions_types";
-import axios from "axios";
+} from '../actions_types';
+import axios from 'axios';
 
-import {host} from "../varible_host";
-import { useSelector } from "react-redux";
+
+import { host } from '../varible_host';
+import { useSelector } from 'react-redux';
 
 export const saveRegisterData = (data, finish) => (dispatch) => {
   if (finish == 0) {
-    //axios.post("http://192.168.0.27:8080/users", data);
     axios.post(`http://${host}:8080/users`, data);
     dispatch({ type: SAVE_REGISTER_DATA, payload: data });
   } else {
@@ -20,8 +20,7 @@ export const saveRegisterData = (data, finish) => (dispatch) => {
 
 export const accountUser = (id, currency) => (dispatch) => {
   axios
-    // .get(`http://192.168.0.27:8080/users/account/${id}/${currency}`)
-   .get(`http://${host}:8080/users/account/${id}/${currency}`)
+    .get(`http://${host}:8080/users/account/${id}/${currency}`)
     .then((data) => {
       dispatch({ type: ACCOUNT_LOGIN, payload: data.data });
     });
@@ -33,11 +32,12 @@ export const recargarDinero = (cvu, currency, value) => () => {
     currency,
     value,
   };
-  // axios.post(`http://192.168.0.27:8080/users/transfer/deposito`, datos);
- axios.post(`http://${host}:8080/users/transfer/deposito`, datos);
+
+  axios.post(`http://${host}:8080/users/transfer/deposito`, datos);
+
 };
 
 export const vaciarReducer = () => (dispatch) => {
-  var data = "";
+  var data = '';
   dispatch({ type: EMPTY_REDUX, payload: data });
 };
