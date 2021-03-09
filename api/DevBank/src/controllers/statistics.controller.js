@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const moment = require('moment');
 
 module.exports = {
-  getMonth(cvu) {
+  getMonth(cvu, number, type) {
     return Transfer.findAll({
       where: {
         [Op.or]: [
@@ -11,7 +11,7 @@ module.exports = {
           {destination: cvu}
         ],
         createdAt: {
-          [Op.gte]: moment().subtract(1, 'months').toDate()
+          [Op.gte]: moment().subtract(number, type).toDate()
         }
       }
     })
