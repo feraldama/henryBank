@@ -84,6 +84,7 @@ function SendMoneyScreen(props) {
             Alert.alert("AVISO", "Transferencia realizada con exito");
             dispatch(accountUser(loginUser.id, "PESOS"));
             dispatch(accountUser(loginUser.id, "USD"));
+            props.navigation.navigate("Home");
             //props.route.params = undefined;
           });
       } else {
@@ -105,6 +106,7 @@ function SendMoneyScreen(props) {
             Alert.alert("AVISO", "Transferencia realizada con exito");
             dispatch(accountUser(loginUser.id, "PESOS"));
             dispatch(accountUser(loginUser.id, "USD"));
+            props.navigation.navigate("Home");
             //props.route.params = undefined;
           });
       } else {
@@ -168,7 +170,6 @@ function SendMoneyScreen(props) {
           mode="contained"
           onPress={() => {
             sendMoney();
-            props.navigation.navigate("Home");
           }}
         >
           Enviar
