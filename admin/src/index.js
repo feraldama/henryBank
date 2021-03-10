@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {ThemeProvider} from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import themeLight from './theme/themeLight'
 
 import App from './App';
@@ -17,6 +18,7 @@ const store = createStore(
 
 ReactDOM.render(
   <ThemeProvider theme={themeLight}>
+    <CssBaseline />
     <Provider store={store}>
         <App />
     </Provider>

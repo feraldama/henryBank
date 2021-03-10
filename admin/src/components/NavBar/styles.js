@@ -6,6 +6,8 @@ const useStyle = makeStyles(theme => ({
     },
     appBar:{
         zIndex: theme.zIndex.drawer + 1, 
+        background: 'rgb(115,195,213)',
+        background: 'linear-gradient(0deg, rgba(115,195,213,1) 0%, rgba(36,55,70,1) 100%)',
     },
     title: {
         width: `${theme.spacing(2)}%`, 

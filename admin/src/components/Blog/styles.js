@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     banner: {
         width: '100%',
         minHeight: '90vh',
-        backgroundColor: 'rgba(54,142,175,0.1)',
+        background: 'rgba(54,142,175,0.1)',
         display: 'flex',
         justifyContent: 'space-evenly',
         alignItems: 'center',
@@ -54,7 +54,8 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         width: '70%',
         height: '80%',
-        backgroundColor: theme.palette.primary.main,
+        background: 'rgb(115,195,213)',
+        background: 'linear-gradient(0deg, rgba(115,195,213,1) 0%, rgba(36,55,70,1) 100%)',
         boxShadow: theme.shadows[8],
         borderRadius: theme.spacing(6),
     },
@@ -131,7 +132,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         minHeight: '30vh',
         borderRadius: theme.spacing(3),
-        backgroundColor: theme.palette.secondary.main,
+        background: 'rgb(115,195,213)',
+        background: 'linear-gradient(0deg, rgba(115,195,213,1) 0%, rgba(36,55,70,1) 100%)',
         color: '#fff',
         
     },
