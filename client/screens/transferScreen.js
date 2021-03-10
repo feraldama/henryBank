@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { colors } from '../res';
@@ -14,68 +14,75 @@ function TransferScreen(props) {
   useEffect(()=>{
     props.navigation.navigate("Transfer");
   },[menutransfer])
-
+  const scrollViewRef = useRef();
   const dispatch = useDispatch();
 
   return (
       <View style={styles.mainContainer}>
         <View style={styles.secondContainer}>
+
           <TouchableOpacity            
             onPress={() => {
               dispatch(menuTransfer(accounts[1].cvu));
             }}
           >
-            <Icon name="sc-telegram" type="evilicon" />
-            <Text>USD</Text>
+            <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
+            <Text style={styles.text_icon} >USD</Text>
           </TouchableOpacity>
-          <TouchableOpacity            
+
+          <Text style={{ color: "white", fontSize: 30 }}>Transacciones</Text>
+
+          <TouchableOpacity         
             onPress={() => {
               dispatch(menuTransfer(accounts[0].cvu));
             }}
           >
-            <Icon name="sc-telegram" type="evilicon" />
-            <Text>PESOS</Text>
+            <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
+            <Text style={styles.text_icon} >PESOS</Text>
           </TouchableOpacity>
-          <TouchableOpacity            
+
+          <TouchableOpacity        
             onPress={() => {
               props.navigation.navigate("Home");
             }}
           >
-            <Icon name="sc-telegram" type="evilicon" />
-            <Text>Inicio</Text>
+            <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
+            <Text style={styles.text_icon}>Inicio</Text>
+
           </TouchableOpacity>
-          <Text>Historial de Transferencias</Text>
+          
         </View>
         <View style={styles.thirdContainer}>
-          <View  style={styles.secondButtonContainer}>       
+          <View  style={styles.secondButtonContainer}>
+            <ScrollView
+              ref={scrollViewRef}
+            >    
         {        
           menutransfer?.map(transfer => 
           
           <View key={transfer.id} style={transfer.type=="DEP"? styles.general : transfer.origin != accounts[0].cvu ? styles.general : styles.generalT  }>
-          <Text style={{ color: "black", fontSize: 20 }}>{transfer.createdAt.slice(0,10)} {transfer.type}</Text>
+          
           <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <View style={{ alignItems: "center", paddingRight: 55 }}>
-              <Text style={styles.generalSumLabel}>Valor transferido</Text>
+            <View style={{ alignItems: "center", paddingRight: 40 }}>
+              <Text style={{ color: "black", fontSize: 16.5 }}>{transfer.createdAt.slice(0,10)}</Text>
               <Text style={styles.generalSumContent}>
-               $ {transfer.value}
+               {transfer.destination}
               </Text>
+            </View>
+            <View style={{ color: "black", fontSize: 16.5 , alignItems: "center"}}>
+              <Text style={styles.generalSumLabel}>{transfer.type}</Text>
             </View>
             <View style={{ alignItems: "center" }}>
-              <Text style={styles.generalSumLabel}>Transferida de/a</Text>
+            <Text style={styles.generalSumLabel} >Valor</Text>
               <Text style={styles.generalSumContent}>
-                {transfer.destination}
+                $ {transfer.value}
               </Text>
             </View>
-          </View>
-          <View style={{ color: "black", fontSize: 12 , alignItems: "center"}}>
-            <Text style={styles.generalSumLabel}>Descripcion</Text>
-            <Text style={styles.generalSumContent}>
-              {transfer.description}              
-            </Text>
           </View>
         </View>
           )
         }
+        </ScrollView>
         </View>
         </View>
       </View>
@@ -84,24 +91,31 @@ function TransferScreen(props) {
 
 const styles = StyleSheet.create({
     mainContainer: {
-      backgroundColor: colors.primary,
+      backgroundColor: '#fff',
       flex: 1,
       alignSelf: 'stretch',
     },
 
     secondContainer: {
       alignItems: 'center',
+      borderBottomLeftRadius: 110,
+      borderBottomRightRadius: 110,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       color: '#fff',    
-      height: 140,
-      backgroundColor: colors.secondary,
+      height: 180,
+      backgroundColor: colors.primary,
     },
   
     thirdContainer: {
       flex: 0.9,
       justifyContent: 'space-evenly',            
-    },  
+    },
+    
+    text_icon:{
+      color: "white",
+      fontSize: 15,
+    },
   
     secondButtonContainer: {
       alignItems: 'center',
@@ -114,7 +128,7 @@ const styles = StyleSheet.create({
     general: {
       backgroundColor: "rgb(172, 232, 179)",
       width: 400,
-      height: 210,
+      height: 100,
       alignSelf: "center",
       alignItems: "center",
       justifyContent: "space-evenly",
@@ -130,7 +144,7 @@ const styles = StyleSheet.create({
     generalT: {
       backgroundColor: "rgb(216, 168, 168)",
       width: 400,
-      height: 210,
+      height: 100,
       alignSelf: "center",
       alignItems: "center",
       justifyContent: "space-evenly",
@@ -144,13 +158,16 @@ const styles = StyleSheet.create({
     },
 
     generalSumContent: {
-      color: "black",
-      fontSize: 22,
+      color: "#000",
+      fontSize: 16.5,
+      paddingRight: 15,
     },
   
     generalSumLabel: {
-      color: "gray",
-      paddingBottom: 15,
+      color: "#000",
+      paddingBottom: 5,
+      paddingRight: 15,
+      fontSize: 16.5,
     },
 
     longButton: {
