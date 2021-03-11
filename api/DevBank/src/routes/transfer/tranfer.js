@@ -1,6 +1,7 @@
 const server = require("express").Router();
 const userController = require("../../controllers/transfer.controller");
 const { User, Account, Transfer } = require("../../database/db");
+const axios = require("axios")
 // const passport = require("passport");
 // const bcrypt = require("bcryptjs");
 
@@ -37,14 +38,10 @@ server.post("/transfer", function (req, res) {
 
   Account.findOne({ where: { cvu: origin } })
     .then((response) => {
-      // console.log("AAAAAAAAAAAAA 1")
-      // console.log("AAAAAAAAAAAAA 1",response.dataValues.balance)
-      // console.log("AAAAAAAAAAAAA 1", value)
       if (response.dataValues.balance >= value) {
         var cantidad = response.dataValues.balance - value;
         Account.update({ balance: cantidad }, { where: { cvu: origin } })
           .then((responseA) => {
-            // console.log("AAAAAAAAAAAAA 2")
             return Account.findOne({ where: { cvu: destination } });
           })
           .then((responseB) => {
@@ -86,6 +83,96 @@ server.post("/transfer", function (req, res) {
       console.log("HUBO ERROR EN LA TRANSACCION", err);
       res.send(err);
     });
+});
+
+server.post("/dolar", function (req, res) {
+
+  var { origin, destination, value, type, currency, description } = req.body;
+
+  
+  // validaciones
+  if (type !== 'TRANSFER' && type !== 'DEP' && type !== 'EXT' && type !== "COMPRA-USD" && type !== "VENTA-USD") {
+    return res.send({ msg: "El valor de tipo de operacion es incorrecto." })
+  }
+
+  if (currency !== 'PESOS' && currency !== 'USD') {
+    return res.send({ msg: 'El valor de moneda es incorrecto.' })
+  }
+
+  if (value < 0 || typeof value !== 'number' || isNaN(parseFloat(value))) {
+    return res.send({ msg: 'El formato de valor es incorrecto.' })
+  }
+
+  if (isNaN(parseInt(origin)) || isNaN(parseInt(destination)) 
+      || typeof origin !== 'number' || typeof destination !== 'number') {
+
+    let errorName = '';
+
+    if (isNaN(parseInt(origin)) || typeof origin !== 'number') errorName = 'origen'
+    else errorName = 'destino'
+    return res.send({ msg: `El formato de ${errorName} es incorrecto.`})
+  }
+  console.log("paso por todos esos");
+  var compra
+  var venta
+  axios.get("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
+  .then(response => {
+    compra = parseInt(response.data[0].casa.compra)
+    venta = parseInt(response.data[0].casa.venta)
+    var moneda
+    if(type == "COMPRA-USD"){
+      venta= (venta *1.30) *1.35
+      moneda = value* venta
+    }else if(type == "VENTA-USD"){
+      moneda = value 
+      value = moneda * compra
+    }
+
+    Account.findOne({ where: { cvu: origin } })
+      .then((response) => {
+        if (response.dataValues.balance >= moneda) {
+          var cantidad = response.dataValues.balance - moneda;
+          Account.update({ balance: cantidad }, { where: { cvu: origin } })
+            .then((responseA) => {
+              return Account.findOne({ where: { cvu: destination } });
+            })
+            .then((responseB) => {
+              var cantidadRecive = responseB.dataValues.balance - 1 + value + 1;
+              return Account.update(
+                { balance: cantidadRecive },
+                { where: { cvu: destination } }
+              );
+            })
+            .then((responseC) => {
+              Transfer.create({
+                origin,
+                destination,
+                value,
+                type,
+                currency,
+                description,
+              });
+            })
+            .then((responseD) => {
+              res.send("cambio de moneda realizado con exito");
+            })
+            .catch((err) => {
+              return err;
+            });
+        } else {
+          res.send(
+            "la cuenta de origen no cuenta con saldo suficiente para realizar esta transferencia"
+          );
+        }
+      })
+      .catch((err) => {
+        console.log("HUBO ERROR EN LA TRANSACCION", err);
+        res.send(err);
+      });
+
+    // res.send({compra, venta, moneda})
+  })
+
 });
 
 server.post("/deposito", (req, res) => {
