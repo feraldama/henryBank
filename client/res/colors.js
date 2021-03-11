@@ -1,6 +1,6 @@
 export const colors = {
-  primary: '#324B50',
-  secondary: '#95B0B6',
+  primary: '#243746',
+  secondary: '#73c3d5',
   accent: '#77C5D5',
   white: '#fff',
   transpartentWhite: 'rgba(255,255,255,0.7)',
