@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/login/actions";
 const { width: WIDTH } = Dimensions.get("window");
 import axios from "axios";
+import { host } from "../redux/varible_host";
 
 export const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -36,17 +37,14 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const loginFunction = () => {
-
-    axios
-      .post("http://localhost:8080/users/auth/login", state)
-      .then((data) => {
-        if (data.data == "login failed") {
-          alert("Usuario o contraseña incorrectos");
-        } else {
-          dispatch(login(state, 1));
-          navigation.navigate("Consolidated");
-        }
-      });
+    axios.post(`http://${host}:8080/users/auth/login`, state).then((data) => {
+      if (data.data == "login failed") {
+        alert("Usuario o contraseña incorrectos");
+      } else {
+        dispatch(login(state, 1));
+        navigation.navigate("Consolidated");
+      }
+    });
   };
 
   return (
