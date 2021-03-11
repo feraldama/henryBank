@@ -15,6 +15,7 @@ import {
   accountUser,
 } from "../redux/user/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { host } from "../redux/varible_host";
 import axios from "axios";
 
 function DepositScreen(props) {
@@ -50,7 +51,7 @@ function DepositScreen(props) {
       value: parseInt(state.amount),
     };
     axios
-      .post(`http://localhost:8080/users/transfer/deposito`, datos)
+      .post(`http://${host}:8080/users/transfer/deposito`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })

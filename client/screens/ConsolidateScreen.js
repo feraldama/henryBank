@@ -133,7 +133,7 @@ function ConsolidateScreen(props) {
 
           <TouchableOpacity
             style={styles.squareButton}
-            onPress={() => alert("Stats")}
+            onPress={() => props.navigation.navigate("Stats")}
           >
             <Icon name="bar-chart-outline" type="ionicon" />
             <Text style={styles.btnText}>Estadisticas</Text>

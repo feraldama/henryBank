@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res/colors";
 import { Icon } from "react-native-elements";
 import axios from "axios";
+import { host } from "../redux/varible_host";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function SendMoneyScreen2(props) {
@@ -45,7 +46,7 @@ function SendMoneyScreen2(props) {
       description: state.description,
     };
     axios
-      .post(`http://localhost:8080/users/transfer/transfer`, datos)
+      .post(`http://${host}:8080/users/transfer/transfer`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
@@ -162,4 +163,3 @@ const styles = StyleSheet.create({
 });
 
 export default SendMoneyScreen2;
-

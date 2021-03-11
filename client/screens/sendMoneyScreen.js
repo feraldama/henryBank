@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res/colors";
 import { Icon } from "react-native-elements";
 import axios from "axios";
+import { host } from "../redux/varible_host";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function SendMoneyScreen(props) {
@@ -76,7 +77,7 @@ function SendMoneyScreen(props) {
     if (datos.currency === "USD") {
       if (datos.value > 0 && datos.value <= balanceDOLARES) {
         axios
-          .post(`http://localhost:8080/users/transfer/transfer`, datos)
+          .post(`http://${host}:8080/users/transfer/transfer`, datos)
           .then(() => {
             dispatch(vaciarReducer());
           })
@@ -98,7 +99,7 @@ function SendMoneyScreen(props) {
     if (datos.currency === "PESOS") {
       if (datos.value > 0 && datos.value <= balancePESOS) {
         axios
-          .post(`http://localhost:8080/users/transfer/transfer`, datos)
+          .post(`http://${host}:8080/users/transfer/transfer`, datos)
           .then(() => {
             dispatch(vaciarReducer());
           })

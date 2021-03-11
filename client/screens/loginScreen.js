@@ -14,6 +14,7 @@ import { colors } from "../res";
 import { Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import logo from "../assets/logo2.png";
+import { host } from "../redux/varible_host";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/login/actions";
 const { width: WIDTH } = Dimensions.get("window");
@@ -36,17 +37,14 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const loginFunction = () => {
-
-    axios
-      .post("http://localhost:8080/users/auth/login", state)
-      .then((data) => {
-        if (data.data == "login failed") {
-          alert("Usuario o contraseña incorrectos");
-        } else {
-          dispatch(login(state, 1));
-          navigation.navigate("Consolidated");
-        }
-      });
+    axios.post(`http://${host}:8080/users/auth/login`, state).then((data) => {
+      if (data.data == "login failed") {
+        alert("Usuario o contraseña incorrectos");
+      } else {
+        dispatch(login(state, 1));
+        navigation.navigate("Consolidated");
+      }
+    });
   };
 
   return (
