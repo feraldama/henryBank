@@ -66,8 +66,10 @@ function DrawerContent(props) {
             />
             <DrawerItem
               icon={() => <Icon name={"swap-horizontal-outline"} size={28} />}
-              onPress={() => {}}
-              label="Transacciones"
+              onPress={() => {
+                props.navigation.navigate("Cambio");
+              }}
+              label="Cambio Divisas"
             />
             <DrawerItem
               icon={() => <Icon name={"people-outline"} size={28} />}

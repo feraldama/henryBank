@@ -12,7 +12,10 @@ import SendMoneyScreen from "./sendMoneyScreen";
 import SendMoneyScreen2 from "./sendMoneyScreen2";
 import TransferScreen from "./transferScreen";
 import ContactsScreen from "./contactsScreen";
-import StatsScreen from "./statsScreen";
+import ProfilePicScreen from "./profilePicScreen";
+import CameraScreen from "./cameraScreen";
+import changeMoneyScreen from "./changeMoneyScreen";
+
 const Drawer = createDrawerNavigator();
 
 //
@@ -30,7 +33,9 @@ export const homeScreen = (props) => {
       <Drawer.Screen name="SendMoney" component={SendMoneyScreen} />
       <Drawer.Screen name="SendMoney2" component={SendMoneyScreen2} />
       <Drawer.Screen name="Contacts" component={ContactsScreen} />
-      <Drawer.Screen name="Stats" component={StatsScreen} />
+      <Drawer.Screen name="ProfilePic" component={ProfilePicScreen} />
+      <Drawer.Screen name="Camera" component={CameraScreen} />
+      <Drawer.Screen name="Cambio" component={changeMoneyScreen} />
     </Drawer.Navigator>
   );
 };

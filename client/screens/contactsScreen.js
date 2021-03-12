@@ -19,6 +19,7 @@ import { host } from "../redux/varible_host";
 import axios from "axios";
 import { Icon } from "react-native-elements";
 import * as Contacts from "expo-contacts";
+import { host } from "../redux/varible_host";
 
 // var contacts = [
 //   {
@@ -87,7 +88,7 @@ export default function ContactsScreen(props) {
 
   useEffect(() => {
     axios
-      .get(`http://${host}:8080/users/contact/` + loginUser.id)
+      .get(`http://${host}:8080/users/contact/${loginUser.id}`)
       .then((data) => {
         setContacts(data.data);
       });
@@ -121,8 +122,9 @@ export default function ContactsScreen(props) {
     var dato = {
       email,
     };
+    console.log("agregarContacto: ", dato);
     axios
-      .post(`http://${host}:8080/users/contact/` + loginUser.id, dato)
+      .post(`http://${host}:8080/users/contact/${loginUser.id}`, dato)
       .then((data) => {
         if (data.data === "ya es un contacto") {
           setModalVisible(!modalVisible);
@@ -141,7 +143,7 @@ export default function ContactsScreen(props) {
 
   const eliminarContacto = (contactId) => {
     axios.delete(
-      `http://${host}:8080/users/contact/` + loginUser.id + "/" + contactId
+      `http://${host}:8080/users/contact/${loginUser.id}/${contactId}`
     );
     Alert.alert("AVISO", "Usuario eliminado");
     setGet(Math.random());

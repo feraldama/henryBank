@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
+  Alert,
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
@@ -14,56 +15,99 @@ import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res/colors";
 import { Icon } from "react-native-elements";
 import axios from "axios";
-import { host } from "../redux/varible_host";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 import { host } from "../redux/varible_host";
-import * as Print from "expo-print";
-import * as Sharing from "expo-sharing";
 
-function SendMoneyScreen2(props) {
+function changeMoneyScreen(props) {
   const dispatch = useDispatch(); // para la futura accion
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((redux) => redux.user.registerData);
+  const cambio = useSelector((state) => state.cambio.cambio);
+
+  var currencyPESOS,
+    currencyDOLARES,
+    datos,
+    origen,
+    destino,
+    tipo,
+    moneda = "";
+
+  var cvuPESOS,
+    cvuDOLARES,
+    balancePESOS,
+    balanceDOLARES = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        cvuPESOS = p.cvu;
+        currencyPESOS = p.currency;
+        balancePESOS = p.balance;
+      } else if (p.currency === "USD") {
+        cvuDOLARES = p.cvu;
+        currencyDOLARES = p.currency;
+        balanceDOLARES = p.balance;
+      }
+    });
+  }
+
+  useEffect(() => {
+    axios
+      .get("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
+      .then((response) => {
+        setState({
+          ...state,
+          compra: parseInt(response.data[0].casa.compra),
+          venta: (parseInt(response.data[0].casa.venta) * 1.3 * 1.35).toFixed(
+            2
+          ),
+        });
+      });
+  }, []);
 
   const [state, setState] = useState({
     type: "PESOS",
     account: "",
     amount: "",
     description: "",
+    currency: "PESOS",
+    compra: 0,
+    venta: 0,
   });
-
-  var cvu,
-    currency = 0;
-  if (accountUserLogin) {
-    accountUserLogin.map((p) => {
-      if (p.currency === state.type) {
-        cvu = p.cvu;
-        currency = p.currency;
-      }
-    });
-  }
 
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
 
   const sendMoney = () => {
-    var datos = {
-      origin: parseInt(cvu),
-      destination: parseInt(state.account),
+    if (state.type === "PESOS") {
+      origen = cvuPESOS;
+      destino = cvuDOLARES;
+      tipo = "COMPRA-USD";
+      moneda = "PESOS";
+    } else if (state.type === "USD") {
+      origen = cvuDOLARES;
+      destino = cvuPESOS;
+      tipo = "VENTA-USD";
+      moneda = "USD";
+    }
+    datos = {
+      origin: parseInt(origen),
+      destination: parseInt(destino),
       value: parseInt(state.amount),
-      type: "TRANSFER",
-      currency: currency,
-      description: state.description,
+      type: tipo,
+      currency: moneda,
     };
     axios
-      .post(`http://${host}:8080/users/transfer/transfer`, datos)
+      .post(`http://${host}:8080/users/transfer/dolar`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
       .then(() => {
+        Alert.alert("AVISO", "Cambio realizado con exito");
         dispatch(accountUser(loginUser.id, "PESOS"));
         dispatch(accountUser(loginUser.id, "USD"));
+        props.navigation.navigate("Home");
+        //props.route.params = undefined;
       });
   };
 
@@ -78,47 +122,35 @@ function SendMoneyScreen2(props) {
           >
             <Text>Inicio</Text>
           </Button>
-          <Text>Transferencias</Text>
+          <Text>Cambio Divisas</Text>
           <Icon />
         </View>
         <View style={styles.regform}>
           <ScrollView>
+            <View style={styles.cambio}>
+              <Text style={styles.monto}>Compra: {state.compra}</Text>
+              <Text style={styles.monto}>Venta: {state.venta}</Text>
+            </View>
             <Picker
               selectedValue={state.type}
               style={styles.picker}
               onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
             >
-              <Picker.Item label="PESOS" value="PESOS" />
-              <Picker.Item label="USD" value="USD" />
+              <Picker.Item label="COMPRA DE USD" value="PESOS" />
+              <Picker.Item label="VENTA DE USD" value="USD" />
             </Picker>
             <TextInput
               style={styles.textinput}
-              placeholder="ID account"
-              underlineColorAndroid={"transparent"}
-              keyboardType="numeric"
-              onChangeText={(value) => handleChangeText(value, "account")}
-              value={state.account}
-            />
-            <TextInput
-              style={styles.textinput}
-              placeholder="$ Amount"
+              placeholder="$ Cantidad de Dolares"
               underlineColorAndroid={"transparent"}
               keyboardType="numeric"
               onChangeText={(value) => handleChangeText(value, "amount")}
               value={state.amount}
             />
-            <TextInput
-              style={styles.textinput}
-              placeholder="Descripción"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "description")}
-              value={state.description}
-            />
             <TouchableOpacity
               style={styles.longButton}
               onPress={() => {
                 sendMoney();
-                props.navigation.navigate("Home");
               }}
             >
               <Text style={styles.generalDescription}>Enviar</Text>
@@ -141,6 +173,16 @@ const styles = StyleSheet.create({
     paddingRight: 40,
     fontSize: 20,
     alignSelf: "center",
+  },
+  cambio: {
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-between",
+  },
+  monto: {
+    color: "#fff",
+    margin: 15,
+    fontSize: 20,
   },
   longButton: {
     width: 250,
@@ -196,4 +238,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SendMoneyScreen2;
+export default changeMoneyScreen;

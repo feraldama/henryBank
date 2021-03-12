@@ -1,45 +1,139 @@
-import React from 'react';
-import { colors } from '../res';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { colors } from "../res";
+import Icon from "react-native-vector-icons/Ionicons";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 function ProfileScreen(props) {
+  const loginUser = useSelector((state) => state.login.loginUser);
+
+  const [state, setState] = useState({
+    phone: loginUser.phone,
+    street: loginUser.street,
+    location: loginUser.location,
+    province: loginUser.province,
+    country: loginUser.country,
+  });
+  const handleChangeText = (value, name) => {
+    setState({ ...state, [name]: value });
+    console.log("STATE: ", state);
+  };
+
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.firstContainer}>
-        <Text style={styles.userName}>Francisco Prato</Text>
-        <View style={styles.actionButtonsContainer}>
-          <TouchableOpacity>
-            <View style={styles.smallCircle}>
-              <Icon name={'qr-code-outline'} size={40} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.largeCircle}>
-              <Icon name={'person-circle-outline'} size={70} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.smallCircle}>
-              <Icon name={'people-outline'} size={40} />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.aliasContainer}>
-          <Text style={styles.aliasLabel}>ALIAS</Text>
-          <Text style={styles.aliasContent}>TEST.ALIAS.DEVBANK</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.mainContainer}>
+        <View style={styles.firstContainer}>
+          <Text style={styles.userName}>
+            {loginUser.name} {loginUser.lastName}
+          </Text>
+          <View style={styles.actionButtonsContainer}>
+            <TouchableOpacity>
+              <View style={styles.smallCircle}>
+                <Icon name={"qr-code-outline"} size={40} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.largeCircle}>
+                <Icon name={"person-circle-outline"} size={70} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.smallCircle}>
+                <Icon name={"people-outline"} size={40} />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>Documento</Text>
+            <TextInput style={styles.aliasContent}>
+              {loginUser.docType} - {loginUser.docNumber}
+            </TextInput>
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>Correo</Text>
+            <TextInput style={styles.aliasContent}>{loginUser.email}</TextInput>
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>Teléfono</Text>
+            <TextInput
+              style={styles.aliasContent}
+              mode="flat"
+              placeholder="Teléfono"
+              underlineColorAndroid={"transparent"}
+              onChangeText={(value) => handleChangeText(value, "phone")}
+              value={state.phone}
+            />
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>Calle</Text>
+            <TextInput
+              style={styles.direction}
+              mode="flat"
+              placeholder="Calle"
+              underlineColorAndroid={"transparent"}
+              onChangeText={(value) => handleChangeText(value, "street")}
+              value={state.street}
+            />
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>Ciudad</Text>
+            <TextInput
+              style={styles.direction}
+              mode="flat"
+              placeholder="Ciudad"
+              underlineColorAndroid={"transparent"}
+              onChangeText={(value) => handleChangeText(value, "location")}
+              value={state.location}
+            />
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>Provincia - Estado</Text>
+            <TextInput
+              style={styles.direction}
+              mode="flat"
+              placeholder="Estado"
+              underlineColorAndroid={"transparent"}
+              onChangeText={(value) => handleChangeText(value, "province")}
+              value={state.province}
+            />
+          </View>
+          <View style={styles.aliasContainer}>
+            <Text style={styles.aliasLabel}>País</Text>
+            <TextInput
+              style={styles.direction}
+              mode="flat"
+              placeholder="País"
+              underlineColorAndroid={"transparent"}
+              onChangeText={(value) => handleChangeText(value, "country")}
+              value={state.country}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: colors.primary,
+  },
+  direction: {
+    color: colors.black,
+    fontSize: 15,
+    marginLeft: 15,
+    marginRight: 15,
   },
   largeCircle: {
     marginHorizontal: 20,
@@ -47,44 +141,48 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100 / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   smallCircle: {
     backgroundColor: colors.secondary,
     width: 75,
     height: 75,
     borderRadius: 75 / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   firstContainer: {
-    height: 450,
+    height: 680,
     width: 375,
-    marginTop: 35,
-    alignItems: 'center',
+    //marginTop: 35,
+    alignItems: "center",
     backgroundColor: colors.transpartentWhite,
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 3,
   },
   userName: {
-    marginTop: 50,
-    fontWeight: 'bold',
+    marginTop: 20,
+    fontWeight: "bold",
     fontSize: 20,
   },
   actionButtonsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 30,
+    marginBottom: 15,
   },
   aliasContainer: {
-    marginTop: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  aliasContainer2: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   aliasLabel: {
     color: colors.transparentBlack,
@@ -92,9 +190,9 @@ const styles = StyleSheet.create({
   },
   aliasContent: {
     color: colors.black,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 25,
-    marginTop: 30,
+    marginBottom: 15,
   },
 });
 
