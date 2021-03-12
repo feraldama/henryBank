@@ -34,7 +34,8 @@ function ConsolidateScreen(props) {
           check = "USD";
         }
         if (p.currency === check) {
-          setBalance(p.balance);
+          var monto = parseInt(p.balance).toFixed(2);
+          setBalance(monto);
         }
       });
     }
@@ -54,20 +55,14 @@ function ConsolidateScreen(props) {
           <Text style={{ paddingBottom: 20, color: "#fff" }}>
             Hola, {userObject.name}
           </Text>
-          <TouchableOpacity
-            style={styles.avatarButton}
-            onPress={() =>
-              props.navigation.navigate("ProfilePic", {
-                uri: profilePic,
-                tempImg: "",
-              })
-            }
-          >
+          <TouchableOpacity style={styles.avatarButton}>
             <Avatar
+              size="large"
               rounded
               source={{
                 uri: profilePic,
               }}
+              onPress={() => props.navigation.navigate("ProfilePic", {})}
             />
           </TouchableOpacity>
         </View>
@@ -251,13 +246,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  avatarButton: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#fff",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
+  avatarButton: { backgroundColor: colors.primary, height: 100 },
 
   squareButton: {
     width: 80,
