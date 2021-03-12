@@ -5,12 +5,13 @@ import axios from "axios";
 import { host } from "../redux/varible_host";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { getStats } from "../redux/user/actions";
+import { RadioButton } from "react-native-paper";
 
 function StatsScreen() {
   const loginUser = useSelector((state) => state.login.loginUser);
   const [ingresos, setIngresos] = useState([0]);
   const [egresos, setEgresos] = useState([0]);
+  const [checked, setChecked] = useState("first");
 
   var date = new Date();
   var date1 = new Date(date);
@@ -25,8 +26,13 @@ function StatsScreen() {
   date5.setMonth(date.getMonth() - 1);
 
   useEffect(() => {
+    var currency;
+    if (checked === "first") {
+      currency = "PESOS";
+    } else currency = "USD";
+
     axios
-      .get(`http://${host}:8080/users/account/${loginUser.id}/PESOS`)
+      .get(`http://${host}:8080/users/account/${loginUser.id}/${currency}`)
       .then((res) => {
         axios
           .get(`http://${host}:8080/users/statistics/${res.data.cvu}/months`)
@@ -35,10 +41,24 @@ function StatsScreen() {
             setEgresos(Object.values(data.data.egresos).reverse());
           });
       });
-  }, []);
+  }, [checked]);
 
   return (
     <View style={styles.mainContainer}>
+      <View style={{ flex: 0.1, flexDirection: "row", marginTop: 30 }}>
+        <Text style={{ color: "#fff" }}>PESOS</Text>
+        <RadioButton
+          value="first"
+          status={checked === "first" ? "checked" : "unchecked"}
+          onPress={() => setChecked("first")}
+        />
+        <Text style={{ color: "#fff" }}>USD</Text>
+        <RadioButton
+          value="second"
+          status={checked === "second" ? "checked" : "unchecked"}
+          onPress={() => setChecked("second")}
+        />
+      </View>
       <View style={styles.secondContainer}>
         <Text style={styles.textStyle}>GASTOS </Text>
         <LineChart

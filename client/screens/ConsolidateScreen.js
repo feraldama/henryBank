@@ -3,6 +3,8 @@ import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
+import axios from "axios";
+import { host } from "../redux/varible_host";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
 import { menuTransfer } from "../redux/transfer/actions";
@@ -15,6 +17,8 @@ function ConsolidateScreen(props) {
   const accountUserLogin = useSelector((state) => state.user.registerData);
 
   const [balance, setBalance] = useState(0);
+  const [ingresos, setIngresos] = useState([]);
+  const [egresos, setEgresos] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -27,9 +31,9 @@ function ConsolidateScreen(props) {
 
   // var balance = 0;
   useEffect(() => {
+    var check;
     if (accountUserLogin) {
       accountUserLogin.map((p) => {
-        var check;
         if (checked === "first") {
           check = "PESOS";
         } else {
@@ -40,14 +44,33 @@ function ConsolidateScreen(props) {
         }
       });
     }
+
+    axios
+      .get(`http://${host}:8080/users/account/${loginUser.id}/${check}`)
+      .then((res) => {
+        axios
+          .get(`http://${host}:8080/users/statistics/${res.data.cvu}/days`)
+          .then((data) => {
+            setIngresos(Object.values(data.data.ingresos).reverse());
+            setEgresos(Object.values(data.data.egresos).reverse());
+          });
+      });
   }, [checked, accountUserLogin]);
+
+  const sumData = (arr) => {
+    var sum = 0;
+    arr.forEach((x) => {
+      sum += x;
+    });
+    return sum;
+  };
 
   var userObject = {
     name: loginUser.name,
     lastName: loginUser.lastName,
     // balance: balance,
-    generalIncomes: 2345.6,
-    generalExpenses: 1234.5,
+    generalIncomes: sumData(ingresos),
+    generalExpenses: sumData(egresos),
   };
 
   return (
@@ -112,9 +135,6 @@ function ConsolidateScreen(props) {
               </Text>
             </View>
           </View>
-          <Text style={{ color: "black", fontSize: 12 }}>
-            1Dia 7Dias 30Dias 6Meses
-          </Text>
         </View>
       </View>
 
