@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res/colors";
 import { Icon } from "react-native-elements";
 import axios from "axios";
+import { host } from "../redux/varible_host";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 import { host } from "../redux/varible_host";
 import * as Print from "expo-print";

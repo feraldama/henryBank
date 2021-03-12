@@ -3,6 +3,8 @@ import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { colors } from "../res";
+import axios from "axios";
+import { host } from "../redux/varible_host";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
 import { menuTransfer } from "../redux/transfer/actions";
@@ -10,11 +12,15 @@ import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function ConsolidateScreen(props) {
   const [checked, setChecked] = useState("first");
+
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((state) => state.user.registerData);
+
   const [balance, setBalance] = useState(0);
+  const [ingresos, setIngresos] = useState([]);
+  const [egresos, setEgresos] = useState([]);
+
   const dispatch = useDispatch();
-  var profilePic = useSelector((state) => state.user.uri);
   useEffect(() => {
     if (loginUser) {
       dispatch(vaciarReducer);
@@ -25,29 +31,48 @@ function ConsolidateScreen(props) {
 
   // var balance = 0;
   useEffect(() => {
+    var check;
     if (accountUserLogin) {
       accountUserLogin.map((p) => {
-        var check;
         if (checked === "first") {
           check = "PESOS";
         } else {
           check = "USD";
         }
         if (p.currency === check) {
-          var monto = parseInt(p.balance).toFixed(2);
-          setBalance(monto);
+          setBalance(p.balance);
         }
       });
     }
+
+    axios
+      .get(`http://${host}:8080/users/account/${loginUser.id}/${check}`)
+      .then((res) => {
+        axios
+          .get(`http://${host}:8080/users/statistics/${res.data.cvu}/days`)
+          .then((data) => {
+            setIngresos(Object.values(data.data.ingresos).reverse());
+            setEgresos(Object.values(data.data.egresos).reverse());
+          });
+      });
   }, [checked, accountUserLogin]);
+
+  const sumData = (arr) => {
+    var sum = 0;
+    arr.forEach((x) => {
+      sum += x;
+    });
+    return sum;
+  };
 
   var userObject = {
     name: loginUser.name,
     lastName: loginUser.lastName,
     // balance: balance,
-    generalIncomes: 2345.6,
-    generalExpenses: 1234.5,
+    generalIncomes: sumData(ingresos),
+    generalExpenses: sumData(egresos),
   };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.firstContainer}>
@@ -57,12 +82,11 @@ function ConsolidateScreen(props) {
           </Text>
           <TouchableOpacity style={styles.avatarButton}>
             <Avatar
-              size="large"
               rounded
               source={{
-                uri: profilePic,
+                uri:
+                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
               }}
-              onPress={() => props.navigation.navigate("ProfilePic", {})}
             />
           </TouchableOpacity>
         </View>
@@ -111,9 +135,6 @@ function ConsolidateScreen(props) {
               </Text>
             </View>
           </View>
-          <Text style={{ color: "black", fontSize: 12 }}>
-            1Dia 7Dias 30Dias 6Meses
-          </Text>
         </View>
       </View>
 
@@ -132,7 +153,7 @@ function ConsolidateScreen(props) {
 
           <TouchableOpacity
             style={styles.squareButton}
-            onPress={() => alert("Stats")}
+            onPress={() => props.navigation.navigate("Stats")}
           >
             <Icon name="bar-chart-outline" type="ionicon" />
             <Text style={styles.btnText}>Estadisticas</Text>
@@ -246,7 +267,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  avatarButton: { backgroundColor: colors.primary, height: 100 },
+  avatarButton: {
+    width: 100,
+    height: 100,
+    backgroundColor: "#fff",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
 
   squareButton: {
     width: 80,
@@ -270,6 +297,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+
+  elevation: {
     shadowColor: "#000",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.5,

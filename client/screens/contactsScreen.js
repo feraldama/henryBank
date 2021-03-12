@@ -15,6 +15,7 @@ import {
   Linking,
 } from "react-native";
 import { colors } from "../res";
+import { host } from "../redux/varible_host";
 import axios from "axios";
 import { Icon } from "react-native-elements";
 import * as Contacts from "expo-contacts";
