@@ -10,7 +10,6 @@ function TransferScreen(props) {
   const accounts = useSelector((state) => state.user.registerData);  
   const loginUser = useSelector((state) => state.login.loginUser);
   const menutransfer = useSelector((state) => state.transfer.dataTransfer);
-  console.log(menutransfer);
   useEffect(()=>{
     props.navigation.navigate("Transfer");
   },[menutransfer])
@@ -26,7 +25,7 @@ function TransferScreen(props) {
               dispatch(menuTransfer(accounts[1].cvu));
             }}
           >
-            <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
+            <Icon color="#fff" name="sc-telegram" type="evilicon" />
             <Text style={styles.text_icon} >USD</Text>
           </TouchableOpacity>
 
@@ -37,11 +36,11 @@ function TransferScreen(props) {
               dispatch(menuTransfer(accounts[0].cvu));
             }}
           >
-            <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
+            <Icon color="#fff" name="sc-telegram" type="evilicon" />
             <Text style={styles.text_icon} >PESOS</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity        
+          {/* <TouchableOpacity        
             onPress={() => {
               props.navigation.navigate("Home");
             }}
@@ -49,7 +48,7 @@ function TransferScreen(props) {
             <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
             <Text style={styles.text_icon}>Inicio</Text>
 
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           
         </View>
         <View style={styles.thirdContainer}>
@@ -71,13 +70,14 @@ function TransferScreen(props) {
             </View>
             <View style={{ color: "black", fontSize: 16.5 , alignItems: "center"}}>
               <Text style={styles.generalSumLabel}>{transfer.type}</Text>
+              <Text style={styles.generalSumLabel}>{transfer.description}</Text>
             </View>
-            <View style={{ alignItems: "center" }}>
+          </View>
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
             <Text style={styles.generalSumLabel} >Valor</Text>
               <Text style={styles.generalSumContent}>
                 $ {transfer.value}
-              </Text>
-            </View>
+              </Text>        
           </View>
         </View>
           )
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 
     general: {
       backgroundColor: "rgb(172, 232, 179)",
-      width: 400,
+      width: 350,
       height: 100,
       alignSelf: "center",
       alignItems: "center",
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
 
     generalT: {
       backgroundColor: "rgb(216, 168, 168)",
-      width: 400,
+      width: 350,
       height: 100,
       alignSelf: "center",
       alignItems: "center",
