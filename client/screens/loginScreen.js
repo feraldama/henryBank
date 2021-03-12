@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/login/actions";
 const { width: WIDTH } = Dimensions.get("window");
 import axios from "axios";
+import { host } from "../redux/varible_host";
 
 export const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();

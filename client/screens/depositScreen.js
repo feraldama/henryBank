@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
@@ -17,6 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { host } from "../redux/varible_host";
 import axios from "axios";
+import { host } from "../redux/varible_host";
 
 function DepositScreen(props) {
   const dispatch = useDispatch();
@@ -72,23 +75,24 @@ function DepositScreen(props) {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <Text style={styles.generalSumLabel}>Recargar dinero</Text>
-      <View style={styles.firstContainer}>
-        <Text style={styles.generalDescription}>
-          Usá este código siempre que quieras ingresar dinero a tu cuenta.
-        </Text>
-        <Text style={styles.generalDescription}>
-          El monto mínimo es de $50.
-        </Text>
-        <View style={styles.codeContainer}>
-          <Text style={styles.codeText}>88333 44526</Text>
-        </View>
-        <Text style={styles.generalDescription}>
-          Mostrale este código al cajero en RapiPago o PagoFacil.
-        </Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.mainContainer}>
+        <Text style={styles.generalSumLabel}>Recargar dinero</Text>
+        <View style={styles.firstContainer}>
+          <Text style={styles.generalDescription}>
+            Usá este código siempre que quieras ingresar dinero a tu cuenta.
+          </Text>
+          <Text style={styles.generalDescription}>
+            El monto mínimo es de $50.
+          </Text>
+          <View style={styles.codeContainer}>
+            <Text style={styles.codeText}>88333 44526</Text>
+          </View>
+          <Text style={styles.generalDescription}>
+            Mostrale este código al cajero en RapiPago o PagoFacil.
+          </Text>
 
-        {/* <Picker
+          {/* <Picker
           selectedValue={state.type}
           // style={styles.picker}
           onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
@@ -97,34 +101,35 @@ function DepositScreen(props) {
           <Picker.Item label="USD" value="USD" />
         </Picker> */}
 
-        <Picker
-          selectedValue={state.type}
-          style={styles.picker}
-          onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
-        >
-          <Picker.Item label="PESOS" value="PESOS" />
-          <Picker.Item label="USD" value="USD" />
-        </Picker>
+          <Picker
+            selectedValue={state.type}
+            style={styles.picker}
+            onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
+          >
+            <Picker.Item label="PESOS" value="PESOS" />
+            <Picker.Item label="USD" value="USD" />
+          </Picker>
 
-        <TextInput
-          keyboardType="numeric"
-          style={styles.montoInput}
-          placeholder="Ingrese monto a recargar"
-          onChangeText={(value) => handleChangeText(value, "amount")}
-          value={state.amount}
-        ></TextInput>
-        <TouchableOpacity
-          style={styles.longButton}
-          onPress={() => {
-            validateDeposit();
-            // dispatchFunction();
-            // props.navigation.navigate("Home");
-          }}
-        >
-          <Text style={styles.generalDescription}>Confirmar Recarga</Text>
-        </TouchableOpacity>
+          <TextInput
+            keyboardType="numeric"
+            style={styles.montoInput}
+            placeholder="Ingrese monto a recargar"
+            onChangeText={(value) => handleChangeText(value, "amount")}
+            value={state.amount}
+          ></TextInput>
+          <TouchableOpacity
+            style={styles.longButton}
+            onPress={() => {
+              validateDeposit();
+              // dispatchFunction();
+              // props.navigation.navigate("Home");
+            }}
+          >
+            <Text style={styles.generalDescription}>Confirmar Recarga</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
