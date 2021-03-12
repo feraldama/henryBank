@@ -1,232 +1,241 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import {obtenerDivisaAccion} from '../redux/divisa';
-import { View, Text, StyleSheet } from "react-native";
-import { Headline, Paragraph,TextInput, Button, Snackbar, Dialog, Portal, } from 'react-native-paper';
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { Button, TextInput } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import { colors } from "../res/colors";
+import { Icon } from "react-native-elements";
+import axios from "axios";
+import { vaciarReducer, accountUser } from "../redux/user/actions";
+import { host } from "../redux/varible_host";
 
-
-
-const changeMoneyScreen = ({ changeScreen }) => {
-  const [select, setSelect] = useState(0);
-  const [monto, setMonto] = useState("");
-  const [visible, setVisible] = useState();
-  const [visible1, setVisible1] = useState();
-  const [visible2, setVisible2] = useState();
-  const [visible3, setVisible3] = useState();
-
-  const dispatch = useDispatch();
+function changeMoneyScreen(props) {
+  const dispatch = useDispatch(); // para la futura accion
   const loginUser = useSelector((state) => state.login.loginUser);
+  const accountUserLogin = useSelector((redux) => redux.user.registerData);
+  const cambio = useSelector((state) => state.cambio.cambio);
 
-  const updateSelected = (select) => {
-    setSelect(select);
+  var currencyPESOS,
+    currencyDOLARES,
+    datos,
+    origen,
+    destino,
+    tipo,
+    moneda = "";
+
+  var cvuPESOS,
+    cvuDOLARES,
+    balancePESOS,
+    balanceDOLARES = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        cvuPESOS = p.cvu;
+        currencyPESOS = p.currency;
+        balancePESOS = p.balance;
+      } else if (p.currency === "USD") {
+        cvuDOLARES = p.cvu;
+        currencyDOLARES = p.currency;
+        balanceDOLARES = p.balance;
+      }
+    });
+  }
+
+  useEffect(() => {
+    axios
+      .get("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
+      .then((response) => {
+        setState({
+          ...state,
+          compra: parseInt(response.data[0].casa.compra),
+          venta: (parseInt(response.data[0].casa.venta) * 1.3 * 1.35).toFixed(
+            2
+          ),
+        });
+      });
+  }, []);
+
+  const [state, setState] = useState({
+    type: "PESOS",
+    account: "",
+    amount: "",
+    description: "",
+    currency: "PESOS",
+    compra: 0,
+    venta: 0,
+  });
+
+  const handleChangeText = (value, name) => {
+    setState({ ...state, [name]: value });
   };
 
-  const data = {
-    type: select === 0 ? "compra" : "venta",
-    monto,
-    // email: email,
-  };
-
-  const onSubmit = () => {
-    if (monto === "") {
-      setVisible1(true);
-    } else if (loginUser.accounts[select].balance >= monto) {
-      setVisible2(true);
-    } else {
-      setVisible2(true);
+  const sendMoney = () => {
+    if (state.type === "PESOS") {
+      origen = cvuPESOS;
+      destino = cvuDOLARES;
+      tipo = "COMPRA-USD";
+      moneda = "PESOS";
+    } else if (state.type === "USD") {
+      origen = cvuDOLARES;
+      destino = cvuPESOS;
+      tipo = "VENTA-USD";
+      moneda = "USD";
     }
-  };
-
-  const change = () => {
-    dispatch(obtenerDivisaAccion(data));
-    setVisible2(false);
-    setVisible3(true);
+    datos = {
+      origin: parseInt(origen),
+      destination: parseInt(destino),
+      value: parseInt(state.amount),
+      type: tipo,
+      currency: moneda,
+    };
+    axios
+      .post(`http://${host}:8080/users/transfer/dolar`, datos)
+      .then(() => {
+        dispatch(vaciarReducer());
+      })
+      .then(() => {
+        Alert.alert("AVISO", "Cambio realizado con exito");
+        dispatch(accountUser(loginUser.id, "PESOS"));
+        dispatch(accountUser(loginUser.id, "USD"));
+        props.navigation.navigate("Home");
+        //props.route.params = undefined;
+      });
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <Portal>
-        <Dialog
-          visible={visible2}
-          onDismiss={() => {
-            setVisible2(false);
-          }}
-        >
-          <Dialog.Content>
-            <Paragraph>{`¿Desea transferir ${select === 0 ? "$" : "US$"}${
-              data.monto
-            } a su cuenta en ${
-              select === 0 ? "dolares" : "pesos"
-            }?`}</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.mainContainer}>
+        <View style={styles.secondContainer}>
+          <Button
+            onPress={() => {
+              props.navigation.navigate("Home");
+            }}
+          >
+            <Text>Inicio</Text>
+          </Button>
+          <Text>Cambio Divisas</Text>
+          <Icon />
+        </View>
+        <View style={styles.regform}>
+          <ScrollView>
+            <View style={styles.cambio}>
+              <Text style={styles.monto}>Compra: {state.compra}</Text>
+              <Text style={styles.monto}>Venta: {state.venta}</Text>
+            </View>
+            <Picker
+              selectedValue={state.type}
+              style={styles.picker}
+              onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
+            >
+              <Picker.Item label="COMPRA DE USD" value="PESOS" />
+              <Picker.Item label="VENTA DE USD" value="USD" />
+            </Picker>
+            <TextInput
+              style={styles.textinput}
+              placeholder="$ Cantidad de Dolares"
+              underlineColorAndroid={"transparent"}
+              keyboardType="numeric"
+              onChangeText={(value) => handleChangeText(value, "amount")}
+              value={state.amount}
+            />
+            <TouchableOpacity
+              style={styles.longButton}
               onPress={() => {
-                setVisible2(false);
+                sendMoney();
               }}
             >
-              No
-            </Button>
-            <Button onPress={change}>Si</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-      <Snackbar
-        visible={visible}
-        onDismiss={() => {
-          setVisible(false);
-        }}
-        action={{
-          label: "Ok",
-          onPress: () => {},
-        }}
-      >
-        No tienes saldo suficiente
-      </Snackbar>
-      <Snackbar
-        visible={visible1}
-        onDismiss={() => {
-          setVisible1(false);
-        }}
-        action={{
-          label: "Ok",
-          onPress: () => {},
-        }}
-      >
-        Ingresa un monto
-      </Snackbar>
-      <Snackbar
-        visible={visible3}
-        onDismiss={() => {
-          setVisible3(false);
-        }}
-      >
-        Se ha realizado el cambio de moneda
-      </Snackbar>
-      <View style={styles.heading}>
-        <Icon.Button
-          name="arrow-left"
-          size={25}
-          color="black"
-          backgroundColor="#FFFF"
-          onPress={() => changeScreen("main")}
-        />
-        <Headline>Cambiar Dinero</Headline>
+              <Text style={styles.generalDescription}>Enviar</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
       </View>
-      <View style></View>
-      <View style>
-        <TextInput
-          label="Monto a cambiar"
-          placeholder={`Ingrese monto en ${select === 0 ? "Pesos" : "Dolares"}`}
-          keyboardType="numeric"
-          mode="outlined"
-          //value={amount}
-          onChangeText={(text) => {
-            setMonto(text);
-          }}
-          style={{ height: 40, width: 222 }}
-        />
-        <Button
-          onPress={updateSelected}
-          selectedIndex={select}
-          buttons={["Pesos a Dolares", "Dolares a Pesos"]}
-          containerStyle={{ height: 40, width: 222 }}
-          selectedButtonStyle={{ backgroundColor: "#006A34" }}
-        />
-      </View>
-      <View style>
-        <Button onPress={onSubmit}></Button>
-        <Paragraph style={{ fontWeight: "700" }}>Cambiar</Paragraph>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        // backgroundColor: colors.primary,
-        flex: 1,
-        alignSelf: 'stretch',
-      },
-  
-      secondContainer: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        color: '#fff',    
-        height: 140,
-        // backgroundColor: colors.secondary,
-      },
-    
-      thirdContainer: {
-        flex: 0.9,
-        justifyContent: 'space-evenly',            
-      },  
-    
-      secondButtonContainer: {
-        alignItems: 'center',
-        padding: 10,
-        height: '100%',
-        margin: 20,
-        borderRadius: 10, 
-      },
-  
-      general: {
-        backgroundColor: "rgb(172, 232, 179)",
-        width: 400,
-        height: 210,
-        alignSelf: "center",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        borderRadius: 10,
-        shadowColor: "#000",
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        elevation: 3,
-        marginBottom: 20,
-      },
-  
-      generalT: {
-        backgroundColor: "rgb(216, 168, 168)",
-        width: 400,
-        height: 210,
-        alignSelf: "center",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        borderRadius: 10,
-        shadowColor: "#000",
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        elevation: 3,
-        marginBottom: 20,
-      },
-  
-      generalSumContent: {
-        color: "black",
-        fontSize: 22,
-      },
-    
-      generalSumLabel: {
-        color: "gray",
-        paddingBottom: 15,
-      },
-  
-      longButton: {
-        width: 220,
-        height: 70,
-        backgroundColor: '#77C5D5',
-        justifyContent: 'space-evenly',
-        marginTop: 20,
-        borderRadius: 10,
-        padding: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 3, height: 3 },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        elevation: 3,
-      },
+  mainContainer: {
+    backgroundColor: colors.primary,
+    flex: 1,
+    alignSelf: "stretch",
+  },
+  generalDescription: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    fontSize: 20,
+    alignSelf: "center",
+  },
+  cambio: {
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "space-between",
+  },
+  monto: {
+    color: "#fff",
+    margin: 15,
+    fontSize: 20,
+  },
+  longButton: {
+    width: 250,
+    height: 50,
+    backgroundColor: "#77C5D5",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  btntext: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  button: {
+    alignSelf: "stretch",
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#59CBBD",
+    marginTop: 30,
+    borderRadius: 15,
+  },
+  secondContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    color: "#fff",
+    height: 120,
+    backgroundColor: colors.secondary,
+  },
+  regform: {
+    flex: 1,
+    padding: 30,
+    paddingTop: 60,
+    backgroundColor: colors.primary,
+    alignSelf: "stretch",
+  },
+  textinput: {
+    alignSelf: "stretch",
+    marginBottom: 50,
+    backgroundColor: colors.white,
+  },
+  picker: {
+    marginBottom: 50,
+    backgroundColor: colors.white,
+    color: colors.black,
+    borderRadius: 30,
+  },
 });
 
-export default changeMoneyScreen
+export default changeMoneyScreen;
