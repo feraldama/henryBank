@@ -17,33 +17,29 @@ import { host } from "../redux/varible_host";
 
 function ProfileScreen(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
+  const accountUserLogin = useSelector((redux) => redux.user.registerData);
 
   const [state, setState] = useState({
-    phone: loginUser.phone,
-    street: loginUser.street,
-    location: loginUser.location,
-    province: loginUser.province,
-    country: loginUser.country,
+    cvuDOLARES: 0,
+    cvuPESOS: 0,
+    balancePESOS: 0,
+    balanceDOLARES: 0,
   });
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
   };
 
-  const editProfile = () => {
-    var datos = {
-      phone: parseInt(state.phone),
-      street: state.street,
-      location: state.location,
-      province: state.province,
-      country: state.country,
-    };
-    axios
-      .put(`http://${host}:8080/users/${loginUser.id}`, datos)
-      .then((response) => {
-        Alert.alert("AVISO", "Pefil Editado");
-        props.navigation.navigate("Home");
-      });
-  };
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        state.cvuPESOS = p.cvu;
+        state.balancePESOS = p.balance;
+      } else if (p.currency === "USD") {
+        state.cvuDOLARES = p.cvu;
+        state.balanceDOLARES = p.balance;
+      }
+    });
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -55,102 +51,50 @@ function ProfileScreen(props) {
           <View style={styles.actionButtonsContainer}>
             <TouchableOpacity>
               <View style={styles.smallCircle}>
-                <Icon name={"qr-code-outline"} size={40} />
+                <Icon name={"logo-usd"} size={40} />
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.largeCircle}>
-                <Icon name={"person-circle-outline"} size={70} />
+                <Icon name={"cash-outline"} size={70} />
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.smallCircle}>
-                <Icon name={"people-outline"} size={40} />
+                <Icon name={"card-outline"} size={40} />
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>Documento</Text>
+            <Text style={styles.aliasLabel}>CVU PESOS</Text>
             <View style={styles.aliasContainer2}>
               <View>
                 <TextInput editable={false} style={styles.aliasContent2}>
-                  {loginUser.docType}
+                  {state.cvuPESOS}
                 </TextInput>
               </View>
               <View>
                 <TextInput editable={false} style={styles.aliasContent2}>
-                  {loginUser.docNumber}
+                  $ {state.balancePESOS}
                 </TextInput>
               </View>
             </View>
           </View>
           <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>Correo</Text>
-            <TextInput style={styles.aliasContent}>{loginUser.email}</TextInput>
+            <Text style={styles.aliasLabel}>CVU DOLARES</Text>
+            <View style={styles.aliasContainer2}>
+              <View>
+                <TextInput editable={false} style={styles.aliasContent2}>
+                  {state.cvuDOLARES}
+                </TextInput>
+              </View>
+              <View>
+                <TextInput editable={false} style={styles.aliasContent2}>
+                  UDS {state.balanceDOLARES}
+                </TextInput>
+              </View>
+            </View>
           </View>
-          <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>Teléfono</Text>
-            <TextInput
-              style={styles.aliasContent}
-              mode="flat"
-              placeholder="Teléfono"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "phone")}
-              value={state.phone}
-            />
-          </View>
-          <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>Calle</Text>
-            <TextInput
-              style={styles.direction}
-              mode="flat"
-              placeholder="Calle"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "street")}
-              value={state.street}
-            />
-          </View>
-          <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>Ciudad</Text>
-            <TextInput
-              style={styles.direction}
-              mode="flat"
-              placeholder="Ciudad"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "location")}
-              value={state.location}
-            />
-          </View>
-          <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>Provincia - Estado</Text>
-            <TextInput
-              style={styles.direction}
-              mode="flat"
-              placeholder="Estado"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "province")}
-              value={state.province}
-            />
-          </View>
-          <View style={styles.aliasContainer}>
-            <Text style={styles.aliasLabel}>País</Text>
-            <TextInput
-              style={styles.direction}
-              mode="flat"
-              placeholder="País"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "country")}
-              value={state.country}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.longButton}
-            onPress={() => {
-              editProfile();
-            }}
-          >
-            <Text style={styles.generalDescription}>Editar</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -209,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   firstContainer: {
-    height: 680,
+    height: 550,
     width: 375,
     //marginTop: 35,
     alignItems: "center",
@@ -222,7 +166,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   userName: {
-    marginTop: 20,
+    marginTop: 30,
     fontWeight: "bold",
     fontSize: 20,
   },
@@ -235,9 +179,10 @@ const styles = StyleSheet.create({
   aliasContainer: {
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 15,
   },
   aliasContainer2: {
-    flexDirection: "row",
+    // flexDirection: "row",
   },
   aliasLabel: {
     color: colors.transparentBlack,
@@ -255,6 +200,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginBottom: 15,
     marginRight: 15,
+    marginTop: 10,
+    alignSelf: "center",
   },
 });
 

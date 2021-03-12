@@ -122,7 +122,6 @@ export default function ContactsScreen(props) {
     var dato = {
       email,
     };
-    console.log("agregarContacto: ", dato);
     axios
       .post(`http://${host}:8080/users/contact/${loginUser.id}`, dato)
       .then((data) => {
