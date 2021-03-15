@@ -33,10 +33,10 @@ function ProfileScreen(props) {
     accountUserLogin.map((p) => {
       if (p.currency === "PESOS") {
         state.cvuPESOS = p.cvu;
-        state.balancePESOS = p.balance;
+        state.balancePESOS = parseFloat(p.balance).toFixed(2);
       } else if (p.currency === "USD") {
         state.cvuDOLARES = p.cvu;
-        state.balanceDOLARES = p.balance;
+        state.balanceDOLARES = parseFloat(p.balance).toFixed(2);
       }
     });
   }

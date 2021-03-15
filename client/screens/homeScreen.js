@@ -16,6 +16,7 @@ import ProfilePicScreen from "./profilePicScreen";
 import CameraScreen from "./cameraScreen";
 import changeMoneyScreen from "./changeMoneyScreen";
 import ProductsScreen from "./ProductsScreen";
+import StatsScreen from "./statsScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,6 +39,7 @@ export const homeScreen = (props) => {
       <Drawer.Screen name="Camera" component={CameraScreen} />
       <Drawer.Screen name="Cambio" component={changeMoneyScreen} />
       <Drawer.Screen name="Products" component={ProductsScreen} />
+      <Drawer.Screen name="Stats" component={StatsScreen} />
     </Drawer.Navigator>
   );
 };

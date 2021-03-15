@@ -56,8 +56,8 @@ function changeMoneyScreen(props) {
       .then((response) => {
         setState({
           ...state,
-          compra: parseInt(response.data[0].casa.compra),
-          venta: (parseInt(response.data[0].casa.venta) * 1.3 * 1.35).toFixed(
+          compra: parseFloat(response.data[0].casa.compra),
+          venta: (parseFloat(response.data[0].casa.venta) * 1.3 * 1.35).toFixed(
             2
           ),
         });

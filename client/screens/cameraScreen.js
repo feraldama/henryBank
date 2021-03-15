@@ -29,9 +29,6 @@ export default function CameraScreen(props) {
     if (camera) {
       const options = { quality: 0.5 };
       const data = await camera.takePictureAsync(options); //aca viene la URI
-      /* dispatch(updateUserPic(data.uri)); */
-      console.log("tempimg en dispatch de camara: ", data.uri);
-      console.log(data);
       props.navigation.navigate("ProfilePic", { props, tempImg: data.uri });
     }
   }

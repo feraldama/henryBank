@@ -12,9 +12,17 @@ import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function ConsolidateScreen(props) {
   const [checked, setChecked] = useState("first");
-
+  var foto =
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((state) => state.user.registerData);
+  var profilePic =
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+
+  if (accountUserLogin[2]) {
+    var pos = accountUserLogin.length - 1;
+    profilePic = accountUserLogin[pos];
+  }
 
   const [balance, setBalance] = useState(0);
   const [ingresos, setIngresos] = useState([]);
@@ -40,7 +48,8 @@ function ConsolidateScreen(props) {
           check = "USD";
         }
         if (p.currency === check) {
-          setBalance(p.balance);
+          var monto = parseFloat(p.balance).toFixed(2);
+          setBalance(monto);
         }
       });
     }
@@ -82,11 +91,12 @@ function ConsolidateScreen(props) {
           </Text>
           <TouchableOpacity style={styles.avatarButton}>
             <Avatar
+              size="large"
               rounded
               source={{
-                uri:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+                uri: profilePic ? profilePic : foto,
               }}
+              onPress={() => props.navigation.navigate("ProfilePic")}
             />
           </TouchableOpacity>
         </View>
@@ -169,7 +179,7 @@ function ConsolidateScreen(props) {
 
           <TouchableOpacity
             style={styles.squareButton}
-            onPress={() => alert("My Products")}
+            onPress={() => props.navigation.navigate("Products")}
           >
             <Icon name="card-outline" type="ionicon" />
             <Text style={styles.btnText}>Mis Productos</Text>
@@ -267,13 +277,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  avatarButton: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#fff",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
+  avatarButton: { backgroundColor: colors.primary, height: 100 },
 
   squareButton: {
     width: 80,

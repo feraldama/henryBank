@@ -10,7 +10,7 @@ server.post("/transfer", function (req, res) {
   //
   console.log("sassadpaso por todos esos");
   const { origin, destination, value, type, currency, description } = req.body;
-
+  console.log("currency: ", currency);
   // validaciones
   if (type !== "TRANSFER" && type !== "DEP" && type !== "EXT") {
     return res.send({ msg: "El valor de tipo de operacion es incorrecto." });
@@ -129,8 +129,8 @@ server.post("/dolar", function (req, res) {
   axios
     .get("https://www.dolarsi.com/api/api.php?type=valoresprincipales")
     .then((response) => {
-      compra = parseInt(response.data[0].casa.compra);
-      venta = parseInt(response.data[0].casa.venta);
+      compra = parseFloat(response.data[0].casa.compra).toFixed(2);
+      venta = parseFloat(response.data[0].casa.venta).toFixed(2);
       var moneda;
       venta = venta * 1.3 * 1.35;
       if (type == "COMPRA-USD") {
