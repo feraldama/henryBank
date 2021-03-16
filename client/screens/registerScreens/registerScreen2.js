@@ -7,6 +7,7 @@ import {
   Keyboard,
   Text,
   Alert,
+  ImageBackground,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
@@ -71,57 +72,64 @@ export const registerScreen2 = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.regform}>
-        <View>
-          <TouchableOpacity onPress={showDatepicker} style={styles.birthBtn}>
-            <Text>{state.birthday}</Text>
-            <Icon name={"calendar-outline"} size={40} />
+    <ImageBackground
+      source={require("../../assets/1.png")}
+      style={styles.image}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.regform}>
+          <View>
+            <TouchableOpacity onPress={showDatepicker} style={styles.birthBtn}>
+              <Text>{state.birthday}</Text>
+              <Icon name={"calendar-outline"} size={40} />
+            </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )}
+          </View>
+          <Picker
+            selectedValue={state.docType}
+            style={styles.picker}
+            onValueChange={(itemValue) =>
+              handleChangeText(itemValue, "docType")
+            }
+          >
+            <Picker.Item label="DNI" value="DNI" />
+            <Picker.Item label="LE" value="LE" />
+            <Picker.Item label="LC" value="LC" />
+            <Picker.Item label="CI" value="CI" />
+          </Picker>
+
+          <TextInput
+            style={styles.textinput}
+            placeholder="Número de ID"
+            underlineColorAndroid={"transparent"}
+            keyboardType="numeric"
+            onChangeText={(value) => handleChangeText(value, "docNumber")}
+            value={state.idNumber}
+          />
+
+          <TextInput
+            style={styles.textinput}
+            placeholder="Número de Telefono"
+            underlineColorAndroid={"transparent"}
+            keyboardType="numeric"
+            onChangeText={(value) => handleChangeText(value, "phone")}
+            value={state.phoneNumber}
+          />
+          <TouchableOpacity style={styles.longButton} onPress={checkData}>
+            <Text style={{ fontSize: 20, color: "black" }}>Continuar</Text>
           </TouchableOpacity>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-            />
-          )}
         </View>
-        <Picker
-          selectedValue={state.docType}
-          style={styles.picker}
-          onValueChange={(itemValue) => handleChangeText(itemValue, "docType")}
-        >
-          <Picker.Item label="DNI" value="DNI" />
-          <Picker.Item label="LE" value="LE" />
-          <Picker.Item label="LC" value="LC" />
-          <Picker.Item label="CI" value="CI" />
-        </Picker>
-
-        <TextInput
-          style={styles.textinput}
-          placeholder="Número de ID"
-          underlineColorAndroid={"transparent"}
-          keyboardType="numeric"
-          onChangeText={(value) => handleChangeText(value, "docNumber")}
-          value={state.idNumber}
-        />
-
-        <TextInput
-          style={styles.textinput}
-          placeholder="Número de Telefono"
-          underlineColorAndroid={"transparent"}
-          keyboardType="numeric"
-          onChangeText={(value) => handleChangeText(value, "phone")}
-          value={state.phoneNumber}
-        />
-        <Button mode="contained" onPress={checkData}>
-          Continuar
-        </Button>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
     paddingTop: 50,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
@@ -164,5 +172,24 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     backgroundColor: colors.white,
     borderRadius: 5,
+  },
+  longButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#77C5D5",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginTop: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });

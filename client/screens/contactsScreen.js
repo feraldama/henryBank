@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
+  ImageBackground,
 } from "react-native";
 import { colors } from "../res";
 import axios from "axios";
@@ -147,152 +148,160 @@ export default function ContactsScreen(props) {
     setGet(Math.random());
   };
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.container}>
-        <Text style={styles.header}> Tus Contactos</Text>
-        <SectionList
-          sections={getData()}
-          ListHeaderComponent={() => (
-            <View>
-              <Button
-                title="Agregar Contacto"
-                onPress={() => setModalVisible(true)}
-              />
-              <TouchableOpacity
-                style={styles.longButton}
-                onPress={() => setModalContactVisible(!modalContactVisible)}
-              >
-                <Icon name="md-logo-whatsapp" type="ionicon" />
-                <Text>Invitar Contacto</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          renderItem={({ item }) => (
-            <View style={styles.row}>
+    <ImageBackground source={require("../assets/1.png")} style={styles.image}>
+      <View style={styles.mainContainer}>
+        <View style={styles.container}>
+          <Text style={styles.header}> Tus Contactos</Text>
+          {/* <ScrollView> */}
+          <SectionList
+            sections={getData()}
+            ListHeaderComponent={() => (
               <View>
-                <Text style={styles.contactNames}>{item.alias}</Text>
-              </View>
-              <View style={styles.transferBtn}>
-                <Button onPress={() => transfer(item)} title="Transferir" />
                 <Button
-                  color="#ff3464"
-                  onPress={() => eliminarContacto(item.contactId)}
-                  title="Eliminar"
+                  title="Agregar Contacto"
+                  onPress={() => setModalVisible(true)}
                 />
+                <TouchableOpacity
+                  style={styles.longButton}
+                  onPress={() => setModalContactVisible(!modalContactVisible)}
+                >
+                  <Icon name="md-logo-whatsapp" type="ionicon" />
+                  <Text>Invitar Contacto</Text>
+                </TouchableOpacity>
               </View>
-            </View>
-          )}
-          keyExtractor={(item) => item.index}
-          renderSectionHeader={({ section }) => {
-            <View style={styles.sectionHeader}>
-              <Text>{section.title}</Text>
-            </View>;
-          }}
-        />
-      </View>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Ingrese e-mail del contacto a agregar
-              </Text>
-              <TextInput
-                style={styles.email}
-                placeholder="E-mail"
-                onChangeText={(value) => handleChangeText(value, "email")}
-                value={email}
-              ></TextInput>
-              <View
-                style={{
-                  justifyContent: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <View style={{ paddingRight: 30 }}>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text style={styles.textStyle}>Cancelar</Text>
-                  </Pressable>
-                </View>
+            )}
+            renderItem={({ item }) => (
+              <View style={styles.row}>
                 <View>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => agregarContacto()}
+                  <Text style={styles.contactNames}>{item.alias}</Text>
+                </View>
+                <View style={styles.transferBtn}>
+                  <Button onPress={() => transfer(item)} title="Transferir" />
+                  <TouchableOpacity
+                    style={styles.squareButton}
+                    onPress={() => eliminarContacto(item.contactId)}
                   >
-                    <Text style={styles.textStyle}>Agregar</Text>
-                  </Pressable>
+                    <Icon name="trash-outline" type="ionicon" />
+                  </TouchableOpacity>
                 </View>
               </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalContactVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalContactVisible(!modalContactVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Seleccione contacto a agregar
-              </Text>
-              <ScrollView>
-                {state.length !== 0 ? (
-                  state.map((contact) => (
-                    <Text
-                      onPress={() =>
-                        mandarMensaje(contact.phoneNumbers[0].number)
-                      }
-                      key={contact.id}
+            )}
+            keyExtractor={(item) => item.index}
+            renderSectionHeader={({ section }) => {
+              <View style={styles.sectionHeader}>
+                <Text>{section.title}</Text>
+              </View>;
+            }}
+          />
+          {/* </ScrollView> */}
+        </View>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Ingrese e-mail del contacto a agregar
+                </Text>
+                <TextInput
+                  style={styles.email}
+                  placeholder="E-mail"
+                  onChangeText={(value) => handleChangeText(value, "email")}
+                  value={email}
+                ></TextInput>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View style={{ paddingRight: 30 }}>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}
                     >
-                      {contact.name} -{" "}
-                      {contact.phoneNumbers[0].number
-                        ? contact.phoneNumbers[0].number
-                        : "Sin número"}
-                    </Text>
-                  ))
-                ) : (
-                  <Text>Aqui van los contactos</Text>
-                )}
-              </ScrollView>
-              <View
-                style={{
-                  justifyContent: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <View>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalContactVisible(!modalContactVisible)}
-                  >
-                    <Text style={styles.textStyle}>Cancelar</Text>
-                  </Pressable>
+                      <Text style={styles.textStyle}>Cancelar</Text>
+                    </Pressable>
+                  </View>
+                  <View>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => agregarContacto()}
+                    >
+                      <Text style={styles.textStyle}>Agregar</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </View>
+
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalContactVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalContactVisible(!modalContactVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Seleccione contacto a agregar
+                </Text>
+                <ScrollView>
+                  {state.length !== 0 ? (
+                    state.map((contact) => (
+                      <Text
+                        style={styles.contacts}
+                        onPress={() =>
+                          mandarMensaje(contact.phoneNumbers[0].number)
+                        }
+                        key={contact.id}
+                      >
+                        {contact.name} -{" "}
+                        {contact.phoneNumbers[0].number
+                          ? contact.phoneNumbers[0].number
+                          : "Sin número"}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text>Aqui van los contactos</Text>
+                  )}
+                </ScrollView>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() =>
+                        setModalContactVisible(!modalContactVisible)
+                      }
+                    >
+                      <Text style={styles.textStyle}>Cancelar</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -300,7 +309,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
+  },
+  contacts: {
+    fontSize: 25,
+    marginBottom: 10,
   },
   container: {
     marginTop: 35,
@@ -314,18 +327,16 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-
     alignItems: "center",
     width: "100%",
     justifyContent: "space-between",
-    margin: 7,
+    marginTop: 10,
     paddingLeft: 3,
     backgroundColor: colors.secondary,
   },
   contactNames: {
     fontSize: 20,
     color: colors.primary,
-    paddingRight: 30,
   },
   transferBtn: {
     alignSelf: "flex-end",
@@ -385,6 +396,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
+  squareButton: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    // borderRadius: 10,
+    shadowColor: "#000",
+    backgroundColor: "red",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,

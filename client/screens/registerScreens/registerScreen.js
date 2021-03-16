@@ -7,6 +7,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ImageBackground,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
@@ -37,35 +40,40 @@ export const registerScreen = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.regform}>
-        <TextInput
-          style={styles.textinput}
-          mode="flat"
-          placeholder="Nombre"
-          underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "name")}
-          value={state.name}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder="Apellido"
-          underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "lastName")}
-          value={state.lastname}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder="E-Mail"
-          underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "email")}
-          value={state.email}
-        />
-        <Button mode="contained" onPress={checkData}>
-          Continuar
-        </Button>
-      </View>
-    </TouchableWithoutFeedback>
+    <ImageBackground
+      source={require("../../assets/1.png")}
+      style={styles.image}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.regform}>
+          <TextInput
+            style={styles.textinput}
+            mode="flat"
+            placeholder="Nombre"
+            underlineColorAndroid={"transparent"}
+            onChangeText={(value) => handleChangeText(value, "name")}
+            value={state.name}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="Apellido"
+            underlineColorAndroid={"transparent"}
+            onChangeText={(value) => handleChangeText(value, "lastName")}
+            value={state.lastname}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="E-Mail"
+            underlineColorAndroid={"transparent"}
+            onChangeText={(value) => handleChangeText(value, "email")}
+            value={state.email}
+          />
+          <TouchableOpacity style={styles.longButton} onPress={checkData}>
+            <Text style={{ fontSize: 20, color: "black" }}>Continuar</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
@@ -86,12 +94,31 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
     paddingTop: 100,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
     alignSelf: "stretch",
     marginBottom: 50,
+  },
+  longButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#77C5D5",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginTop: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 

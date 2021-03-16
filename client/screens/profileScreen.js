@@ -74,7 +74,7 @@ function ProfileScreen(props) {
             </TouchableOpacity>
             <TouchableOpacity style={{ marginLeft: 10, marginRight: 10 }}>
               <Avatar
-                size="xlarge"
+                size="large"
                 rounded
                 source={{
                   uri: profilePic ? profilePic : foto,
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   firstContainer: {
-    height: 730,
+    height: 700,
     width: 375,
     //marginTop: 35,
     alignItems: "center",

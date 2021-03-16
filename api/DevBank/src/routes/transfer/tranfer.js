@@ -132,7 +132,7 @@ server.post("/dolar", function (req, res) {
       compra = parseFloat(response.data[0].casa.compra).toFixed(2);
       venta = parseFloat(response.data[0].casa.venta).toFixed(2);
       var moneda;
-      venta = venta * 1.3 * 1.35;
+      venta = venta;
       if (type == "COMPRA-USD") {
         moneda = value * venta;
       } else if (type == "VENTA-USD") {
