@@ -57,9 +57,7 @@ function changeMoneyScreen(props) {
         setState({
           ...state,
           compra: parseFloat(response.data[0].casa.compra),
-          venta: (parseFloat(response.data[0].casa.venta) * 1.3 * 1.35).toFixed(
-            2
-          ),
+          venta: parseFloat(response.data[0].casa.venta).toFixed(2),
         });
       });
   }, []);

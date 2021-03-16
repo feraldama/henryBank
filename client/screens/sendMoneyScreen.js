@@ -8,6 +8,7 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
@@ -157,72 +158,70 @@ function SendMoneyScreen(props) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.mainContainer}>
-        <View style={styles.secondContainer}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate("Home");
-            }}
-          >
-            <Text>Inicio</Text>
-          </Button>
-          <Text>Transferencias</Text>
-          <Icon />
-        </View>
-        <View style={styles.regform}>
-          <ScrollView>
-            <Picker
-              selectedValue={state.type}
-              style={styles.picker}
-              onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
-            >
-              <Picker.Item label="PESOS" value="PESOS" />
-              <Picker.Item label="USD" value="USD" />
-            </Picker>
+    <ImageBackground source={require("../assets/1.png")} style={styles.image}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.mainContainer}>
+          <View style={styles.secondContainer}>
+            <Text style={{ color: "#fff", fontSize: 25, paddingBottom: 30 }}>
+              Transferencias
+            </Text>
+          </View>
+          <View style={styles.regform}>
+            <ScrollView>
+              <Picker
+                selectedValue={state.type}
+                style={styles.picker}
+                onValueChange={(itemValue) =>
+                  handleChangeText(itemValue, "type")
+                }
+              >
+                <Picker.Item label="PESOS" value="PESOS" />
+                <Picker.Item label="USD" value="USD" />
+              </Picker>
 
-            <TextInput
-              style={styles.textinput}
-              placeholder="ID de Cuenta"
-              underlineColorAndroid={"transparent"}
-              editable={false}
-              keyboardType="numeric"
-              onChangeText={(value) => handleChangeText(value, "account")}
-              value={state.account}
-            />
-            <TextInput
-              style={styles.textinput}
-              placeholder="$ Cantidad"
-              underlineColorAndroid={"transparent"}
-              keyboardType="numeric"
-              onChangeText={(value) => handleChangeText(value, "amount")}
-              value={state.amount}
-            />
-            <TextInput
-              style={styles.textinput}
-              placeholder="Descripción"
-              underlineColorAndroid={"transparent"}
-              onChangeText={(value) => handleChangeText(value, "description")}
-              value={state.description}
-            />
-            <TouchableOpacity
-              style={styles.longButton}
-              onPress={() => {
-                sendMoney();
-              }}
-            >
-              <Text style={styles.generalDescription}>Enviar</Text>
-            </TouchableOpacity>
-          </ScrollView>
+              <TextInput
+                style={styles.textinput}
+                placeholder="ID de Cuenta"
+                underlineColorAndroid={"transparent"}
+                editable={false}
+                keyboardType="numeric"
+                onChangeText={(value) => handleChangeText(value, "account")}
+                value={state.account}
+              />
+              <TextInput
+                style={styles.textinput}
+                placeholder="$ Cantidad"
+                underlineColorAndroid={"transparent"}
+                keyboardType="numeric"
+                onChangeText={(value) => handleChangeText(value, "amount")}
+                value={state.amount}
+              />
+              <TextInput
+                style={styles.textinput}
+                placeholder="Descripción"
+                underlineColorAndroid={"transparent"}
+                onChangeText={(value) => handleChangeText(value, "description")}
+                value={state.description}
+              />
+              <TouchableOpacity
+                style={styles.longButton}
+                onPress={() => {
+                  sendMoney();
+                }}
+              >
+                <Text style={styles.generalDescription}>Enviar</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     flex: 1,
     alignSelf: "stretch",
   },
@@ -260,17 +259,17 @@ const styles = StyleSheet.create({
   },
   secondContainer: {
     alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     color: "#fff",
-    height: 120,
-    backgroundColor: colors.secondary,
+    height: 100,
+    marginTop: 40,
+    // backgroundColor: colors.secondary,
   },
   regform: {
     flex: 1,
     padding: 30,
-    paddingTop: 60,
-    backgroundColor: colors.primary,
+    paddingTop: 40,
+    // backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
@@ -283,6 +282,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     color: colors.black,
     borderRadius: 30,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 

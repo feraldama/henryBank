@@ -145,7 +145,9 @@ function DrawerContent(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={() => <Icon name={"exit-outline"} size={28} />}
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate("Login");
+          }}
           label="Salir"
         />
       </Drawer.Section>

@@ -9,11 +9,12 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
 import { colors } from "../res";
 import { Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
-import logo from "../assets/logo2.png";
+import logo from "../assets/logoBlanco.png";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/login/actions";
 const { width: WIDTH } = Dimensions.get("window");
@@ -49,69 +50,69 @@ export const LoginScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.mainContainer}>
-        <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.image} />
-        </View>
+      <ImageBackground source={require("../assets/1.png")} style={styles.image}>
+        <View style={styles.mainContainer}>
+          <View style={styles.logoContainer}>
+            <Image source={logo} style={styles.logo} />
+          </View>
 
-        <View styles={styles.inputContainer}>
-          <Icon
-            name={"ios-person-outline"}
-            size={28}
-            style={styles.inputIcon}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={"E-Mail"}
-            placeholderTextColor={colors.transpartentWhite}
-            underlineColorAndroid="transparent"
-            onChangeText={(value) => handleChangeText(value, "username")}
-            value={state.username}
-          />
-        </View>
+          <View styles={styles.inputContainer}>
+            <Icon
+              name={"ios-person-outline"}
+              size={28}
+              style={styles.inputIcon}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={"E-Mail"}
+              placeholderTextColor={colors.transpartentWhite}
+              underlineColorAndroid="transparent"
+              onChangeText={(value) => handleChangeText(value, "username")}
+              value={state.username}
+            />
+          </View>
 
-        <View styles={styles.inputContainer}>
+          <View styles={styles.inputContainer}>
+            <TouchableOpacity
+              style={styles.btnEye}
+              onPress={() => {
+                handlePassVisibility();
+              }}
+            >
+              <Icon name={"ios-eye-outline"} size={26} color={colors.black} />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.input}
+              placeholder={"Contraseña"}
+              secureTextEntry={passHidden}
+              placeholderTextColor={colors.transpartentWhite}
+              underlineColorAndroid="transparent"
+              onChangeText={(value) => handleChangeText(value, "password")}
+              value={state.password}
+            />
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.longButton}
+              onPress={() => {
+                loginFunction();
+              }}
+            >
+              <Text style={{ fontSize: 20, color: "black" }}>Log In</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
-            style={styles.btnEye}
+            style={styles.registerLink}
             onPress={() => {
-              handlePassVisibility();
+              navigation.navigate("Register");
             }}
           >
-            <Icon name={"ios-eye-outline"} size={26} color={colors.black} />
+            <Text style={{ color: "#fff" }}>
+              No tienes cuenta aún? Registrate Acá!
+            </Text>
           </TouchableOpacity>
-          <TextInput
-            style={styles.input}
-            placeholder={"Contraseña"}
-            secureTextEntry={passHidden}
-            placeholderTextColor={colors.transpartentWhite}
-            underlineColorAndroid="transparent"
-            onChangeText={(value) => handleChangeText(value, "password")}
-            value={state.password}
-          />
         </View>
-        <View>
-          <Button
-            style={styles.btn}
-            mode="contained"
-            title="Register"
-            onPress={() => {
-              loginFunction();
-            }}
-          >
-            Log In
-          </Button>
-        </View>
-        <TouchableOpacity
-          style={styles.registerLink}
-          onPress={() => {
-            navigation.navigate("Register");
-          }}
-        >
-          <Text style={{ color: "#fff" }}>
-            No tienes cuenta aún? Registrate Acá!
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
@@ -123,10 +124,12 @@ const styles = StyleSheet.create({
     height: null,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
   },
   logoContainer: {
     alignItems: "center",
+    height: 220,
+    marginBottom: 30,
   },
   logoText: {
     color: "white",
@@ -174,12 +177,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
-  image: {
-    width: 200,
-    height: 200,
+  logo: {
+    // width: 200,
+    // height: 200,
     marginBottom: 92,
   },
   registerLink: {
     marginTop: 50,
+  },
+  longButton: {
+    width: 160,
+    height: 50,
+    backgroundColor: "#77C5D5",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginTop: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });

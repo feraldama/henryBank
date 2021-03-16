@@ -5,6 +5,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../res/";
@@ -47,30 +50,34 @@ export const registerScreen4 = ({ navigation }) => {
     );
   };
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.regform}>
-        <TextInput
-          style={styles.textinput}
-          placeholder="Contraseña"
-          secureTextEntry={true}
-          underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "password")}
-          value={state.password}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder="Confirmar contraseña"
-          secureTextEntry={true}
-          underlineColorAndroid={"transparent"}
-          onChangeText={(value) => handleChangeText(value, "rePassword")}
-          value={state.rePassword}
-        />
-
-        <Button mode="contained" onPress={passAuth}>
-          Terminar
-        </Button>
-      </View>
-    </TouchableWithoutFeedback>
+    <ImageBackground
+      source={require("../../assets/1.png")}
+      style={styles.image}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.regform}>
+          <TextInput
+            style={styles.textinput}
+            placeholder="Contraseña"
+            secureTextEntry={true}
+            underlineColorAndroid={"transparent"}
+            onChangeText={(value) => handleChangeText(value, "password")}
+            value={state.password}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="Confirmar contraseña"
+            secureTextEntry={true}
+            underlineColorAndroid={"transparent"}
+            onChangeText={(value) => handleChangeText(value, "rePassword")}
+            value={state.rePassword}
+          />
+          <TouchableOpacity style={styles.longButton} onPress={passAuth}>
+            <Text style={{ fontSize: 20, color: "black" }}>Terminar</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 30,
     paddingTop: 100,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
@@ -104,6 +111,25 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     color: colors.black,
     borderRadius: 30,
+  },
+  longButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#77C5D5",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginTop: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 

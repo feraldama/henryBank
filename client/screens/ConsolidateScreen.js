@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Icon } from "react-native-elements";
 import { Avatar } from "react-native-elements";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import { colors } from "../res";
 import axios from "axios";
 import { host } from "../redux/varible_host";
@@ -84,137 +90,144 @@ function ConsolidateScreen(props) {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.firstContainer}>
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ paddingBottom: 20, color: "#fff" }}>
-            Hola, {userObject.name}
-          </Text>
-          <TouchableOpacity style={styles.avatarButton}>
-            <Avatar
-              size="large"
-              rounded
-              source={{
-                uri: profilePic ? profilePic : foto,
-              }}
-              onPress={() => props.navigation.navigate("ProfilePic")}
+      <ImageBackground source={require("../assets/2.png")} style={styles.image}>
+        <View style={styles.firstContainer}>
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ paddingBottom: 20, color: "#fff" }}>
+              Hola, {userObject.name}
+            </Text>
+            <TouchableOpacity style={styles.avatarButton}>
+              <Avatar
+                size="large"
+                rounded
+                source={{
+                  uri: profilePic ? profilePic : foto,
+                }}
+                onPress={() => props.navigation.navigate("ProfilePic")}
+              />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#fff", fontSize: 28 }}>
+              {checked == "second" ? "U$D" : "$"} {balance}
+            </Text>
+            <Text style={{ color: "#fff", fontSize: 14 }}>
+              Balance de mi cuenta
+            </Text>
+          </View>
+          <View>
+            <Text style={{ color: "#fff" }}>PESOS</Text>
+            <RadioButton
+              value="first"
+              status={checked === "first" ? "checked" : "unchecked"}
+              onPress={() => setChecked("first")}
             />
-          </TouchableOpacity>
+            <Text style={{ color: "#fff" }}>USD</Text>
+            <RadioButton
+              value="second"
+              status={checked === "second" ? "checked" : "unchecked"}
+              onPress={() => setChecked("second")}
+            />
+          </View>
         </View>
-        <View
-          style={{
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "#fff", fontSize: 28 }}>
-            {checked == "second" ? "U$D" : "$"} {balance}
-          </Text>
-          <Text style={{ color: "#fff", fontSize: 14 }}>
-            Balance de mi cuenta
-          </Text>
-        </View>
-        <View>
-          <Text style={{ color: "#fff" }}>PESOS</Text>
-          <RadioButton
-            value="first"
-            status={checked === "first" ? "checked" : "unchecked"}
-            onPress={() => setChecked("first")}
-          />
-          <Text style={{ color: "#fff" }}>USD</Text>
-          <RadioButton
-            value="second"
-            status={checked === "second" ? "checked" : "unchecked"}
-            onPress={() => setChecked("second")}
-          />
-        </View>
-      </View>
 
-      <View style={styles.secondContainer}>
-        <View style={styles.generalSumContainer}>
-          <Text style={{ color: "black", fontSize: 20 }}>General</Text>
-          <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <View style={{ alignItems: "center", paddingRight: 55 }}>
-              <Text style={styles.generalSumLabel}>Ingresos</Text>
-              <Text style={styles.generalSumContent}>
-                $ {userObject.generalIncomes}
-              </Text>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text style={styles.generalSumLabel}>Gastos</Text>
-              <Text style={styles.generalSumContent}>
-                $ {userObject.generalExpenses}
-              </Text>
+        <View style={styles.secondContainer}>
+          <View style={styles.generalSumContainer}>
+            <Text style={{ color: "black", fontSize: 20 }}>General</Text>
+            <View style={{ alignItems: "center", flexDirection: "row" }}>
+              <View style={{ alignItems: "center", paddingRight: 55 }}>
+                <Text style={styles.generalSumLabel}>Ingresos</Text>
+                <Text style={styles.generalSumContent}>
+                  $ {userObject.generalIncomes}
+                </Text>
+              </View>
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.generalSumLabel}>Gastos</Text>
+                <Text style={styles.generalSumContent}>
+                  $ {userObject.generalExpenses}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.thirdContainer}>
-        <View style={styles.firstButtonContainer}>
-          <TouchableOpacity
-            style={styles.squareButton}
-            onPress={() => {
-              dispatch(menuTransfer(accountUserLogin[0].cvu));
-              props.navigation.navigate("Transfer");
-            }}
-          >
-            <Icon name="sc-telegram" type="evilicon" />
-            <Text style={styles.btnText}>Transacciones</Text>
-          </TouchableOpacity>
+        <View style={styles.thirdContainer}>
+          <View style={styles.firstButtonContainer}>
+            <TouchableOpacity
+              style={styles.squareButton}
+              onPress={() => {
+                dispatch(menuTransfer(accountUserLogin[0].cvu));
+                props.navigation.navigate("Transfer");
+              }}
+            >
+              <Icon name="sc-telegram" type="evilicon" />
+              <Text style={styles.btnText}>Transacciones</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.squareButton}
-            onPress={() => props.navigation.navigate("Stats")}
-          >
-            <Icon name="bar-chart-outline" type="ionicon" />
-            <Text style={styles.btnText}>Estadisticas</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.squareButton}
+              onPress={() => props.navigation.navigate("Stats")}
+            >
+              <Icon name="bar-chart-outline" type="ionicon" />
+              <Text style={styles.btnText}>Estadisticas</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.squareButton}
-            onPress={() => alert("Personal Info")}
-          >
-            <Icon name="key-outline" type="ionicon" />
-            <Text style={styles.btnText}>Mis Datos</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.squareButton}
+              onPress={() => alert("Personal Info")}
+            >
+              <Icon name="key-outline" type="ionicon" />
+              <Text style={styles.btnText}>Mis Datos</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.squareButton}
-            onPress={() => props.navigation.navigate("Products")}
-          >
-            <Icon name="card-outline" type="ionicon" />
-            <Text style={styles.btnText}>Mis Productos</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.squareButton}
+              onPress={() => props.navigation.navigate("Products")}
+            >
+              <Icon name="card-outline" type="ionicon" />
+              <Text style={styles.btnText}>Mis Productos</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.secondButtonContainer}>
+            <TouchableOpacity
+              style={styles.longButton}
+              onPress={() => {
+                props.navigation.navigate("Deposit");
+              }}
+            >
+              <Icon name="download-outline" type="ionicon" />
+              <Text>Recargar Dinero</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.longButton}
+              onPress={() => {
+                props.navigation.navigate("MenuMoney");
+              }}
+            >
+              <Icon name="send-outline" type="ionicon" />
+              <Text>Mandar Dinero</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <View style={styles.secondButtonContainer}>
-          <TouchableOpacity
-            style={styles.longButton}
-            onPress={() => {
-              props.navigation.navigate("Deposit");
-            }}
-          >
-            <Icon name="download-outline" type="ionicon" />
-            <Text>Recargar Dinero</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.longButton}
-            onPress={() => {
-              props.navigation.navigate("MenuMoney");
-            }}
-          >
-            <Icon name="send-outline" type="ionicon" />
-            <Text>Mandar Dinero</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
   mainContainer: {
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     flex: 1,
     alignSelf: "stretch",
   },
@@ -277,7 +290,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  avatarButton: { backgroundColor: colors.primary, height: 100 },
+  avatarButton: { height: 100 },
 
   squareButton: {
     width: 80,
