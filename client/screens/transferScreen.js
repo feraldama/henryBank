@@ -5,11 +5,13 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { colors } from "../res";
-import { menuTransfer } from "../redux/transfer/actions";
+import { menuTransfer, infoTransfer } from "../redux/transfer/actions";
+
 
 function TransferScreen(props) {
   const accounts = useSelector((state) => state.user.registerData);
@@ -21,8 +23,11 @@ function TransferScreen(props) {
   const scrollViewRef = useRef();
   const dispatch = useDispatch();
 
+
+
   return (
     <View style={styles.mainContainer}>
+      <ImageBackground source={require('../assets/2.png')} style={styles.image}>
       <View style={styles.secondContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -58,49 +63,42 @@ function TransferScreen(props) {
         <View style={styles.secondButtonContainer}>
           <ScrollView ref={scrollViewRef}>
             {menutransfer?.map((transfer) => (
-              <View
-                key={transfer.id}
+              <TouchableOpacity
+              key={transfer.id}
+              onPress={() => {
+                dispatch(infoTransfer(transfer.id));
+                props.navigation.navigate("InfoTransfer")
+              }}
+              >
+              <View                
                 style={
                   transfer.type == "DEP"
                     ? styles.general
                     : transfer.origin != accounts[0].cvu
                     ? styles.general
                     : styles.generalT
-                }
+                }                
               >
                 <View style={{ alignItems: "center", flexDirection: "row" }}>
                   <View style={{ alignItems: "center", paddingRight: 40 }}>
                     <Text style={{ color: "black", fontSize: 16.5 }}>
                       {transfer.createdAt.slice(0, 10)}
                     </Text>
-                    <Text style={styles.generalSumContent}>
-                      {transfer.destination}
-                    </Text>
                   </View>
-                  <View
-                    style={{
-                      color: "black",
-                      fontSize: 16.5,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={styles.generalSumLabel}>{transfer.type}</Text>
-                    <Text style={styles.generalSumLabel}>
-                      {transfer.description}
-                    </Text>
-                  </View>
-                </View>
-                <View style={{ alignItems: "center", flexDirection: "row" }}>
+                  <View style={{ alignItems: "center", flexDirection: "row" }}>
                   <Text style={styles.generalSumLabel}>Valor</Text>
                   <Text style={styles.generalSumContent}>
                     $ {transfer.value}
                   </Text>
                 </View>
+                </View>
               </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
       </View>
+    </ImageBackground>
     </View>
   );
 }
@@ -114,13 +112,9 @@ const styles = StyleSheet.create({
 
   secondContainer: {
     alignItems: "center",
-    borderBottomLeftRadius: 110,
-    borderBottomRightRadius: 110,
     flexDirection: "row",
     justifyContent: "space-evenly",
-    color: "#fff",
     height: 180,
-    backgroundColor: colors.primary,
   },
 
   thirdContainer: {
@@ -131,6 +125,12 @@ const styles = StyleSheet.create({
   text_icon: {
     color: "white",
     fontSize: 15,
+  },
+
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
   },
 
   secondButtonContainer: {

@@ -1,1 +1,1 @@
-export const host = "192.168.1.36";
+export const host = "localhost"; //192.168.1.36
