@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res/colors";
 import { Icon } from "react-native-elements";
 import axios from "axios";
-import { host } from "../redux/varible_host";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 import { host } from "../redux/varible_host";
 import * as Print from "expo-print";
@@ -25,35 +24,72 @@ function SendMoneyScreen2(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((redux) => redux.user.registerData);
 
+  // const [state, setState] = useState({
+  //   type: "PESOS",
+  //   account: "",
+  //   amount: "",
+  //   description: "",
+  // });
+
+  var currencyPESOS,
+    currencyDOLARES,
+    datos = "";
+
+  var cvuPESOS,
+    cvuDOLARES,
+    balancePESOS,
+    balanceDOLARES = 0;
+  if (accountUserLogin) {
+    accountUserLogin.map((p) => {
+      if (p.currency === "PESOS") {
+        cvuPESOS = p.cvu;
+        currencyPESOS = p.currency;
+        balancePESOS = p.balance;
+      } else if (p.currency === "USD") {
+        cvuDOLARES = p.cvu;
+        currencyDOLARES = p.currency;
+        balanceDOLARES = p.balance;
+      }
+    });
+  }
+
   const [state, setState] = useState({
     type: "PESOS",
     account: "",
     amount: "",
     description: "",
+    cvu: cvuPESOS,
+    currency: "PESOS",
   });
-
-  var cvu,
-    currency = 0;
-  if (accountUserLogin) {
-    accountUserLogin.map((p) => {
-      if (p.currency === state.type) {
-        cvu = p.cvu;
-        currency = p.currency;
-      }
-    });
-  }
 
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
+    if (name === "type") {
+      value === "PESOS"
+        ? setState({
+            ...state,
+            type: "PESOS",
+            // account: props.route.params.cvu_pesos,
+            cvu: cvuPESOS,
+            currency: currencyPESOS,
+          })
+        : setState({
+            ...state,
+            type: "USD",
+            // account: props.route.params.cvu_dolares,
+            cvu: cvuDOLARES,
+            currency: currencyDOLARES,
+          });
+    }
   };
 
   const sendMoney = () => {
-    var datos = {
-      origin: parseInt(cvu),
+    datos = {
+      origin: parseInt(state.cvu),
       destination: parseInt(state.account),
       value: parseInt(state.amount),
       type: "TRANSFER",
-      currency: currency,
+      currency: state.currency,
       description: state.description,
     };
     axios
@@ -93,7 +129,7 @@ function SendMoneyScreen2(props) {
             </Picker>
             <TextInput
               style={styles.textinput}
-              placeholder="ID account"
+              placeholder="CVU"
               underlineColorAndroid={"transparent"}
               keyboardType="numeric"
               onChangeText={(value) => handleChangeText(value, "account")}

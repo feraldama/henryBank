@@ -15,6 +15,8 @@ import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
 import { useDispatch, useSelector } from "react-redux";
 
 function DrawerContent(props) {
+  const accountUserLogin = useSelector((state) => state.user.registerData);
+
   const loginUser = useSelector((state) => state.login.loginUser);
   const [darkTheme, setDarkTheme] = React.useState(false);
 
@@ -29,6 +31,22 @@ function DrawerContent(props) {
     email = loginUser.email;
   }
 
+  var foto =
+    "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7";
+
+  var profilePic =
+    "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7";
+
+  if (accountUserLogin[2]) {
+    var pos = accountUserLogin.length - 1;
+    profilePic = accountUserLogin[pos];
+  }
+
+  if (accountUserLogin[2]) {
+    var pos = accountUserLogin.length - 1;
+    profilePic = accountUserLogin[pos];
+  }
+
   return (
     <View style={styles.mainContainer}>
       <DrawerContentScrollView {...props}>
@@ -37,8 +55,7 @@ function DrawerContent(props) {
             <View style={{ flexDirection: "row", marginTop: 15 }}>
               <Avatar.Image
                 source={{
-                  uri:
-                    "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7",
+                  uri: profilePic ? profilePic : foto,
                 }}
                 size={50}
               />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Avatar } from "react-native-elements";
 import { colors } from "../res";
 import Icon from "react-native-vector-icons/Ionicons";
 import {
@@ -17,6 +18,19 @@ import { host } from "../redux/varible_host";
 
 function ProfileScreen(props) {
   const loginUser = useSelector((state) => state.login.loginUser);
+
+  const accountUserLogin = useSelector((state) => state.user.registerData);
+
+  var foto =
+    "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7";
+
+  var profilePic =
+    "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7";
+
+  if (accountUserLogin[2]) {
+    var pos = accountUserLogin.length - 1;
+    profilePic = accountUserLogin[pos];
+  }
 
   const [state, setState] = useState({
     phone: loginUser.phone,
@@ -58,10 +72,18 @@ function ProfileScreen(props) {
                 <Icon name={"qr-code-outline"} size={40} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.largeCircle}>
+            <TouchableOpacity style={{ marginLeft: 10, marginRight: 10 }}>
+              <Avatar
+                size="xlarge"
+                rounded
+                source={{
+                  uri: profilePic ? profilePic : foto,
+                }}
+                onPress={() => props.navigation.navigate("ProfilePic")}
+              />
+              {/* <View style={styles.largeCircle}>
                 <Icon name={"person-circle-outline"} size={70} />
-              </View>
+              </View> */}
             </TouchableOpacity>
             <TouchableOpacity>
               <View style={styles.smallCircle}>
@@ -86,7 +108,9 @@ function ProfileScreen(props) {
           </View>
           <View style={styles.aliasContainer}>
             <Text style={styles.aliasLabel}>Correo</Text>
-            <TextInput style={styles.aliasContent}>{loginUser.email}</TextInput>
+            <TextInput editable={false} style={styles.aliasContent}>
+              {loginUser.email}
+            </TextInput>
           </View>
           <View style={styles.aliasContainer}>
             <Text style={styles.aliasLabel}>Teléfono</Text>
@@ -209,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   firstContainer: {
-    height: 680,
+    height: 730,
     width: 375,
     //marginTop: 35,
     alignItems: "center",

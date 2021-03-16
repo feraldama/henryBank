@@ -7,8 +7,7 @@ import {
 const initialState = {
   registerData: [],
   registerData2: [],
-  uri:
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+  uri: "",
 };
 
 export default function userReducer(state = initialState, action) {
@@ -32,7 +31,7 @@ export default function userReducer(state = initialState, action) {
 
     case UPDATE_USER_PIC:
       return {
-        uri: action.payload,
+        registerData: [...state.registerData, action.payload],
       };
 
     default:

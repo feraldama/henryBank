@@ -14,7 +14,6 @@ import { colors } from "../res";
 import { Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import logo from "../assets/logo2.png";
-import { host } from "../redux/varible_host";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/login/actions";
 const { width: WIDTH } = Dimensions.get("window");

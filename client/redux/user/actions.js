@@ -9,7 +9,6 @@ import { host } from "../varible_host";
 import { useSelector } from "react-redux";
 
 export const saveRegisterData = (data, finish) => (dispatch) => {
-  console.log(data);
   if (finish == 0) {
     axios.post(`http://${host}:8080/users`, data);
     dispatch({ type: SAVE_REGISTER_DATA, payload: data });
