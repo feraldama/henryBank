@@ -39,9 +39,8 @@ function DrawerContent(props) {
     var pos = accountUserLogin.length - 1;
     profilePic = accountUserLogin[pos];
   }
-  if(loginUser){
-    console.log("FOTO ", loginUser.image)
-    foto = loginUser.image
+  if (loginUser) {
+    foto = loginUser.image;
   }
 
   return (

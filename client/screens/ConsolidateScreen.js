@@ -28,9 +28,8 @@ function ConsolidateScreen(props) {
     var pos = accountUserLogin.length - 1;
     profilePic = accountUserLogin[pos];
   }
-  if(loginUser){
-    console.log("FOTO ", loginUser.image)
-    foto = loginUser.image
+  if (loginUser) {
+    foto = loginUser.image;
   }
   const [balance, setBalance] = useState(0);
   const [ingresos, setIngresos] = useState([]);
@@ -39,7 +38,6 @@ function ConsolidateScreen(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (loginUser) {
-
       dispatch(vaciarReducer);
       dispatch(accountUser(loginUser.id, "PESOS"));
       dispatch(accountUser(loginUser.id, "USD"));

@@ -156,27 +156,39 @@ export default function ContactsScreen(props) {
             sections={getData()}
             ListHeaderComponent={() => (
               <View>
-                <Button
-                  title="Agregar Contacto"
-                  onPress={() => setModalVisible(true)}
-                />
-                <TouchableOpacity
-                  style={styles.longButton}
-                  onPress={() => setModalContactVisible(!modalContactVisible)}
-                >
-                  <Icon name="md-logo-whatsapp" type="ionicon" />
-                  <Text>Invitar Contacto</Text>
-                </TouchableOpacity>
+                <View>
+                  <TouchableOpacity
+                    style={styles.longButton2}
+                    onPress={() => setModalVisible(true)}
+                  >
+                    <Icon name="person-add-outline" type="ionicon" />
+                    <Text style={{ color: "white" }}>Agregar Contacto</Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <TouchableOpacity
+                    style={styles.longButton}
+                    onPress={() => setModalContactVisible(!modalContactVisible)}
+                  >
+                    <Icon name="md-logo-whatsapp" type="ionicon" />
+                    <Text>Invitar Contacto</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
             renderItem={({ item }) => (
               <ScrollView>
                 <View style={styles.row}>
-                  <View>
+                  <View style={styles.alias}>
                     <Text style={styles.contactNames}>{item.alias}</Text>
                   </View>
-                  <View style={styles.transferBtn}>
-                    <Button onPress={() => transfer(item)} title="Transferir" />
+                  <View style={styles.botones}>
+                    <TouchableOpacity
+                      style={styles.transferBT}
+                      onPress={() => transfer(item)}
+                    >
+                      <Icon name="send-outline" type="ionicon" />
+                    </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.squareButton}
                       onPress={() => eliminarContacto(item.contactId)}
@@ -255,25 +267,28 @@ export default function ContactsScreen(props) {
             }}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+              <View style={styles.modalView2}>
                 <Text style={styles.modalText}>
                   Seleccione contacto a agregar
                 </Text>
-                <ScrollView>
+                <ScrollView style={{ width: "100%" }}>
                   {state.length !== 0 ? (
                     state.map((contact) => (
-                      <Text
-                        style={styles.contacts}
-                        onPress={() =>
-                          mandarMensaje(contact.phoneNumbers[0].number)
-                        }
-                        key={contact.id}
-                      >
-                        {contact.name} -{" "}
+                      <View style={styles.contactView}>
+                        <Text
+                          style={styles.contacts}
+                          onPress={() =>
+                            mandarMensaje(contact.phoneNumbers[0].number)
+                          }
+                          key={contact.id}
+                        >
+                          {contact.name}
+                          {/* -{" "}
                         {contact.phoneNumbers[0].number
                           ? contact.phoneNumbers[0].number
-                          : "Sin número"}
-                      </Text>
+                        : "Sin número"} */}
+                        </Text>
+                      </View>
                     ))
                   ) : (
                     <Text>Aqui van los contactos</Text>
@@ -283,9 +298,10 @@ export default function ContactsScreen(props) {
                   style={{
                     justifyContent: "center",
                     flexDirection: "row",
+                    width: "70%",
                   }}
                 >
-                  <View>
+                  <View style={{ width: "100%" }}>
                     <Pressable
                       style={[styles.button, styles.buttonClose]}
                       onPress={() =>
@@ -317,7 +333,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 35,
-    width: 300,
+    width: "100%",
   },
   header: {
     alignSelf: "center",
@@ -329,21 +345,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
+    height: 40,
     justifyContent: "space-between",
     marginTop: 10,
+    borderRadius: 10,
     paddingLeft: 3,
-    backgroundColor: colors.secondary,
+    // backgroundColor: colors.secondary,
   },
   contactNames: {
     fontSize: 20,
-    color: colors.primary,
+    color: colors.white,
+    paddingLeft: 10,
   },
-  transferBtn: {
-    alignSelf: "flex-end",
-    flexDirection: "row",
-  },
-  sectionHeader: {},
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -365,6 +378,24 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalView2: {
+    margin: 20,
+    marginTop: 40,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingBottom: 35,
+    paddingTop: 40,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -374,7 +405,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#ff6961",
+    marginTop: 10,
+    marginBottom: 10,
+    width: "100%",
   },
   textStyle: {
     color: "white",
@@ -382,6 +416,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
+    fontSize: 20,
     marginBottom: 15,
     textAlign: "center",
   },
@@ -391,8 +426,24 @@ const styles = StyleSheet.create({
   longButton: {
     width: "100%",
     height: 50,
+    borderRadius: 10,
     backgroundColor: "#00ff80",
     justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  longButton2: {
+    width: "100%",
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: "#2B58DE",
+    justifyContent: "center",
+    marginBottom: 10,
     alignItems: "center",
     flexDirection: "row",
     shadowColor: "#000",
@@ -409,12 +460,47 @@ const styles = StyleSheet.create({
   squareButton: {
     justifyContent: "space-evenly",
     alignItems: "center",
-    // borderRadius: 10,
+    borderRadius: 10,
     shadowColor: "#000",
-    backgroundColor: "red",
+    backgroundColor: "#ff6961",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 3,
+    height: "100%",
+    width: 55,
+  },
+  transferBT: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    backgroundColor: "#00ff80",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+    height: "100%",
+    width: 55,
+  },
+  alias: {
+    width: "70%",
+    backgroundColor: "#2B58DE",
+    height: "100%",
+    borderRadius: 10,
+    justifyContent: "center",
+  },
+  botones: {
+    width: "30%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  contactView: {
+    width: "100%",
+    backgroundColor: "#73c3d5",
+    borderRadius: 10,
+    justifyContent: "center",
+    marginBottom: 15,
+    alignItems: "center",
   },
 });

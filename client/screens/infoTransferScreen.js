@@ -8,10 +8,37 @@ import {
   ImageBackground,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
+import { Icon } from "react-native-elements";
+import moment from "moment-timezone";
 
 function InfoTransferScreen(props) {
   const infotransfer = useSelector((state) => state.transfer.infoTransfer);
-  console.log(infotransfer.id);
+
+  const createPDF = async () => {
+    console.log("infotransfer.createdAt: ", infotransfer.createdAt);
+    const fecha = moment(infotransfer.createdAt).format("YYYY-MM-DD");
+    console.log("FECHA: ", fecha);
+    filePath = await Print.printToFileAsync({
+      // let filePath = await Print.printAsync({
+      html: `<p style="text-align:center;"><img src="http://www.tecnovate.com.py/templates/g5_helium/custom/images/logo3Original.png?6052ae77" width="500" height="300"></p><h1 style="text-align:center;">DATOS DE TRANSFERENCIA</h1><h2>Fecha: ${fecha}</h2><h2>CVU Origen: ${infotransfer.origin}</h2><h2>CVU Destino: ${infotransfer.destination}</h2><h2>Monto: ${infotransfer.value}</h2><h2>Tipo: ${infotransfer.type}</h2><h2>Moneda: ${infotransfer.currency}</h2><h2>Descripción: ${infotransfer.description}</h2>`,
+      width: 500,
+      height: 700,
+      base64: false,
+    });
+    // alert("PDF Generated", filePath.uri);
+    onShare();
+  };
+
+  const onShare = async () => {
+    if (!(await Sharing.isAvailableAsync())) {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+
+    await Sharing.shareAsync(filePath.uri);
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -52,6 +79,13 @@ function InfoTransferScreen(props) {
               Descripcion: {infotransfer?.description}
             </Text>
           </View>
+          <TouchableOpacity
+            style={styles.squareButton}
+            onPress={() => createPDF()}
+          >
+            <Icon name="document-text-outline" type="ionicon" />
+            <Text style={styles.btnText}>PDF</Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>
@@ -113,6 +147,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     height: 180,
+  },
+
+  squareButton: {
+    width: 80,
+    height: 80,
+    backgroundColor: "#77C5D5",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    alignSelf: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
   },
 });
 
