@@ -152,7 +152,6 @@ export default function ContactsScreen(props) {
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <Text style={styles.header}> Tus Contactos</Text>
-          {/* <ScrollView> */}
           <SectionList
             sections={getData()}
             ListHeaderComponent={() => (
@@ -171,20 +170,22 @@ export default function ContactsScreen(props) {
               </View>
             )}
             renderItem={({ item }) => (
-              <View style={styles.row}>
-                <View>
-                  <Text style={styles.contactNames}>{item.alias}</Text>
+              <ScrollView>
+                <View style={styles.row}>
+                  <View>
+                    <Text style={styles.contactNames}>{item.alias}</Text>
+                  </View>
+                  <View style={styles.transferBtn}>
+                    <Button onPress={() => transfer(item)} title="Transferir" />
+                    <TouchableOpacity
+                      style={styles.squareButton}
+                      onPress={() => eliminarContacto(item.contactId)}
+                    >
+                      <Icon name="trash-outline" type="ionicon" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <View style={styles.transferBtn}>
-                  <Button onPress={() => transfer(item)} title="Transferir" />
-                  <TouchableOpacity
-                    style={styles.squareButton}
-                    onPress={() => eliminarContacto(item.contactId)}
-                  >
-                    <Icon name="trash-outline" type="ionicon" />
-                  </TouchableOpacity>
-                </View>
-              </View>
+              </ScrollView>
             )}
             keyExtractor={(item) => item.index}
             renderSectionHeader={({ section }) => {
@@ -193,7 +194,6 @@ export default function ContactsScreen(props) {
               </View>;
             }}
           />
-          {/* </ScrollView> */}
         </View>
         <View style={styles.centeredView}>
           <Modal

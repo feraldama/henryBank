@@ -8,10 +8,9 @@ import {
   ImageBackground,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { colors } from "../res";
 import { menuTransfer, infoTransfer } from "../redux/transfer/actions";
-
 
 function TransferScreen(props) {
   const accounts = useSelector((state) => state.user.registerData);
@@ -23,82 +22,74 @@ function TransferScreen(props) {
   const scrollViewRef = useRef();
   const dispatch = useDispatch();
 
-
-
   return (
     <View style={styles.mainContainer}>
-      <ImageBackground source={require('../assets/2.png')} style={styles.image}>
-      <View style={styles.secondContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            dispatch(menuTransfer(accounts[1].cvu));
-          }}
-        >
-          <Icon color="#fff" name="sc-telegram" type="evilicon" />
-          <Text style={styles.text_icon}>USD</Text>
-        </TouchableOpacity>
-
-        <Text style={{ color: "white", fontSize: 30 }}>Transacciones</Text>
-
-        <TouchableOpacity
-          onPress={() => {
-            dispatch(menuTransfer(accounts[0].cvu));
-          }}
-        >
-          <Icon color="#fff" name="sc-telegram" type="evilicon" />
-          <Text style={styles.text_icon}>PESOS</Text>
-        </TouchableOpacity>
-
-        {/* <TouchableOpacity        
+      <ImageBackground source={require("../assets/2.png")} style={styles.image}>
+        <View style={styles.secondContainer}>
+          <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("Home");
+              dispatch(menuTransfer(accounts[1].cvu));
             }}
           >
-            <Icon style={styles.text_icon} name="sc-telegram" type="evilicon" />
-            <Text style={styles.text_icon}>Inicio</Text>
+            <Icon color="#fff" name="sc-telegram" type="evilicon" />
+            <Text style={styles.text_icon}>USD</Text>
+          </TouchableOpacity>
 
-          </TouchableOpacity> */}
-      </View>
-      <View style={styles.thirdContainer}>
-        <View style={styles.secondButtonContainer}>
-          <ScrollView ref={scrollViewRef}>
-            {menutransfer?.map((transfer) => (
-              <TouchableOpacity
-              key={transfer.id}
-              onPress={() => {
-                dispatch(infoTransfer(transfer.id));
-                props.navigation.navigate("InfoTransfer")
-              }}
-              >
-              <View                
-                style={
-                  transfer.type == "DEP"
-                    ? styles.general
-                    : transfer.origin != accounts[0].cvu
-                    ? styles.general
-                    : styles.generalT
-                }                
-              >
-                <View style={{ alignItems: "center", flexDirection: "row" }}>
-                  <View style={{ alignItems: "center", paddingRight: 40 }}>
-                    <Text style={{ color: "black", fontSize: 16.5 }}>
-                      {transfer.createdAt.slice(0, 10)}
-                    </Text>
-                  </View>
-                  <View style={{ alignItems: "center", flexDirection: "row" }}>
-                  <Text style={styles.generalSumLabel}>Valor</Text>
-                  <Text style={styles.generalSumContent}>
-                    $ {transfer.value}
-                  </Text>
-                </View>
-                </View>
-              </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+          <Text style={{ color: "white", fontSize: 30 }}>Transacciones</Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(menuTransfer(accounts[0].cvu));
+            }}
+          >
+            <Icon color="#fff" name="sc-telegram" type="evilicon" />
+            <Text style={styles.text_icon}>PESOS</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-    </ImageBackground>
+        <View style={styles.thirdContainer}>
+          <View style={styles.secondButtonContainer}>
+            <ScrollView ref={scrollViewRef}>
+              {menutransfer?.map((transfer) => (
+                <TouchableOpacity
+                  key={transfer.id}
+                  onPress={() => {
+                    dispatch(infoTransfer(transfer.id));
+                    props.navigation.navigate("InfoTransfer");
+                  }}
+                >
+                  <View
+                    style={
+                      transfer.type == "DEP"
+                        ? styles.general
+                        : transfer.origin != accounts[0].cvu
+                        ? styles.general
+                        : styles.generalT
+                    }
+                  >
+                    <View
+                      style={{ alignItems: "center", flexDirection: "row" }}
+                    >
+                      <View style={{ alignItems: "center", paddingRight: 40 }}>
+                        <Text style={{ color: "black", fontSize: 16.5 }}>
+                          {transfer.createdAt.slice(0, 10)}
+                        </Text>
+                      </View>
+                      <View
+                        style={{ alignItems: "center", flexDirection: "row" }}
+                      >
+                        <Text style={styles.generalSumLabel}>Valor</Text>
+                        <Text style={styles.generalSumContent}>
+                          $ {transfer.value}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -130,7 +121,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   secondButtonContainer: {
@@ -143,7 +134,7 @@ const styles = StyleSheet.create({
 
   general: {
     backgroundColor: "rgb(172, 232, 179)",
-    width: 400,
+    width: 300,
     height: 100,
     alignSelf: "center",
     alignItems: "center",
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
 
   generalT: {
     backgroundColor: "rgb(216, 168, 168)",
-    width: 400,
+    width: 300,
     height: 100,
     alignSelf: "center",
     alignItems: "center",
