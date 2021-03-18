@@ -46,18 +46,22 @@ function StatsScreen() {
   return (
     <View style={styles.mainContainer}>
       <View style={{ flex: 0.1, flexDirection: "row", marginTop: 30 }}>
-        <Text style={{ color: "#fff" }}>PESOS</Text>
-        <RadioButton
-          value="first"
-          status={checked === "first" ? "checked" : "unchecked"}
-          onPress={() => setChecked("first")}
-        />
-        <Text style={{ color: "#fff" }}>USD</Text>
-        <RadioButton
-          value="second"
-          status={checked === "second" ? "checked" : "unchecked"}
-          onPress={() => setChecked("second")}
-        />
+        <View style={{ marginHorizontal: 10 }}>
+          <Text style={{ color: "#fff" }}>PESOS</Text>
+          <RadioButton
+            value="first"
+            status={checked === "first" ? "checked" : "unchecked"}
+            onPress={() => setChecked("first")}
+          />
+        </View>
+        <View style={{ marginHorizontal: 10 }}>
+          <Text style={{ color: "#fff" }}>USD</Text>
+          <RadioButton
+            value="second"
+            status={checked === "second" ? "checked" : "unchecked"}
+            onPress={() => setChecked("second")}
+          />
+        </View>
       </View>
       <View style={styles.secondContainer}>
         <Text style={styles.textStyle}>GASTOS </Text>
@@ -77,7 +81,7 @@ function StatsScreen() {
               },
             ],
           }}
-          width={Dimensions.get("window").width - 20} // from react-native
+          width={Dimensions.get("window").width - 25} // from react-native
           height={220}
           yAxisLabel="$"
           yAxisSuffix=""
@@ -122,7 +126,7 @@ function StatsScreen() {
               },
             ],
           }}
-          width={Dimensions.get("window").width - 20} // from react-native
+          width={Dimensions.get("window").width - 25} // from react-native
           height={220}
           yAxisLabel="$"
           yAxisSuffix=""
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.secondary,
+    //backgroundColor: colors.secondary,
     borderRadius: 10,
   },
   thirdContainer: {
@@ -177,12 +181,12 @@ const styles = StyleSheet.create({
     margin: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.secondary,
+    //backgroundColor: colors.secondary,
     borderRadius: 10,
   },
   textStyle: {
     marginBottom: 5,
-    color: colors.black,
+    color: colors.white,
     fontWeight: "bold",
     fontSize: 25,
   },
