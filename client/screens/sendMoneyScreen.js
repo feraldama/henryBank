@@ -20,6 +20,7 @@ import { vaciarReducer, accountUser } from "../redux/user/actions";
 import { host } from "../redux/varible_host";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
+import moment from "moment-timezone";
 
 function SendMoneyScreen(props) {
   const dispatch = useDispatch(); // para la futura accion
@@ -137,11 +138,14 @@ function SendMoneyScreen(props) {
   };
 
   const createPDF = async () => {
+    const fecha = moment(new Date())
+      .tz("America/Buenos_Aires")
+      .format("YYYY-MM-DD");
     filePath = await Print.printToFileAsync({
       // let filePath = await Print.printAsync({
-      html: `<img src="https://www.tecnovate.com.py/templates/g5_helium/custom/images/logo2.png?604a7651" width="300" height="300"><h1>DATOS DE TRANSFERENCIA</h1><h2>CVU Origen: ${datos.origin}</h2><h2>CVU Destino: ${datos.destination}</h2><h2>Monto: ${datos.value}</h2><h2>Tipo: ${datos.type}</h2><h2>Moneda: ${datos.currency}</h2><h2>Descripción: ${datos.description}</h2>`,
-      width: 612,
-      height: 792,
+      html: `<p style="text-align:center;"><img src="http://www.tecnovate.com.py/templates/g5_helium/custom/images/logo3Original.png?6052ae77" width="500" height="300"></p><h1 style="text-align:center;">DATOS DE TRANSFERENCIA</h1><h2>Fecha: ${fecha}</h2><h2>CVU Origen: ${datos.origin}</h2><h2>CVU Destino: ${datos.destination}</h2><h2>Monto: ${datos.value}</h2><h2>Tipo: ${datos.type}</h2><h2>Moneda: ${datos.currency}</h2><h2>Descripción: ${datos.description}</h2>`,
+      width: 500,
+      height: 700,
       base64: false,
     });
     // alert("PDF Generated", filePath.uri);

@@ -17,14 +17,22 @@ server.post("/:id", async (req, res, next) => {
       }); //Busca el contacto
       console.log(contact);
       console.log(contact.accounts);
+      var cvuPESOS, cvuDOLARES;
+      var mapear = contact.accounts.map((p) => {
+        if (p.currency === "PESOS") {
+          cvuPESOS = p.cvu;
+        } else if (p.currency === "USD") {
+          cvuDOLARES = p.cvu;
+        }
+      });
+
       const result = await Contact.create({
         alias: contact.name, // Se nombra por defecto.
         email: contact.email,
         userId: id,
         mobile: contact.phone,
-        cvu_pesos: contact.accounts[0].cvu,
-        cvu_dolares: contact.accounts[1].cvu,
-
+        cvu_pesos: cvuPESOS,
+        cvu_dolares: cvuDOLARES,
         contactId: contact.id,
       });
       res.status(201).json(result); //devuelve el contacto creado.
