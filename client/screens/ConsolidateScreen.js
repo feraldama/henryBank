@@ -22,14 +22,16 @@ function ConsolidateScreen(props) {
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((state) => state.user.registerData);
-  var profilePic =
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  var profilePic;
 
   if (accountUserLogin[2]) {
     var pos = accountUserLogin.length - 1;
     profilePic = accountUserLogin[pos];
   }
-
+  if(loginUser){
+    console.log("FOTO ", loginUser.image)
+    foto = loginUser.image
+  }
   const [balance, setBalance] = useState(0);
   const [ingresos, setIngresos] = useState([]);
   const [egresos, setEgresos] = useState([]);
@@ -37,6 +39,7 @@ function ConsolidateScreen(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (loginUser) {
+
       dispatch(vaciarReducer);
       dispatch(accountUser(loginUser.id, "PESOS"));
       dispatch(accountUser(loginUser.id, "USD"));
