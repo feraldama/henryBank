@@ -8,6 +8,7 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
@@ -110,59 +111,57 @@ function changeMoneyScreen(props) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.mainContainer}>
-        <View style={styles.secondContainer}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate("Home");
-            }}
-          >
-            <Text>Inicio</Text>
-          </Button>
-          <Text>Cambio Divisas</Text>
-          <Icon />
+    <ImageBackground source={require("../assets/3.png")} style={styles.image}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.mainContainer}>
+          <View style={styles.secondContainer}>
+            <Text style={{ color: "#fff", fontSize: 25, paddingTop: 10 }}>
+              Cambio Divisas
+            </Text>
+          </View>
+          <View style={styles.regform}>
+            <ScrollView>
+              <View style={styles.cambio}>
+                <Text style={styles.monto}>Compra: {state.compra}</Text>
+                <Text style={styles.monto}>Venta: {state.venta}</Text>
+              </View>
+              <Picker
+                selectedValue={state.type}
+                style={styles.picker}
+                onValueChange={(itemValue) =>
+                  handleChangeText(itemValue, "type")
+                }
+              >
+                <Picker.Item label="COMPRA DE USD" value="PESOS" />
+                <Picker.Item label="VENTA DE USD" value="USD" />
+              </Picker>
+              <TextInput
+                style={styles.textinput}
+                placeholder="$ Cantidad de Dolares"
+                underlineColorAndroid={"transparent"}
+                keyboardType="numeric"
+                onChangeText={(value) => handleChangeText(value, "amount")}
+                value={state.amount}
+              />
+              <TouchableOpacity
+                style={styles.longButton}
+                onPress={() => {
+                  sendMoney();
+                }}
+              >
+                <Text style={styles.generalDescription}>Enviar</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </View>
-        <View style={styles.regform}>
-          <ScrollView>
-            <View style={styles.cambio}>
-              <Text style={styles.monto}>Compra: {state.compra}</Text>
-              <Text style={styles.monto}>Venta: {state.venta}</Text>
-            </View>
-            <Picker
-              selectedValue={state.type}
-              style={styles.picker}
-              onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
-            >
-              <Picker.Item label="COMPRA DE USD" value="PESOS" />
-              <Picker.Item label="VENTA DE USD" value="USD" />
-            </Picker>
-            <TextInput
-              style={styles.textinput}
-              placeholder="$ Cantidad de Dolares"
-              underlineColorAndroid={"transparent"}
-              keyboardType="numeric"
-              onChangeText={(value) => handleChangeText(value, "amount")}
-              value={state.amount}
-            />
-            <TouchableOpacity
-              style={styles.longButton}
-              onPress={() => {
-                sendMoney();
-              }}
-            >
-              <Text style={styles.generalDescription}>Enviar</Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     flex: 1,
     alignSelf: "stretch",
   },
@@ -178,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   monto: {
-    color: "#fff",
+    color: "black",
     margin: 15,
     fontSize: 20,
   },
@@ -214,13 +213,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     color: "#fff",
     height: 120,
-    backgroundColor: colors.secondary,
+    // backgroundColor: colors.secondary,
   },
   regform: {
     flex: 1,
     padding: 30,
     paddingTop: 60,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     alignSelf: "stretch",
   },
   textinput: {
@@ -230,9 +229,14 @@ const styles = StyleSheet.create({
   },
   picker: {
     marginBottom: 50,
-    backgroundColor: colors.white,
+    backgroundColor: "#77C5D5",
     color: colors.black,
     borderRadius: 30,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 
