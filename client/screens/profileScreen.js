@@ -24,12 +24,15 @@ function ProfileScreen(props) {
   var foto =
     "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7";
 
-  var profilePic =
-    "https://th.bing.com/th/id/OIP.NW8X36eGSsuY8WnXF4BjMwHaHa?w=214&h=214&c=7&o=5&pid=1.7";
+  var profilePic;
 
   if (accountUserLogin[2]) {
     var pos = accountUserLogin.length - 1;
     profilePic = accountUserLogin[pos];
+  }
+  if(loginUser){
+    console.log("FOTO ", loginUser.image)
+    foto = loginUser.image
   }
 
   const [state, setState] = useState({

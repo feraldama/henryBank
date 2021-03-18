@@ -9,10 +9,12 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { host } from "../redux/varible_host";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserPic } from "../redux/user/actions";
 import { Camera } from "expo-camera";
 import { Button } from "react-native-paper";
+import axios from "axios";
 
 const CameraModule = (props) => {
   const [cameraRef, setCameraRef] = useState(null);
@@ -124,6 +126,10 @@ export default function ProfilePicScreen(props) {
   const [tempImg, setTempImg] = useState("");
   const [camera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
+  const loginUser = useSelector((state) => state.login.loginUser);
+
+  
+
 
   useEffect(() => {
     (async () => {
@@ -139,6 +145,8 @@ export default function ProfilePicScreen(props) {
   }
 
   const handleImgChange = () => {
+    var obj = {image: tempImg}
+    axios.put(`http://${host}:8080/users/${loginUser.id}`, obj)
     dispatch(updateUserPic(tempImg));
     props.navigation.navigate("Home");
   };
