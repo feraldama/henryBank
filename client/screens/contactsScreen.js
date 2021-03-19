@@ -48,7 +48,7 @@ export default function ContactsScreen(props) {
       const { status } = await Contacts.requestPermissionsAsync();
       if (status === "granted") {
         const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails],
+          fields: [Contacts.Fields.PhoneNumbers],
         });
 
         if (data.length > 0) {
@@ -106,7 +106,7 @@ export default function ContactsScreen(props) {
         return item.alias[0].toUpperCase() === currChar;
       });
       if (currContacts.length > 0) {
-        currContacts.sort((a, b) => a.alias.localeCompaer(b.alias));
+        currContacts.sort((a, b) => a.alias.localeCompare(b.alias));
         obj.data = currContacts;
         contactsArr.push(obj);
       }
@@ -269,12 +269,20 @@ export default function ContactsScreen(props) {
             <View style={styles.centeredView}>
               <View style={styles.modalView2}>
                 <Text style={styles.modalText}>
-                  Seleccione contacto a agregar
+                  SELECCIONE CONTACTO A AGREGAR
                 </Text>
                 <ScrollView style={{ width: "100%" }}>
                   {state.length !== 0 ? (
                     state.map((contact) => (
-                      <View style={styles.contactView}>
+                      <View
+                        key={state.indexOf(contact)}
+                        style={[
+                          styles.contactView,
+                          state.indexOf(contact) % 2 == 0
+                            ? styles.grey
+                            : styles.red,
+                        ]}
+                      >
                         <Text
                           style={styles.contacts}
                           onPress={() =>
@@ -297,19 +305,24 @@ export default function ContactsScreen(props) {
                 <View
                   style={{
                     justifyContent: "center",
-                    flexDirection: "row",
-                    width: "70%",
+                    width: "100%",
                   }}
                 >
-                  <View style={{ width: "100%" }}>
-                    <Pressable
-                      style={[styles.button, styles.buttonClose]}
+                  <View
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#ff6961",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={styles.contactsCancel}
                       onPress={() =>
                         setModalContactVisible(!modalContactVisible)
                       }
                     >
-                      <Text style={styles.textStyle}>Cancelar</Text>
-                    </Pressable>
+                      <Text style={{ fontSize: 20 }}>CANCELAR</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -354,7 +367,7 @@ const styles = StyleSheet.create({
   },
   contactNames: {
     fontSize: 20,
-    color: colors.white,
+    color: colors.black,
     paddingLeft: 10,
   },
   centeredView: {
@@ -381,7 +394,7 @@ const styles = StyleSheet.create({
   modalView2: {
     margin: 20,
     marginTop: 40,
-    backgroundColor: "white",
+    backgroundColor: "#84bbcd",
     borderRadius: 20,
     paddingBottom: 35,
     paddingTop: 40,
@@ -405,6 +418,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
+    backgroundColor: "#2196f3",
+  },
+  buttonClose2: {
     backgroundColor: "#ff6961",
     marginTop: 10,
     marginBottom: 10,
@@ -417,7 +433,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 20,
-    marginBottom: 15,
+    marginBottom: 35,
     textAlign: "center",
   },
   email: {
@@ -442,6 +458,20 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     backgroundColor: "#2B58DE",
+    justifyContent: "center",
+    marginBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  contactsCancel: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#ff6961",
     justifyContent: "center",
     marginBottom: 10,
     alignItems: "center",
@@ -485,7 +515,7 @@ const styles = StyleSheet.create({
   },
   alias: {
     width: "70%",
-    backgroundColor: "#2B58DE",
+    backgroundColor: "white",
     height: "100%",
     borderRadius: 10,
     justifyContent: "center",
@@ -497,10 +527,16 @@ const styles = StyleSheet.create({
   },
   contactView: {
     width: "100%",
-    backgroundColor: "#73c3d5",
-    borderRadius: 10,
+    // backgroundColor: "#73c3d5",
     justifyContent: "center",
-    marginBottom: 15,
     alignItems: "center",
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  red: {
+    backgroundColor: "#e4f2f7",
+  },
+  grey: {
+    backgroundColor: "#c0dce5",
   },
 });
