@@ -8,8 +8,13 @@ import {
 } from "react-native";
 import { colors } from "../../res/";
 import { Button, TextInput } from "react-native-paper";
+import { Restart } from "fiction-expo-restart";
 
 export const confirmEmailScreen = ({ navigation }) => {
+  const cerrar = () => {
+    Restart();
+  };
+
   return (
     <ImageBackground
       source={require("../../assets/1.png")}
@@ -19,12 +24,7 @@ export const confirmEmailScreen = ({ navigation }) => {
         <View style={styles.secondContainer}>
           <Text style={styles.textStyle}>Confirme email</Text>
         </View>
-        <TouchableOpacity
-          style={styles.longButton}
-          onPress={() => {
-            navigation.navigate("Login");
-          }}
-        >
+        <TouchableOpacity style={styles.longButton} onPress={() => cerrar()}>
           <Text style={{ fontSize: 20, color: "black" }}>HOME</Text>
         </TouchableOpacity>
       </View>

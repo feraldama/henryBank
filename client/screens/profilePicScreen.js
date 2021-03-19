@@ -15,10 +15,16 @@ import { updateUserPic } from "../redux/user/actions";
 import { Camera } from "expo-camera";
 import { Button } from "react-native-paper";
 import axios from "axios";
+import { Icon } from "react-native-elements";
 
 const CameraModule = (props) => {
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flash, setFlash] = useState(false);
+  const handleFlash = () => {
+    setFlash(!flash);
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -31,7 +37,8 @@ const CameraModule = (props) => {
       <Camera
         style={{ flex: 1 }}
         ratio="16:9"
-        flashMode={Camera.Constants.FlashMode.on}
+        // flashMode={Camera.Constants.FlashMode.on}
+        flashMode={flash ? "on" : "off"}
         type={type}
         ref={(ref) => {
           setCameraRef(ref);
@@ -49,20 +56,17 @@ const CameraModule = (props) => {
               backgroundColor: "black",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "space-evenly",
             }}
           >
-            <Button
-              icon="close"
-              style={{ marginLeft: 12 }}
-              mode="outlined"
-              color="white"
-              onPress={() => {
-                props.setModalVisible();
-              }}
-            >
-              Close
-            </Button>
+            <TouchableOpacity onPress={handleFlash} styles={{ height: "100%" }}>
+              <Icon
+                color="white"
+                size={30}
+                name={flash ? "flash-outline" : "flash-off-outline"}
+                type="ionicon"
+              />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={async () => {
                 if (cameraRef) {
@@ -98,11 +102,8 @@ const CameraModule = (props) => {
                 ></View>
               </View>
             </TouchableOpacity>
-            <Button
-              icon="axis-z-rotate-clockwise"
-              style={{ marginRight: 12 }}
-              mode="outlined"
-              color="white"
+
+            <TouchableOpacity
               onPress={() => {
                 setType(
                   type === Camera.Constants.Type.back
@@ -111,8 +112,13 @@ const CameraModule = (props) => {
                 );
               }}
             >
-              {type === Camera.Constants.Type.back ? "Front" : "Back "}
-            </Button>
+              <Icon
+                name="refresh-cw"
+                type="feather"
+                size={30}
+                color={"white"}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </Camera>
@@ -122,14 +128,22 @@ const CameraModule = (props) => {
 
 export default function ProfilePicScreen(props) {
   const dispatch = useDispatch();
-  const image = useSelector((state) => state.user.uri);
+  // const image = useSelector((state) => state.user.uri);
+  const loginUser = useSelector((state) => state.login.loginUser);
+
+  const accountUserLogin = useSelector((state) => state.user.registerData);
+
+  if (accountUserLogin[2]) {
+    var pos = accountUserLogin.length - 1;
+    image = accountUserLogin[pos];
+  }
+  if (loginUser) {
+    image = loginUser.image;
+  }
+
   const [tempImg, setTempImg] = useState("");
   const [camera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
-  const loginUser = useSelector((state) => state.login.loginUser);
-
-  
-
 
   useEffect(() => {
     (async () => {
@@ -145,8 +159,8 @@ export default function ProfilePicScreen(props) {
   }
 
   const handleImgChange = () => {
-    var obj = {image: tempImg}
-    axios.put(`http://${host}:8080/users/${loginUser.id}`, obj)
+    var obj = { image: tempImg };
+    axios.put(`http://${host}:8080/users/${loginUser.id}`, obj);
     dispatch(updateUserPic(tempImg));
     props.navigation.navigate("Home");
   };

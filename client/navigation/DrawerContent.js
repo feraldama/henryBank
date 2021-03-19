@@ -11,8 +11,13 @@ import {
   TouchableRipple,
   Switch,
 } from "react-native-paper";
-import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
+import {
+  DrawerItem,
+  DrawerContentScrollView,
+  createDrawerNavigator,
+} from "@react-navigation/drawer";
 import { useDispatch, useSelector } from "react-redux";
+import { Restart } from "fiction-expo-restart";
 
 function DrawerContent(props) {
   const accountUserLogin = useSelector((state) => state.user.registerData);
@@ -42,6 +47,10 @@ function DrawerContent(props) {
   if (loginUser) {
     foto = loginUser.image;
   }
+
+  const cerrar = () => {
+    Restart();
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -141,9 +150,7 @@ function DrawerContent(props) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={() => <Icon name={"exit-outline"} size={28} />}
-          onPress={() => {
-            props.navigation.navigate("Login");
-          }}
+          onPress={() => cerrar()}
           label="Salir"
         />
       </Drawer.Section>
