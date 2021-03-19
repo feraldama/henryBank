@@ -4,7 +4,7 @@ const { User, Account, Transfer } = require("../../database/db");
 
 
 server.get('/list-transfer/:cvu',async (req,res)=>{
-    const {cvu, type } = req.params
+    const {cvu} = req.params
     await Transfer.findAll({
         limit: 10,
         where: {
@@ -19,6 +19,17 @@ server.get('/list-transfer/:cvu',async (req,res)=>{
     })
     .catch(err=>{
         res.json({msg:"no has hecho ninguna transferencia"})
+    })
+})
+
+server.get('/info-transfer/:id', async (req,res)=>{
+    const {id} = req.params
+    await Transfer.findOne({ where: { id: id } })
+    .then((data)=>{
+        res.send(data)
+    })
+    .catch(err=>{
+        res.json({msg:"Error"})
     })
 })
 

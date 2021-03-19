@@ -7,3 +7,5 @@ export const ACCOUNT_LOGIN = "ACCOUNT_LOGIN";
 export const RECARGAR_DINERO = "RECARGAR_DINERO";
 export const EMPTY_REDUX = "EMPTY_REDUX";
 export const TRANSFER = "TRANSFER";
+export const INFO_TRANFER = "INFO_TRANFER"; 
+export const UPDATE_USER_PIC = "UPDATE_USER_PIC";

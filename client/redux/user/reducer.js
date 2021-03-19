@@ -2,10 +2,12 @@ import {
   SAVE_REGISTER_DATA,
   ACCOUNT_LOGIN,
   EMPTY_REDUX,
+  UPDATE_USER_PIC,
 } from "../actions_types.js";
 const initialState = {
   registerData: [],
   registerData2: [],
+  uri: "",
 };
 
 export default function userReducer(state = initialState, action) {
@@ -25,6 +27,11 @@ export default function userReducer(state = initialState, action) {
     case EMPTY_REDUX:
       return {
         registerData: [],
+      };
+
+    case UPDATE_USER_PIC:
+      return {
+        registerData: [...state.registerData, action.payload],
       };
 
     default:

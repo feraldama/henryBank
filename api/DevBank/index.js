@@ -1,6 +1,5 @@
 const server = require("./src/app");
 const { conn } = require("./src/database/db");
-const { Users } = require("./src/database/db");
 
 conn
   .authenticate()

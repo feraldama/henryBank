@@ -13,11 +13,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
+  ImageBackground,
 } from "react-native";
 import { colors } from "../res";
 import axios from "axios";
 import { Icon } from "react-native-elements";
 import * as Contacts from "expo-contacts";
+import { host } from "../redux/varible_host";
 
 // var contacts = [
 //   {
@@ -46,7 +48,7 @@ export default function ContactsScreen(props) {
       const { status } = await Contacts.requestPermissionsAsync();
       if (status === "granted") {
         const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails],
+          fields: [Contacts.Fields.PhoneNumbers],
         });
 
         if (data.length > 0) {
@@ -86,7 +88,7 @@ export default function ContactsScreen(props) {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.11:8080/users/contact/" + loginUser.id)
+      .get(`http://${host}:8080/users/contact/${loginUser.id}`)
       .then((data) => {
         setContacts(data.data);
       });
@@ -104,7 +106,7 @@ export default function ContactsScreen(props) {
         return item.alias[0].toUpperCase() === currChar;
       });
       if (currContacts.length > 0) {
-        currContacts.sort((a, b) => a.alias.localeCompaer(b.alias));
+        currContacts.sort((a, b) => a.alias.localeCompare(b.alias));
         obj.data = currContacts;
         contactsArr.push(obj);
       }
@@ -121,7 +123,7 @@ export default function ContactsScreen(props) {
       email,
     };
     axios
-      .post("http://192.168.0.11:8080/users/contact/" + loginUser.id, dato)
+      .post(`http://${host}:8080/users/contact/${loginUser.id}`, dato)
       .then((data) => {
         if (data.data === "ya es un contacto") {
           setModalVisible(!modalVisible);
@@ -140,158 +142,195 @@ export default function ContactsScreen(props) {
 
   const eliminarContacto = (contactId) => {
     axios.delete(
-      "http://192.168.0.11:8080/users/contact/" + loginUser.id + "/" + contactId
+      `http://${host}:8080/users/contact/${loginUser.id}/${contactId}`
     );
     Alert.alert("AVISO", "Usuario eliminado");
     setGet(Math.random());
   };
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.container}>
-        <Text style={styles.header}> Tus Contactos</Text>
-        <SectionList
-          sections={getData()}
-          ListHeaderComponent={() => (
-            <View>
-              <Button
-                title="Agregar Contacto"
-                onPress={() => setModalVisible(true)}
-              />
-              <TouchableOpacity
-                style={styles.longButton}
-                onPress={() => setModalContactVisible(!modalContactVisible)}
-              >
-                <Icon name="md-logo-whatsapp" type="ionicon" />
-                <Text>Invitar Contacto</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          renderItem={({ item }) => (
-            <View style={styles.row}>
+    <ImageBackground source={require("../assets/1.png")} style={styles.image}>
+      <View style={styles.mainContainer}>
+        <View style={styles.container}>
+          <Text style={styles.header}> Tus Contactos</Text>
+          <SectionList
+            sections={getData()}
+            ListHeaderComponent={() => (
               <View>
-                <Text style={styles.contactNames}>{item.alias}</Text>
-              </View>
-              <View style={styles.transferBtn}>
-                <Button onPress={() => transfer(item)} title="Transferir" />
-                <Button
-                  color="#ff3464"
-                  onPress={() => eliminarContacto(item.contactId)}
-                  title="Eliminar"
-                />
-              </View>
-            </View>
-          )}
-          keyExtractor={(item) => item.index}
-          renderSectionHeader={({ section }) => {
-            <View style={styles.sectionHeader}>
-              <Text>{section.title}</Text>
-            </View>;
-          }}
-        />
-      </View>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Ingrese e-mail del contacto a agregar
-              </Text>
-              <TextInput
-                style={styles.email}
-                placeholder="E-mail"
-                onChangeText={(value) => handleChangeText(value, "email")}
-                value={email}
-              ></TextInput>
-              <View
-                style={{
-                  justifyContent: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <View style={{ paddingRight: 30 }}>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
+                <View>
+                  <TouchableOpacity
+                    style={styles.longButton2}
+                    onPress={() => setModalVisible(true)}
                   >
-                    <Text style={styles.textStyle}>Cancelar</Text>
-                  </Pressable>
+                    <Icon name="person-add-outline" type="ionicon" />
+                    <Text style={{ color: "white" }}>Agregar Contacto</Text>
+                  </TouchableOpacity>
                 </View>
                 <View>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => agregarContacto()}
-                  >
-                    <Text style={styles.textStyle}>Agregar</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalContactVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalContactVisible(!modalContactVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Seleccione contacto a agregar
-              </Text>
-              <ScrollView>
-                {state.length !== 0 ? (
-                  state.map((contact) => (
-                    <Text
-                      onPress={() =>
-                        mandarMensaje(contact.phoneNumbers[0].number)
-                      }
-                      key={contact.id}
-                    >
-                      {contact.name} -{" "}
-                      {contact.phoneNumbers[0].number
-                        ? contact.phoneNumbers[0].number
-                        : "Sin número"}
-                    </Text>
-                  ))
-                ) : (
-                  <Text>Aqui van los contactos</Text>
-                )}
-              </ScrollView>
-              <View
-                style={{
-                  justifyContent: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <View>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
+                  <TouchableOpacity
+                    style={styles.longButton}
                     onPress={() => setModalContactVisible(!modalContactVisible)}
                   >
-                    <Text style={styles.textStyle}>Cancelar</Text>
-                  </Pressable>
+                    <Icon name="md-logo-whatsapp" type="ionicon" />
+                    <Text>Invitar Contacto</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+            renderItem={({ item }) => (
+              <ScrollView>
+                <View style={styles.row}>
+                  <View style={styles.alias}>
+                    <Text style={styles.contactNames}>{item.alias}</Text>
+                  </View>
+                  <View style={styles.botones}>
+                    <TouchableOpacity
+                      style={styles.transferBT}
+                      onPress={() => transfer(item)}
+                    >
+                      <Icon name="send-outline" type="ionicon" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.squareButton}
+                      onPress={() => eliminarContacto(item.contactId)}
+                    >
+                      <Icon name="trash-outline" type="ionicon" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </ScrollView>
+            )}
+            keyExtractor={(item) => item.index}
+            renderSectionHeader={({ section }) => {
+              <View style={styles.sectionHeader}>
+                <Text>{section.title}</Text>
+              </View>;
+            }}
+          />
+        </View>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Ingrese e-mail del contacto a agregar
+                </Text>
+                <TextInput
+                  style={styles.email}
+                  placeholder="E-mail"
+                  onChangeText={(value) => handleChangeText(value, "email")}
+                  value={email}
+                ></TextInput>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View style={{ paddingRight: 30 }}>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Cancelar</Text>
+                    </Pressable>
+                  </View>
+                  <View>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => agregarContacto()}
+                    >
+                      <Text style={styles.textStyle}>Agregar</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </View>
+
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalContactVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalContactVisible(!modalContactVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView2}>
+                <Text style={styles.modalText}>
+                  SELECCIONE CONTACTO A AGREGAR
+                </Text>
+                <ScrollView style={{ width: "100%" }}>
+                  {state.length !== 0 ? (
+                    state.map((contact) => (
+                      <View
+                        key={state.indexOf(contact)}
+                        style={[
+                          styles.contactView,
+                          state.indexOf(contact) % 2 == 0
+                            ? styles.grey
+                            : styles.red,
+                        ]}
+                      >
+                        <Text
+                          style={styles.contacts}
+                          onPress={() =>
+                            mandarMensaje(contact.phoneNumbers[0].number)
+                          }
+                          key={contact.id}
+                        >
+                          {contact.name}
+                          {/* -{" "}
+                        {contact.phoneNumbers[0].number
+                          ? contact.phoneNumbers[0].number
+                        : "Sin número"} */}
+                        </Text>
+                      </View>
+                    ))
+                  ) : (
+                    <Text>Aqui van los contactos</Text>
+                  )}
+                </ScrollView>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <View
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#ff6961",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={styles.contactsCancel}
+                      onPress={() =>
+                        setModalContactVisible(!modalContactVisible)
+                      }
+                    >
+                      <Text style={{ fontSize: 20 }}>CANCELAR</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -299,11 +338,15 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
+  },
+  contacts: {
+    fontSize: 25,
+    marginBottom: 10,
   },
   container: {
     marginTop: 35,
-    width: 300,
+    width: "100%",
   },
   header: {
     alignSelf: "center",
@@ -313,25 +356,20 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-
     alignItems: "center",
     width: "100%",
+    height: 40,
     justifyContent: "space-between",
-    margin: 7,
+    marginTop: 10,
+    borderRadius: 10,
     paddingLeft: 3,
-    backgroundColor: colors.secondary,
+    // backgroundColor: colors.secondary,
   },
   contactNames: {
     fontSize: 20,
-    color: colors.primary,
-    paddingRight: 30,
+    color: colors.black,
+    paddingLeft: 10,
   },
-  transferBtn: {
-    alignSelf: "flex-end",
-    flexDirection: "row",
-  },
-  sectionHeader: {},
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -353,6 +391,24 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalView2: {
+    margin: 20,
+    marginTop: 40,
+    backgroundColor: "#84bbcd",
+    borderRadius: 20,
+    paddingBottom: 35,
+    paddingTop: 40,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -362,7 +418,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#2196f3",
+  },
+  buttonClose2: {
+    backgroundColor: "#ff6961",
+    marginTop: 10,
+    marginBottom: 10,
+    width: "100%",
   },
   textStyle: {
     color: "white",
@@ -370,7 +432,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    fontSize: 20,
+    marginBottom: 35,
     textAlign: "center",
   },
   email: {
@@ -379,6 +442,7 @@ const styles = StyleSheet.create({
   longButton: {
     width: "100%",
     height: 50,
+    borderRadius: 10,
     backgroundColor: "#00ff80",
     justifyContent: "center",
     alignItems: "center",
@@ -388,5 +452,91 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     elevation: 3,
+  },
+  longButton2: {
+    width: "100%",
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: "#2B58DE",
+    justifyContent: "center",
+    marginBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  contactsCancel: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#ff6961",
+    justifyContent: "center",
+    marginBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
+  squareButton: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    backgroundColor: "#ff6961",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+    height: "100%",
+    width: 55,
+  },
+  transferBT: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    backgroundColor: "#00ff80",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
+    height: "100%",
+    width: 55,
+  },
+  alias: {
+    width: "70%",
+    backgroundColor: "white",
+    height: "100%",
+    borderRadius: 10,
+    justifyContent: "center",
+  },
+  botones: {
+    width: "30%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  contactView: {
+    width: "100%",
+    // backgroundColor: "#73c3d5",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  red: {
+    backgroundColor: "#e4f2f7",
+  },
+  grey: {
+    backgroundColor: "#c0dce5",
   },
 });

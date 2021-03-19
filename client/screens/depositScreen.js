@@ -7,6 +7,9 @@ import {
   Text,
   TextInput,
   Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
@@ -16,6 +19,7 @@ import {
 } from "../redux/user/actions";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { host } from "../redux/varible_host";
 
 function DepositScreen(props) {
   const dispatch = useDispatch();
@@ -50,7 +54,7 @@ function DepositScreen(props) {
       value: parseInt(state.amount),
     };
     axios
-      .post(`http://localhost:8080/users/transfer/deposito`, datos)
+      .post(`http://${host}:8080/users/transfer/deposito`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
@@ -71,71 +75,64 @@ function DepositScreen(props) {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <Text style={styles.generalSumLabel}>Recargar dinero</Text>
-      <View style={styles.firstContainer}>
-        <Text style={styles.generalDescription}>
-          Usá este código siempre que quieras ingresar dinero a tu cuenta.
-        </Text>
-        <Text style={styles.generalDescription}>
-          El monto mínimo es de $50.
-        </Text>
-        <View style={styles.codeContainer}>
-          <Text style={styles.codeText}>88333 44526</Text>
+    <ImageBackground source={require("../assets/2.png")} style={styles.image}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.mainContainer}>
+          <Text style={styles.generalSumLabel}>Recargar dinero</Text>
+          <View style={styles.firstContainer}>
+            <Text style={styles.generalDescription2}>
+              Usá este código siempre que quieras ingresar dinero a tu cuenta.
+            </Text>
+            <Text style={styles.generalDescription2}>
+              El monto mínimo es de $50.
+            </Text>
+            <View style={styles.codeContainer}>
+              <Text style={styles.codeText}>88333 44526</Text>
+            </View>
+            <Text style={styles.generalDescription}>
+              Mostrale este código al cajero en RapiPago o PagoFacil.
+            </Text>
+            <Picker
+              selectedValue={state.type}
+              style={styles.picker}
+              onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
+            >
+              <Picker.Item label="PESOS" value="PESOS" />
+              <Picker.Item label="USD" value="USD" />
+            </Picker>
+            <TextInput
+              keyboardType="numeric"
+              style={styles.montoInput}
+              placeholder="Ingrese monto a recargar"
+              onChangeText={(value) => handleChangeText(value, "amount")}
+              value={state.amount}
+            ></TextInput>
+            <TouchableOpacity
+              style={styles.longButton}
+              onPress={() => {
+                validateDeposit();
+                // dispatchFunction();
+                // props.navigation.navigate("Home");
+              }}
+            >
+              <Text style={styles.generalDescription}>Confirmar Recarga</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <Text style={styles.generalDescription}>
-          Mostrale este código al cajero en RapiPago o PagoFacil.
-        </Text>
-
-        {/* <Picker
-          selectedValue={state.type}
-          // style={styles.picker}
-          onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
-        >
-          <Picker.Item label="PESOS" value="PESOS" />
-          <Picker.Item label="USD" value="USD" />
-        </Picker> */}
-
-        <Picker
-          selectedValue={state.type}
-          style={styles.picker}
-          onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
-        >
-          <Picker.Item label="PESOS" value="PESOS" />
-          <Picker.Item label="USD" value="USD" />
-        </Picker>
-
-        <TextInput
-          keyboardType="numeric"
-          style={styles.montoInput}
-          placeholder="Ingrese monto a recargar"
-          onChangeText={(value) => handleChangeText(value, "amount")}
-          value={state.amount}
-        ></TextInput>
-        <TouchableOpacity
-          style={styles.longButton}
-          onPress={() => {
-            validateDeposit();
-            // dispatchFunction();
-            // props.navigation.navigate("Home");
-          }}
-        >
-          <Text style={styles.generalDescription}>Confirmar Recarga</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
   },
   firstContainer: {
-    backgroundColor: colors.secondary,
+    // backgroundColor: colors.secondary,
     borderRadius: 10,
     width: 350,
     height: 550,
@@ -172,7 +169,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingTop: 20,
   },
+  generalDescription2: {
+    color: "#fff",
+    paddingLeft: 40,
+    paddingRight: 40,
+    fontSize: 20,
+    alignSelf: "flex-start",
+  },
   generalDescription: {
+    color: "black",
     paddingLeft: 40,
     paddingRight: 40,
     fontSize: 20,
@@ -197,9 +202,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
     alignSelf: "center",
     width: 200,
-    backgroundColor: colors.white,
+    backgroundColor: "#77C5D5",
     color: colors.black,
     borderRadius: 30,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 
