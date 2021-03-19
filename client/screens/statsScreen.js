@@ -3,7 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { colors } from "../res";
 import axios from "axios";
 import { host } from "../redux/varible_host";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  ImageBackground,
+} from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { RadioButton } from "react-native-paper";
 
@@ -44,124 +50,126 @@ function StatsScreen() {
   }, [checked]);
 
   return (
-    <View style={styles.mainContainer}>
-      <View style={{ flex: 0.1, flexDirection: "row", marginTop: 30 }}>
-        <View style={{ marginHorizontal: 10 }}>
-          <Text style={{ color: "#fff" }}>PESOS</Text>
-          <RadioButton
-            value="first"
-            status={checked === "first" ? "checked" : "unchecked"}
-            onPress={() => setChecked("first")}
+    <ImageBackground source={require("../assets/1.png")} style={styles.image}>
+      <View style={styles.mainContainer}>
+        <View style={{ flex: 0.1, flexDirection: "row", marginTop: 30 }}>
+          <View style={{ marginHorizontal: 10 }}>
+            <Text style={{ color: "#fff" }}>PESOS</Text>
+            <RadioButton
+              value="first"
+              status={checked === "first" ? "checked" : "unchecked"}
+              onPress={() => setChecked("first")}
+            />
+          </View>
+          <View style={{ marginHorizontal: 10 }}>
+            <Text style={{ color: "#fff" }}>USD</Text>
+            <RadioButton
+              value="second"
+              status={checked === "second" ? "checked" : "unchecked"}
+              onPress={() => setChecked("second")}
+            />
+          </View>
+        </View>
+        <View style={styles.secondContainer}>
+          <Text style={styles.textStyle}>GASTOS</Text>
+          <LineChart
+            data={{
+              labels: [
+                date1.getMonth() + 1,
+                date2.getMonth() + 1,
+                date3.getMonth() + 1,
+                date4.getMonth() + 1,
+                date5.getMonth() + 1,
+                date.getMonth() + 1,
+              ],
+              datasets: [
+                {
+                  data: egresos,
+                },
+              ],
+            }}
+            width={Dimensions.get("window").width - 25} // from react-native
+            height={220}
+            yAxisLabel="$"
+            yAxisSuffix=""
+            chartConfig={{
+              backgroundColor: "#77C5D5",
+              backgroundGradientFrom: "#77C5D5",
+              backgroundGradientTo: "#77D5F0",
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForDots: {
+                r: "6",
+                strokeWidth: "2",
+                stroke: "#ffa726",
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
           />
         </View>
-        <View style={{ marginHorizontal: 10 }}>
-          <Text style={{ color: "#fff" }}>USD</Text>
-          <RadioButton
-            value="second"
-            status={checked === "second" ? "checked" : "unchecked"}
-            onPress={() => setChecked("second")}
+        <View style={styles.thirdContainer}>
+          <Text style={styles.textStyle}>INGRESOS </Text>
+          <LineChart
+            data={{
+              labels: [
+                date1.getMonth() + 1,
+                date2.getMonth() + 1,
+                date3.getMonth() + 1,
+                date4.getMonth() + 1,
+                date5.getMonth() + 1,
+                date.getMonth() + 1,
+              ],
+              datasets: [
+                {
+                  data: ingresos,
+                },
+              ],
+            }}
+            width={Dimensions.get("window").width - 25} // from react-native
+            height={220}
+            yAxisLabel="$"
+            yAxisSuffix=""
+            yAxisInterval={1} // optional, defaults to 1
+            chartConfig={{
+              backgroundColor: "#77C5D5",
+              backgroundGradientFrom: "#77C5D5",
+              backgroundGradientTo: "#77D5F0",
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForDots: {
+                r: "6",
+                strokeWidth: "2",
+                stroke: "#ffa726",
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
           />
         </View>
       </View>
-      <View style={styles.secondContainer}>
-        <Text style={styles.textStyle}>GASTOS </Text>
-        <LineChart
-          data={{
-            labels: [
-              date1.getMonth() + 1,
-              date2.getMonth() + 1,
-              date3.getMonth() + 1,
-              date4.getMonth() + 1,
-              date5.getMonth() + 1,
-              date.getMonth() + 1,
-            ],
-            datasets: [
-              {
-                data: egresos,
-              },
-            ],
-          }}
-          width={Dimensions.get("window").width - 25} // from react-native
-          height={220}
-          yAxisLabel="$"
-          yAxisSuffix=""
-          chartConfig={{
-            backgroundColor: "#77C5D5",
-            backgroundGradientFrom: "#77C5D5",
-            backgroundGradientTo: "#77D5F0",
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "#ffa726",
-            },
-          }}
-          bezier
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-      </View>
-      <View style={styles.thirdContainer}>
-        <Text style={styles.textStyle}>INGRESOS </Text>
-        <LineChart
-          data={{
-            labels: [
-              date1.getMonth() + 1,
-              date2.getMonth() + 1,
-              date3.getMonth() + 1,
-              date4.getMonth() + 1,
-              date5.getMonth() + 1,
-              date.getMonth() + 1,
-            ],
-            datasets: [
-              {
-                data: ingresos,
-              },
-            ],
-          }}
-          width={Dimensions.get("window").width - 25} // from react-native
-          height={220}
-          yAxisLabel="$"
-          yAxisSuffix=""
-          yAxisInterval={1} // optional, defaults to 1
-          chartConfig={{
-            backgroundColor: "#77C5D5",
-            backgroundGradientFrom: "#77C5D5",
-            backgroundGradientTo: "#77D5F0",
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: "6",
-              strokeWidth: "2",
-              stroke: "#ffa726",
-            },
-          }}
-          bezier
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-      </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: colors.primary,
+    // backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -178,7 +186,8 @@ const styles = StyleSheet.create({
   thirdContainer: {
     flex: 1,
     width: "90%",
-    margin: 30,
+    // margin: 30,
+    marginBottom: 70,
     justifyContent: "center",
     alignItems: "center",
     //backgroundColor: colors.secondary,
@@ -189,6 +198,11 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: "bold",
     fontSize: 25,
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
 

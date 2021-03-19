@@ -17,9 +17,7 @@ function InfoTransferScreen(props) {
   const infotransfer = useSelector((state) => state.transfer.infoTransfer);
 
   const createPDF = async () => {
-    console.log("infotransfer.createdAt: ", infotransfer.createdAt);
     const fecha = moment(infotransfer.createdAt).format("YYYY-MM-DD");
-    console.log("FECHA: ", fecha);
     filePath = await Print.printToFileAsync({
       // let filePath = await Print.printAsync({
       html: `<p style="text-align:center;"><img src="http://www.tecnovate.com.py/templates/g5_helium/custom/images/logo3Original.png?6052ae77" width="500" height="300"></p><h1 style="text-align:center;">DATOS DE TRANSFERENCIA</h1><h2>Fecha: ${fecha}</h2><h2>CVU Origen: ${infotransfer.origin}</h2><h2>CVU Destino: ${infotransfer.destination}</h2><h2>Monto: ${infotransfer.value}</h2><h2>Tipo: ${infotransfer.type}</h2><h2>Moneda: ${infotransfer.currency}</h2><h2>Descripción: ${infotransfer.description}</h2>`,
