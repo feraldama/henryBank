@@ -1,1 +1,1 @@
-![Dev_Bank](https://www.tecnovate.com.py/devBank.png=100x20)
+![Dev_Bank](https://www.tecnovate.com.py/devBank.png =100x20)
