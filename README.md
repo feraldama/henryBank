@@ -1,1 +1,1 @@
-<img src="https://www.tecnovate.com.py/devBank.png" alt="drawing" width="200"/>
+<img src="https://www.tecnovate.com.py/devBank.png" alt="drawing" align="center" width="200"/>
